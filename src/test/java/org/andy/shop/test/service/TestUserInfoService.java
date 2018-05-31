@@ -9,6 +9,7 @@ import org.andy.shop.dao.UserInfoDao;
 import org.andy.shop.entity.UserInfoPo;
 import org.andy.shop.service.CustomerReportService;
 import org.andy.shop.service.UserInfoService;
+import org.andy.shop.test.service.HttpRequestMyTest;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -66,9 +67,9 @@ public class TestUserInfoService {
 
 	@Test
 	public void testHttpRequestTest() {
-		HttpRequestTest httpRequestTest =new HttpRequestTest();
+		HttpRequestMyTest httpRequestTest =new HttpRequestMyTest();
 		String param="openId=ozLOG5LWXLjDpxZLrD1DxXIKxHWg&startIndex=1&indexSize=5";
-		String returnStr =  httpRequestTest.sendGet("http://203.195.200.199/springmvc_demo/getCustomerReportList.do", param);
+		String returnStr =  httpRequestTest.sendGet("http://localhost:80/YLXcxMallBack_bak/getCustomerReportList.do", param);
 		System.out.println(returnStr);
 		LOGGER.info("returnStr:"+returnStr);
 }

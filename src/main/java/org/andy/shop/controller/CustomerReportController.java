@@ -170,7 +170,7 @@ public String addCustomerReport(@RequestParam Map<String,String> map){ // spring
 //		
 //		return str;
 //	}
-	 @RequestMapping(value="/hello.do")  
+	 @RequestMapping(value="/hello.do",method = {RequestMethod.GET })  
 	    public String toIndex(String hello,ModelMap model) {  
 	          
 	        model.addAttribute("helloworld", "hello "+hello);  

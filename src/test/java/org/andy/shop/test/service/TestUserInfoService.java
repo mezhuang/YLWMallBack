@@ -1,15 +1,20 @@
 package org.andy.shop.test.service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.andy.shop.common.Utils;
 import org.andy.shop.dao.CustomerReportDao;
 import org.andy.shop.dao.UserInfoDao;
+import org.andy.shop.dao.UserPowerDao;
 import org.andy.shop.entity.UserInfoPo;
 import org.andy.shop.service.CustomerReportService;
 import org.andy.shop.service.UserInfoService;
-import org.andy.shop.test.service.HttpRequestMyTest;
+import org.andy.shop.service.UserPowerService;
+import org.andy.shop.test.service.HttpRequestMyTest1;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,11 +40,17 @@ public class TestUserInfoService {
 	@Autowired
 	private UserInfoService userInfoService;
 	@Autowired
+	private UserPowerService userPowerService;
+	
+	@Autowired
 	private CustomerReportService customerReportService;
 	@Autowired
 	private UserInfoDao userInfoDao;
 	@Autowired 
 	private CustomerReportDao customerReportDao;
+	
+	@Autowired
+	private UserPowerDao userPowerDao;
 /*
 	@Test
 	public void testGetAllGuideInfo() {
@@ -64,14 +75,42 @@ public class TestUserInfoService {
 	}
 
 */
-
-	@Test
-	public void testHttpRequestTest() {
-		HttpRequestMyTest httpRequestTest =new HttpRequestMyTest();
-		String param="openId=ozLOG5LWXLjDpxZLrD1DxXIKxHWg&startIndex=1&indexSize=5";
-		String returnStr =  httpRequestTest.sendGet("http://localhost:80/YLXcxMallBack_bak/getCustomerReportList.do", param);
-		System.out.println(returnStr);
-		LOGGER.info("returnStr:"+returnStr);
+//测试客户报备列表
+//	@Test
+//	public void testHttpRequestTest() {
+//		HttpRequestMyTest1 httpRequestTest =new HttpRequestMyTest1();
+//		String param="openId=ozLOG5LWXLjDpxZLrD1DxXIKxHWg&startIndex=1&indexSize=5";
+//		String returnStr =  httpRequestTest.sendGet("http://localhost:80/YLXcxMallBack/getCustomerReportList.do", param);
+//		System.out.println(returnStr);
+//		LOGGER.info("returnStr:"+returnStr);
+////		String param ="";
+//		//test hello
+////		String returnStr =  httpRequestTest.sendGet("http://localhost/YLXcxMallBack/", param);
+////		System.out.println(returnStr);
+////		LOGGER.info("returnStr:"+returnStr);
+//}
+	//测试申请分销商
+	@Test 
+	public void testapplyToReferee() {
+		
+		UUID uuid1=UUID.randomUUID();
+	     String userId = uuid1.toString(); 
+		 String openId ="fffff";
+		 String userName ="yyy";
+		 String userPhone ="fdfd";
+		 String userRegTime = Utils.getCurrentDate();
+		 Map<String,String> map = new HashMap<String,String>();
+		 map.put("openId", openId);
+		 map.put("userName", userName);
+		 map.put("userPhone", userPhone);
+		 map.put("userRegTime", userRegTime);
+		 userPowerService.applytoReferee(map);
+		
+//		String param ="";
+		//test hello
+//		String returnStr =  httpRequestTest.sendGet("http://localhost/YLXcxMallBack/", param);
+//		System.out.println(returnStr);
+//		LOGGER.info("returnStr:"+returnStr);
 }
 	
 

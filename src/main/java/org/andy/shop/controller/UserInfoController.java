@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.andy.shop.entity.UserInfoPo;
 import org.andy.shop.service.UserInfoService;
+import org.andy.shop.service.UserPowerService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -29,6 +31,8 @@ public class UserInfoController {
 			.getLogger(UserInfoController.class);
 	@Autowired
 	private UserInfoService userInfoService;
+	@Autowired
+	private UserPowerService userPowerService;
 
 //	@RequestMapping("/showInfo/{userId}")
 //	public String showUserInfo(ModelMap modelMap, @PathVariable int userId) {
@@ -52,5 +56,29 @@ public class UserInfoController {
 		List<String> guideInfos = userInfoService.findAllGuideInfo();
 //		LOGGER.info("guideInfos:"+guideInfos);
 		return guideInfos;
+	}
+	/*获取全部导购信息
+	 * */
+	@RequestMapping(value="/getUserPowerList.do",method = {RequestMethod.GET })
+	@ResponseBody
+	public List<Map<String, Object>> getUserPowerList(@RequestParam Map<String,String> map) {
+		LOGGER.info("json返回用户全部的权限");
+		 String openId =map.get("openId");
+		 List<Map<String, Object>> guideInfos = userPowerService.getUserPowerByOpenId(openId);
+//		LOGGER.info("guideInfos:"+guideInfos);
+		return guideInfos;
+	}
+	/*申请分销
+	 * 参数:
+	 * */
+	@RequestMapping(value="/applyToReferee.do",method = {RequestMethod.GET })
+	@ResponseBody
+	public String applyToReferee(@RequestParam Map<String,String> map) {
+		LOGGER.info("json申请成为分销商结果");
+		userPowerService.applytoReferee(map);
+	
+	
+//		LOGGER.info("guideInfos:"+guideInfos);
+		 return  "success";
 	}
 }

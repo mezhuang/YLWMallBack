@@ -22,7 +22,6 @@ public class UserInfoPo implements RowMapper<UserInfoPo>, Serializable {
 
 
 	private String userId;
-	private String usertype;
 	private String userName;
 	private String userPhone;
 	private Date userRegTime;
@@ -36,15 +35,7 @@ public class UserInfoPo implements RowMapper<UserInfoPo>, Serializable {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
-	public String getUserType() {
-		return usertype;
-	}
-
-	public void setUserType(String userType) {
-		this.usertype = userType;
-	}
-
+	
 	public String getUserName() {
 		return userName;
 	}
@@ -75,7 +66,6 @@ public class UserInfoPo implements RowMapper<UserInfoPo>, Serializable {
 	public UserInfoPo mapRow(ResultSet rs, int rowNum) throws SQLException {
 		UserInfoPo userInfo = new UserInfoPo();
 		userInfo.setUserId(rs.getString("user_id"));
-		userInfo.setUserType(rs.getString("userTye"));
 		userInfo.setUserName( rs.getString("userName"));
 		userInfo.setUserRegTime(rs.getDate("userRegTime"));
 		return userInfo;

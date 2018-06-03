@@ -1,6 +1,7 @@
 package org.andy.shop.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -10,6 +11,7 @@ import org.andy.shop.entity.AddCustomerReportPo;
 import org.andy.shop.entity.UserInfoPo;
 import org.andy.shop.entity.CustomerReportPo;
 import org.andy.shop.service.CustomerReportService;
+import org.andy.shop.service.GroupMapService;
 import org.andy.shop.service.UserInfoService;
 import org.andy.shop.common.Constant;
 import org.apache.log4j.Logger;
@@ -46,27 +48,14 @@ public class CustomerReportController {
 	private UserInfoService userInfoService;
 	@Autowired
 	private UserInfoDao userInfoDao;
+	
+	@Autowired
+	private GroupMapService groupMapService;
 
-//	@RequestMapping("/showInfo/{userId}")
-//	public String showUserInfo(ModelMap modelMap, @PathVariable int userId) {
-//		LOGGER.info("查看用户：" + userId);
-//		UserInfo userInfo = customerReportService.getById(userId);
-//		modelMap.addAttribute("userInfo", userInfo);
-//		return "/user/showInfo";
-//	}
 
-//	@RequestMapping("/getCustomerReportList")
-//	public @ResponseBody List<CustomerReport> getCustomerReportList() {
-//		LOGGER.info("json返回全部用户的信息");111111111111111110000000000000000000
-//		List<UserInfo> userInfos = userInfoService.findAll();
-//		return userInfos;
-//	}·······
-	//新增客户报备
-//	@RequestMapping("/addCustomerReport.do")
-//	public boolean addCustomerReport(@RequestBody CustomerReportPo customerReportPo) {
 @RequestMapping(value = "/addCustomerReport.do",method = {RequestMethod.POST })
 @ResponseBody
-public String addCustomerReport(@RequestParam Map<String,String> map){ // spring MVC只能解析外层的json格式，内部的bean转化为Map格式的键值对，需要对map解析
+public String addCustomerReport(@RequestParam Map<String,String> map) throws Exception{ // spring MVC只能解析外层的json格式，内部的bean转化为Map格式的键值对，需要对map解析
 
 //		 List<UserInfoPo> userList = new ArrayList<UserInfoPo>();
 		// JSONObject object = JSONObject.fromObject();
@@ -105,17 +94,29 @@ public String addCustomerReport(@RequestParam Map<String,String> map){ // spring
 		 {
 			 return "10002"; 
 		 }
-		 
+		 UUID uuid=UUID.randomUUID();
+	     String customerUserId = uuid.toString();
+	     customerInfo.setUserId(customerUserId);
 		 customerInfo.setUserName(map.get("customerName"));
 		 customerInfo.setUserPhone(customerPhone);
-		 customerInfo.setUserType("1");
 		 userInfoService.save(customerInfo);
+		 //增加至客户分组
+		 Map<String, String> groupMap = new HashMap<String, String>(); 
+		 groupMap.put("groupId", Constant.CUSTOMER_GROUP_ID);
+		 groupMap.put("userId", customerUserId);
+		 groupMapService.addUserToGroup(groupMap);
+		 
 		 //新增带看人
 		 UserInfoPo taskInfo = new UserInfoPo();
 		 taskInfo.setUserName(map.get("taskName"));
 		 taskInfo.setUserPhone(map.get("taskPhone"));
-		 taskInfo.setUserType("2");
 		 userInfoService.save(taskInfo);
+		 
+		//增加至带看人分组
+//		 Map<String, String> taskGroupMap = new HashMap<String, String>(); 
+//		 groupMap.put("groupId", Constant.TASK_GROUP_ID);
+//		 groupMap.put("userId", customerUserId);
+//		 groupMapService.addUserToGroup(groupMap);
 	 
 		 
 		 //新增客户报备表
@@ -149,7 +150,7 @@ public String addCustomerReport(@RequestParam Map<String,String> map){ // spring
 	 String openId= map.get("openId");
 	 String startIndex =map.get("startIndex");
 	 String indexSize =map.get("indexSize");
-	//			LOGGER.info("json返回全部导购的信息");
+	//			LOGGER.info("json返回全部客户报备的信息");
 	List<Map<String, Object>> customerReportInfos = customerReportService.getAllReportcustomerList(openId,startIndex,indexSize);
 		LOGGER.info("guideInfos:"+customerReportInfos);
 	return customerReportInfos;

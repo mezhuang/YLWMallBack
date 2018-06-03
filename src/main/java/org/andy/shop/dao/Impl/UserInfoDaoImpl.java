@@ -52,7 +52,7 @@ public class UserInfoDaoImpl implements UserInfoDao {
 	@Override
 	public Integer save(UserInfoPo entity) {
 
-		String sql = "INSERT INTO user_info(user_type, user_name,user_phone,user_reg_time) VALUES(:user_Type, :user_Name, :user_Phone,:user_Reg_Time)";
+		String sql = "INSERT INTO user_info(user_type, user_name,user_phone,user_reg_time) VALUES(:user_Type, :user_Name,:user_Phone,:user_Reg_Time)";
 		MapSqlParameterSource paramSource = new MapSqlParameterSource();
 		paramSource.addValue("user_Type", entity.getUserType());
 		paramSource.addValue("user_Name", entity.getUserName());

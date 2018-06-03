@@ -96,8 +96,8 @@ public class TestUserInfoService {
 		UUID uuid1=UUID.randomUUID();
 	     String userId = uuid1.toString(); 
 		 String openId ="fffff";
-		 String userName ="yyy";
-		 String userPhone ="fdfd";
+		 String userName ="xiaoliu";
+		 String userPhone ="18812345678";
 		 String userRegTime = Utils.getCurrentDate();
 		 Map<String,String> map = new HashMap<String,String>();
 		 map.put("openId", openId);

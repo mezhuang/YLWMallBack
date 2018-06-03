@@ -11,6 +11,8 @@ import org.andy.shop.dao.UserInfoDao;
 import org.andy.shop.dao.UserPowerDao;
 import org.andy.shop.entity.UserInfoPo;
 import org.andy.shop.common.Constant;
+import org.andy.shop.controller.CustomerReportController;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -27,6 +29,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("userPowerDao")
 public class UserPowerDaoImpl implements UserPowerDao {
+	private static final Logger LOGGER = Logger
+	.getLogger(CustomerReportController.class);
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -51,23 +55,44 @@ public class UserPowerDaoImpl implements UserPowerDao {
 	
 	@Override
 	public void applytoReferee(Map<String,String> map) {
-	
+		MapSqlParameterSource paramSource = new MapSqlParameterSource();
+
 		 UUID uuid1=UUID.randomUUID();
 	     String userId = uuid1.toString(); 
 		 String openId =map.get("openId");
-		 String userName =map.get("user_name");
+		 String userName =map.get("userName");
 		 String userPhone = map.get("userPhone");
 		 String userRegTime = Utils.getCurrentDate();
 		 
 		 
 		 
 		 //新增分销商用户
-		 String addUserInfoSql ="insert into user_info (user_id,open_id,user_name,user_phone,user_reg_time) values('"+userId+"','"+openId+"','"+userName+"','"+userPhone+"','"+userRegTime+"')";
-		 jdbcTemplate.execute(addUserInfoSql);
-		 //新增用户分组
-		 String group_id=Constant.REFEREE_GROUP_ID;//分销商组
-		 String addUserGroupSql ="insert into group_user_map (group_id,user_id) values('"+group_id+"','"+userId+"')";
-		 jdbcTemplate.execute(addUserGroupSql);
+		 String addUserInfoSql ="insert into user_info (open_id,user_name,user_phone,user_reg_time) values(:open_id,:user_name,:user_phone,:user_reg_time)";
+//		 jdbcTemplate.execute(addUserInfoSql);
+		 
+			paramSource.addValue("open_id", openId);
+			paramSource.addValue("user_name", userName);
+			paramSource.addValue("user_phone",userPhone );			
+			paramSource.addValue("user_reg_time", Utils.getCurrentDate());
+
+			int addUserResult = namedParameterJdbcTemplate.update(addUserInfoSql, paramSource);
+			LOGGER.info("插入分销商addUserResult:"+String.valueOf(addUserResult));
+//		 //新增用户分组
+		 String groupId=Constant.REFEREE_GROUP_ID;//分销商组
+//		 jdbcTemplate.execute(addUserGroupSql);
+		MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
+		String GetUserIdSql = "SELECT user_id FROM user_info WHERE user_phone = ? limit 1";
+
+		String rUserId = jdbcTemplate.queryForObject(GetUserIdSql,String.class,
+				new Object[] { userPhone });
+
+		 String addUserGroupSql ="insert into group_user_map (group_id,user_id) values(:group_id,:user_id)";
+			paramSourceGroup.addValue("user_id", rUserId);
+			paramSourceGroup.addValue("group_id", groupId);
+
+		 int addGroupResult = namedParameterJdbcTemplate.update(addUserGroupSql, paramSourceGroup);
+			LOGGER.info("插入分销商addGroupResult:"+String.valueOf(addGroupResult));
+
 		 
 	}
 	

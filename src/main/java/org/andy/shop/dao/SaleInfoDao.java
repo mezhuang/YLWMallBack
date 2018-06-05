@@ -15,10 +15,12 @@ import org.andy.shop.entity.UserInfoPo;
  * UserInfoDao
  */
 
-public interface  GroupMapDao extends Serializable {
+public interface  SaleInfoDao extends Serializable {
 
 
-	String addUserToGroup(Map<String, String> map) throws Exception;
+	String addSaleInfo(Map<String, String> Map) throws Exception;
+
+	List<Map<String, Object>> getSaleInfo();
 
 
 }

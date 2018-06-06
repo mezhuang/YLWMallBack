@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.andy.shop.common.Utils;
 import org.andy.shop.entity.UserInfoPo;
 import org.andy.shop.service.CommissionService;
 import org.andy.shop.service.SaleInfoService;
@@ -42,6 +43,8 @@ public class SaleAndCommiController {
 	private SaleInfoService saleInfoService;
 	@Autowired
 	private CommissionService commissionService;
+	@Value("#(protect.days)")
+	private Integer protectDays;
 	@Value("#{refereeManager.noTaskRadio}")  
 	private String refereeManager_noTaskRadio;
 	@Value("#{refereeManager.taskRadio}")  
@@ -50,7 +53,6 @@ public class SaleAndCommiController {
 	private String referee_noTaskRadio;
 	@Value("#{referee.taskRadio}")  
 	private String referee_taskRadio;
-	
 	@Value("#{superiorReferee.taskRadio}")  
 	private String superiorRefereeTaskRadio;
 	@Value("#{superiorReferee.noTaskRadio}")  
@@ -96,6 +98,7 @@ public class SaleAndCommiController {
 	@ResponseBody
 	public String addSaleInfoAndCommi(@RequestParam Map<String,String> map) throws Exception {
 		LOGGER.info("导购增加销售信息");
+		String result ="success";
 		//新增销售信息
 		String ret = saleInfoService.addSaleInfo(map);
 		
@@ -105,19 +108,30 @@ public class SaleAndCommiController {
 			int transMoney=0;//成交价钱
 			String customerPhone = map.get("customerPhone");
 			String customerName  = map.get("customerName");
+			String transTime  = map.get("transTime");
+
 			transMoney=Integer.valueOf((String)map.get("transMoney"));
 			
-			//1、根据客户电话，获取分销人员姓名和电话
+			//1、根据客户电话，获取报备时间、分销人员姓名、电话
 			List<Map<String, Object>>	refereeList = userInfoService.getRefereeInfobyCustomerPhone(customerPhone);	
 			String reFereeUserPhone=null;
 			String employeeCode=null;//分销经理员工编码
+			String reportTime=null;//
 
+			
 			for(Map<String, Object> referMap :refereeList)
 			{
 				reFereeUserPhone = (String) referMap.get("user_phone");
 				employeeCode=(String)referMap.get("employee_code");
+				reportTime=(String)referMap.get("trans_time");
 			}
-			
+			//判断报备时间是否在保护期内
+			int diffDay =(int)Utils.getDiffDays(transTime, reportTime);
+			if((diffDay+1)<protectDays)
+			{
+				result="outProtectDays";
+			}
+
 			//2、根据分销员电话，判断是分销经纪人还是销售经理
 			int isrefereeManager = userPowerService.isRefereeManger(reFereeUserPhone);
 			Map<String, String>  commisionMap = new HashMap<String, String>();		
@@ -221,7 +235,7 @@ public class SaleAndCommiController {
 			}
 		}
 	
-		 return  "success";
+		 return result ;
 	}
 }
 

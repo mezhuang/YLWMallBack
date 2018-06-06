@@ -15,13 +15,13 @@ import org.andy.shop.entity.UserInfoPo;
  * UserInfoService 接口
  */
 
-public interface UserPowerService {
+public interface CommissionService {
 
-	List<Map<String, Object>> getUserPowerByOpenId(String openId);
 
-	void applytoReferee(Map<String, String> Map);
+	String addCommissioin(Map<String, String> Map) throws Exception;
 
-	int isRefereeManger(String reFereeUserPhone) throws Exception;
+	List<Map<String, Object>> getCommissioinInfo(String openId)
+			throws Exception;
 
 	
 

@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.andy.shop.common.Utils;
+import org.andy.shop.dao.CommissioinDao;
 import org.andy.shop.dao.GroupMapDao;
 import org.andy.shop.dao.SaleInfoDao;
 import org.andy.shop.dao.UserInfoDao;
@@ -29,8 +30,8 @@ import org.springframework.stereotype.Repository;
  * 
  * CustomerInfoDao实现类
  */
-@Repository("SaleInfoDao")
-public class SaleInfoDaoImpl implements SaleInfoDao {
+@Repository("CommissioinDao")
+public class CommissionDaoImpl implements CommissioinDao {
 	private static final Logger LOGGER = Logger
 	.getLogger(CustomerReportController.class);
 
@@ -43,14 +44,16 @@ public class SaleInfoDaoImpl implements SaleInfoDao {
 	
 	
 	@Override
-	public String addSaleInfo(Map<String, String> map) throws Exception{
+	public String addCommissioin(Map<String, String> map) throws Exception{
 			
 			MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
 
-		 String addUserGroupSql ="INSERT INTO sales_info ( product_id, trans_money, trans_time,customer_phone, guide_phone,is_task,task_name,task_phone, remark) VALUES (:product_id, :trans_money, :trans_time,:customer_phone, :guide_phone,:is_task,:task_name,:task_phone,:remark)";
+
+
+		 String addUserGroupSql ="INSERT INTO commission_info ( product_id, transaction_price, transaction_time,customer_phone, guide_phone,is_task,task_name,task_phone, remark) VALUES (:product_id, :transaction_price, :customer_phone, :guide_phone,:is_task,:task_name,:task_phone,:remark)";
 			paramSourceGroup.addValue("product_id", map.get("productId"));
-			paramSourceGroup.addValue("trans_money", map.get("transMoney"));
-			paramSourceGroup.addValue("trans_time", map.get("transTime"));
+			paramSourceGroup.addValue("transaction_price", map.get("transactionPrice"));
+			paramSourceGroup.addValue("transaction_time", map.get("transactionTime"));
 			paramSourceGroup.addValue("customer_phone", map.get("customerPhone"));
 			paramSourceGroup.addValue("guide_phone", map.get("guidePhone"));
 			paramSourceGroup.addValue("is_task", map.get("isTask"));
@@ -65,9 +68,9 @@ public class SaleInfoDaoImpl implements SaleInfoDao {
 		 return String.valueOf(addSaleResult);
 	}
 	@Override
-	public List<Map<String, Object>> getSaleInfo() {
+	public List<Map<String, Object>> getCommissioinInfo(String openId) throws Exception{
 	
-		String sql = "select   ";
+		String sql = "select a.user_name ,a.user_phone,b.commi_ratio,b.commi_money,b.commi_status,b.customer_phone,b.customer_name From user_info a INNER JOIN commission_info b ON b.referee_phone=a.user_phone where a.open_id='"+openId+"'";
 
 		List<Map<String, Object>> userinfoinfo = jdbcTemplate.queryForList(sql);
 

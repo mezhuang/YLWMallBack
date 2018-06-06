@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.andy.shop.dao.UserInfoDao;
-import org.andy.shop.entity.AddCustomerReportPo;
 import org.andy.shop.entity.UserInfoPo;
 import org.andy.shop.entity.CustomerReportPo;
 import org.andy.shop.service.CustomerReportService;

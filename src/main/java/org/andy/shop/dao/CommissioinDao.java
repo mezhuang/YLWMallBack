@@ -15,13 +15,12 @@ import org.andy.shop.entity.UserInfoPo;
  * UserInfoDao
  */
 
-public interface  UserPowerDao extends Serializable {
+public interface  CommissioinDao extends Serializable {
 
-	List<Map<String, Object>> getUserPowerByOpenId(String openId);
 
-	void applytoReferee(Map<String, String> Map);
+	String addCommissioin(Map<String, String> Map) throws Exception;
 
-	int isRefereeManger(String reFereeUserPhone) throws Exception;
+	List<Map<String, Object>> getCommissioinInfo(String openId)throws Exception;
 
 
 }

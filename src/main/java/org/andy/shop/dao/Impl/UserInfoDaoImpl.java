@@ -85,5 +85,24 @@ public class UserInfoDaoImpl implements UserInfoDao {
 
 		return userinfoinfo;
 	}
+	
+	@Override
+	public List<Map<String, Object>> getRefereeInfobyCustomerPhone(String customerPhone) throws Exception{
+	
+		String sql = "select c.user_name,c.user_phone,c.employee_code From sales_info a INNER JOIN customer_report b ON b.customer_phone=a.customer_phone INNER JOIN user_info c on c.open_id=b.open_id where a.customer_phone='"+customerPhone+"';";
+
+		List<Map<String, Object>> userinfo = jdbcTemplate.queryForList(sql);
+
+		return userinfo;
+	}
+	@Override
+	public List<Map<String, Object>> getRefereeInfobyEmployeeCode(String employeeCode) throws Exception{
+	
+		String sql = "select c.user_name,c.user_phone,c.employee_code From sales_info a INNER JOIN customer_report b ON b.customer_phone=a.customer_phone INNER JOIN user_info c on c.open_id=b.open_id where employee_ode='"+employeeCode+"';";
+
+		List<Map<String, Object>> userinfo = jdbcTemplate.queryForList(sql);
+
+		return userinfo;
+	}
 
 }

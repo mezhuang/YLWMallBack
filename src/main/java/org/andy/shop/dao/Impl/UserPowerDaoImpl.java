@@ -95,6 +95,20 @@ public class UserPowerDaoImpl implements UserPowerDao {
 
 		 
 	}
+	/*判断分销商是否为分销经理
+	 * */
+	@Override
+	public int isRefereeManger(String reFereeUserPhone) throws Exception {
+	
+		String sql = "SELECT COUNT(1) from user_info a INNER JOIN group_user_map b on b.user_id=a.user_id INNER JOIN group_info c on c.group_id=b.group_id  where c.group_code='10003' and a.user_phone='"+reFereeUserPhone+"'; ";
+
+
+		int isRefereeCount = jdbcTemplate.queryForObject(sql,Integer.class,
+				new Object[] { reFereeUserPhone });
+
+		return isRefereeCount;
+
+	}
 	
 
 }

@@ -5,9 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.andy.shop.controller.UserInfoController;
+import org.andy.shop.dao.CommissioinDao;
+import org.andy.shop.dao.GroupMapDao;
+import org.andy.shop.dao.SaleInfoDao;
 import org.andy.shop.dao.UserInfoDao;
 import org.andy.shop.dao.UserPowerDao;
 import org.andy.shop.entity.UserInfoPo;
+import org.andy.shop.service.CommissionService;
+import org.andy.shop.service.GroupMapService;
+import org.andy.shop.service.SaleInfoService;
 import org.andy.shop.service.UserInfoService;
 import org.andy.shop.service.UserPowerService;
 import org.apache.log4j.Logger;
@@ -21,27 +27,25 @@ import org.springframework.stereotype.Service;
  * @version 2.2 实现接口
  */
 
-@Service("userPowerService")
-public class UserPowerServiceImpl implements UserPowerService {
+@Service("CommissioinService")
+public class CommissionServiceImpl implements CommissionService {
 
 	private static final Logger LOGGER = Logger
-	.getLogger(UserPowerServiceImpl.class);
+	.getLogger(CommissionServiceImpl.class);
 	@Autowired
-	private UserPowerDao userPowerDao;
+	private CommissioinDao CommissioinDao;
 	
 	@Override
-	public List<Map<String, Object>> getUserPowerByOpenId(String openId){
-		return userPowerDao.getUserPowerByOpenId(openId);
+	public String addCommissioin(Map<String, String> Map) throws Exception{
+		return CommissioinDao.addCommissioin(Map);
 	}
+
 	@Override
-	public void applytoReferee(Map<String, String> Map){
-		 userPowerDao.applytoReferee(Map);
-	}
-	
-	@Override
-	public int isRefereeManger(String reFereeUserPhone) throws Exception{
-		return userPowerDao.isRefereeManger(reFereeUserPhone);
-	}
+	public List<Map<String, Object>> getCommissioinInfo(String openId)throws Exception{
+	return CommissioinDao.getCommissioinInfo(openId);
+}
+
+
 	
 
 }

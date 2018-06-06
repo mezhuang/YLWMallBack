@@ -31,4 +31,10 @@ public interface UserInfoService {
 	//获取导购信息
 	List<String> findAllGuideInfo();
 
+	List<Map<String, Object>> getRefereeInfobyCustomerPhone(String customerPhone)
+			throws Exception;
+
+	List<Map<String, Object>> getRefereeInfobyEmployeeCode(String employeeCode)
+			throws Exception;
+
 }

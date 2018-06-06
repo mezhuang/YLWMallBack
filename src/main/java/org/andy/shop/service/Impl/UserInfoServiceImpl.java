@@ -61,5 +61,13 @@ public class UserInfoServiceImpl implements UserInfoService {
 		}
 		return guideList;
 	}
+	@Override
+	public	List<Map<String, Object>> getRefereeInfobyCustomerPhone(String customerPhone)throws Exception{
+	return userInfoDao.getRefereeInfobyCustomerPhone(customerPhone);	
+	}
+	@Override
+	public List<Map<String, Object>> getRefereeInfobyEmployeeCode(String employeeCode)throws Exception{
+		return getRefereeInfobyEmployeeCode( employeeCode);
+	}
 
 }

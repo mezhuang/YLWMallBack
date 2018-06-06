@@ -227,10 +227,8 @@ public class SaleAndCommiController {
 					commisionMap.put("customer_name", customerName);
 					
 					commissionService.addCommissioin(commisionMap);
-					
-					
+	
 				}
-					
 				
 			}
 		}

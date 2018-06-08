@@ -20,7 +20,9 @@ public interface  SaleInfoDao extends Serializable {
 
 	String addSaleInfo(Map<String, String> Map) throws Exception;
 
-	List<Map<String, Object>> getSaleInfo();
+
+	List<Map<String, Object>> getSaleInfoList(String openId, String startIndex,
+			String indexSize)throws Exception;
 
 
 }

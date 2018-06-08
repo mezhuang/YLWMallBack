@@ -48,22 +48,29 @@ public class CommissionDaoImpl implements CommissioinDao {
 			
 			MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
 
+			
+//			commisionMap.put("commi_ratio",String.valueOf(Constant.refereeManagerNoTaskRadio));
+//			commisionMap.put("commi_money", String.valueOf(commissionSize));
+//			
+//		}
+//		commisionMap.put("commi_status", "1");
+//		commisionMap.put("referee_phone", reFereeUserPhone);
+//		commisionMap.put("customer_phone", customerPhone);
+//		commisionMap.put("customer_name", customerName);
 
-
-		 String addUserGroupSql ="INSERT INTO commission_info ( product_id, transaction_price, transaction_time,customer_phone, guide_phone,is_task,task_name,task_phone, remark) VALUES (:product_id, :transaction_price, :customer_phone, :guide_phone,:is_task,:task_name,:task_phone,:remark)";
-			paramSourceGroup.addValue("product_id", map.get("productId"));
-			paramSourceGroup.addValue("transaction_price", map.get("transactionPrice"));
-			paramSourceGroup.addValue("transaction_time", map.get("transactionTime"));
-			paramSourceGroup.addValue("customer_phone", map.get("customerPhone"));
-			paramSourceGroup.addValue("guide_phone", map.get("guidePhone"));
+		 String addUserGroupSql ="INSERT INTO commission_info (product_info , commi_ratio,commi_money, commi_status,customer_name,customer_phone,is_task, referee_phone) VALUES (:product_info, :commi_ratio,:commi_money, :commi_status,:customer_name,:customer_phone,:is_task, :referee_phone)";
+			paramSourceGroup.addValue("product_info", map.get("productInfo"));
+			paramSourceGroup.addValue("commi_ratio", map.get("commiRatio"));
+			paramSourceGroup.addValue("commi_money", map.get("commiMoney"));
+			paramSourceGroup.addValue("commi_status", map.get("commiStatus"));
+			paramSourceGroup.addValue("customer_name", map.get("customerName"));
 			paramSourceGroup.addValue("is_task", map.get("isTask"));
-			paramSourceGroup.addValue("task_name", map.get("taskName"));
-			paramSourceGroup.addValue("task_phone", map.get("taskPhone"));
-			paramSourceGroup.addValue("remark", map.get("remark"));
+			paramSourceGroup.addValue("customer_phone", map.get("customerPhone"));
+			paramSourceGroup.addValue("referee_phone", map.get("refereePhone"));
 		
 
 		 int addSaleResult = namedParameterJdbcTemplate.update(addUserGroupSql, paramSourceGroup);
-			LOGGER.info("增加销售信息结果:"+String.valueOf(addSaleResult));
+			LOGGER.info("增加结算佣金结果:"+String.valueOf(addSaleResult));
 
 		 return String.valueOf(addSaleResult);
 	}

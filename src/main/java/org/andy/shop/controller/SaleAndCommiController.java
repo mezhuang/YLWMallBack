@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.andy.shop.common.Constant;
 import org.andy.shop.common.Utils;
 import org.andy.shop.entity.UserInfoPo;
 import org.andy.shop.service.CommissionService;
@@ -43,72 +44,31 @@ public class SaleAndCommiController {
 	private SaleInfoService saleInfoService;
 	@Autowired
 	private CommissionService commissionService;
-	@Value("#(protect.days)")
-	private Integer protectDays;
-	@Value("#{refereeManager.noTaskRadio}")  
-	private String refereeManager_noTaskRadio;
-	@Value("#{refereeManager.taskRadio}")  
-	private String refereeManager_taskRadio;
-	@Value("#{referee.noTaskRadio}")  
-	private String referee_noTaskRadio;
-	@Value("#{referee.taskRadio}")  
-	private String referee_taskRadio;
-	@Value("#{superiorReferee.taskRadio}")  
-	private String superiorRefereeTaskRadio;
-	@Value("#{superiorReferee.noTaskRadio}")  
-	private String superiorRefereeNTaskRadio;
-//	@RequestMapping("/showInfo/{userId}")
-//	public String showUserInfo(ModelMap modelMap, @PathVariable int userId) {
-//		LOGGER.info("查看用户：" + userId);
-//		UserInfoPo userInfo = userInfoService.getById(1);
-//		modelMap.addAttribute("userInfo", userInfo);
-//		return "/user/showInfo";
-//	}
-//	
-	@RequestMapping(value="/getCustomerInfoList.do",method = {RequestMethod.GET })
-	@ResponseBody
-	public  List<UserInfoPo> getCustomerInfoList() {
-		LOGGER.info("json返回全部用户的信息");
-		List<UserInfoPo> userInfos = userInfoService.findAll();
-		return userInfos;
-	}
-	@RequestMapping(value="/getGuideInfoList.do",method = {RequestMethod.GET })
-	@ResponseBody
-	public List<String> getGuideInfoList() {
-		LOGGER.info("json返回全部导购的信息");
-		List<String> guideInfos = userInfoService.findAllGuideInfo();
-//		LOGGER.info("guideInfos:"+guideInfos);
-		return guideInfos;
-	}
-	/*获取全部导购信息
-	 * */
-	@RequestMapping(value="/getUserPowerList.do",method = {RequestMethod.GET })
-	@ResponseBody
-	public List<Map<String, Object>> getUserPowerList(@RequestParam Map<String,String> map) {
-		LOGGER.info("json返回用户全部的权限");
-		 String openId =map.get("openId");
-		 List<Map<String, Object>> guideInfos = userPowerService.getUserPowerByOpenId(openId);
-//		LOGGER.info("guideInfos:"+guideInfos);
-		return guideInfos;
-	}
+	
+
+
+	
 	/*申请分销
 	 * 参数:
 	 * */
-	@RequestMapping(value="/addSaleInfoAndCommi.do",method = {RequestMethod.GET })
+	@RequestMapping(value="/addSaleInfoAndCommi.do",method = {RequestMethod.POST })
 	@ResponseBody
 	public String addSaleInfoAndCommi(@RequestParam Map<String,String> map) throws Exception {
 		LOGGER.info("导购增加销售信息");
+		LOGGER.info("保护期时长protectDays:"+Constant.protectDays);
 		String result ="success";
 		//新增销售信息
 		String ret = saleInfoService.addSaleInfo(map);
 		
-		if(ret.equals("success"))
+		if(ret.equals("1"))
 		{
+			LOGGER.info("给分销商结佣");
 			String isTask=null;//是否有分销人员带看
 			int transMoney=0;//成交价钱
 			String customerPhone = map.get("customerPhone");
 			String customerName  = map.get("customerName");
 			String transTime  = map.get("transTime");
+			String productInfo=map.get("productInfo");
 
 			transMoney=Integer.valueOf((String)map.get("transMoney"));
 			
@@ -121,16 +81,17 @@ public class SaleAndCommiController {
 			
 			for(Map<String, Object> referMap :refereeList)
 			{
-				reFereeUserPhone = (String) referMap.get("user_phone");
-				employeeCode=(String)referMap.get("employee_code");
-				reportTime=(String)referMap.get("trans_time");
+				reportTime=(String)referMap.get("report_time");
+				//判断报备时间是否在保护期内
+				int diffDay =(int)Utils.getDiffDays(transTime, reportTime);
+				if((diffDay+1)<Constant.protectDays)
+				{
+					reFereeUserPhone = (String) referMap.get("user_phone");
+					employeeCode=(String)referMap.get("employee_code");
+					break;
+				}
 			}
-			//判断报备时间是否在保护期内
-			int diffDay =(int)Utils.getDiffDays(transTime, reportTime);
-			if((diffDay+1)<protectDays)
-			{
-				result="outProtectDays";
-			}
+			
 
 			//2、根据分销员电话，判断是分销经纪人还是销售经理
 			int isrefereeManager = userPowerService.isRefereeManger(reFereeUserPhone);
@@ -149,26 +110,25 @@ public class SaleAndCommiController {
 //				customer_name
 				if(isTask=="1")
 				{
-					int manTaskRadio = Integer.valueOf(refereeManager_taskRadio); //带看费率
-					int commissionSize=transMoney*manTaskRadio;
+					double commissionSize=transMoney*Constant.refereeManagerTaskRadio;//带看费率
 					
-					commisionMap.put("commi_ratio", "5%");
-					commisionMap.put("commi_money", String.valueOf(commissionSize));
+					commisionMap.put("commiRatio",String.valueOf(Constant.refereeManagerTaskRadio));
+					commisionMap.put("commiMoney", String.valueOf(commissionSize));
 					
 				}else
 				{
-					int manNoTaskRadio = Integer.valueOf(refereeManager_noTaskRadio); //分销经理不带看费率
-					int commissionSize=transMoney*manNoTaskRadio;
+					double commissionSize=transMoney*Constant.refereeManagerNoTaskRadio;
 					
-					commisionMap.put("commi_ratio", refereeManager_taskRadio);
-					commisionMap.put("commi_money", String.valueOf(commissionSize));
+					commisionMap.put("commiRatio",String.valueOf(Constant.refereeManagerNoTaskRadio));
+					commisionMap.put("commiMoney", String.valueOf(commissionSize));
 					
 				}
-				commisionMap.put("commi_status", "1");
-				commisionMap.put("referee_phone", reFereeUserPhone);
-				commisionMap.put("customer_phone", customerPhone);
-				commisionMap.put("customer_name", customerName);
-				
+				commisionMap.put("commiStatus", "1");
+				commisionMap.put("refereePhone", reFereeUserPhone);
+				commisionMap.put("customerPhone", customerPhone);
+				commisionMap.put("customerPame", customerName);
+				commisionMap.put("isTask", isTask);
+				commisionMap.put("productInfo", productInfo);
 				commissionService.addCommissioin(commisionMap);
 				
 			}else
@@ -177,25 +137,24 @@ public class SaleAndCommiController {
 			//5、如果是分销经纪人，还要判断是否给分销经理提成
 				if(isTask=="1")
 				{
-					int TaskRadio = Integer.valueOf(referee_taskRadio); //带看费率
-					int commissionSize=transMoney*TaskRadio;
+					double commissionSize=transMoney*Constant.refereeTaskRadio;//带看费率
 					
-					commisionMap.put("commi_ratio", referee_taskRadio);
-					commisionMap.put("commi_money", String.valueOf(commissionSize));
+					commisionMap.put("commiRatio", String.valueOf(Constant.refereeTaskRadio));
+					commisionMap.put("commiMoney", String.valueOf(commissionSize));
 					
 				}else
 				{
-					int NoTaskRadio = Integer.valueOf(referee_noTaskRadio); //分销经理不带看费率
-					int commissionSize=transMoney*NoTaskRadio;
+					double commissionSize=transMoney*Constant.refereeNoTaskRadio;
 					
-					commisionMap.put("commi_ratio", referee_noTaskRadio);
+					commisionMap.put("commi_ratio", String.valueOf(Constant.refereeNoTaskRadio));
 					commisionMap.put("commi_money", String.valueOf(commissionSize));
 					
 				}
-				commisionMap.put("commi_status", "1");
-				commisionMap.put("referee_phone", reFereeUserPhone);
-				commisionMap.put("customer_phone", customerPhone);
-				commisionMap.put("customer_name", customerName);
+				commisionMap.put("commiStatus", "1");
+				commisionMap.put("refereePhone", reFereeUserPhone);
+				commisionMap.put("customerPhone", customerPhone);
+				commisionMap.put("customerName", customerName);
+				commisionMap.put("isTask", isTask);
 				
 				commissionService.addCommissioin(commisionMap);
 				
@@ -206,35 +165,50 @@ public class SaleAndCommiController {
 					List<Map<String, Object>>	superiorRefereeList = userInfoService.getRefereeInfobyEmployeeCode(employeeCode);		
 					if(isTask=="1")
 					{
-						int superiorTaskRadioTmp = Integer.valueOf(superiorRefereeTaskRadio); //带看费率
-						int superiorCommissionSize=transMoney*superiorTaskRadioTmp;
+						double superiorCommissionSize=transMoney*Constant.superiorRefereeTaskRadio;//分销商带看费率
 						
-						commisionMap.put("commi_ratio", superiorRefereeTaskRadio);
-						commisionMap.put("commi_money", String.valueOf(superiorCommissionSize));
+						commisionMap.put("commiRatio", String.valueOf(Constant.superiorRefereeTaskRadio));
+						commisionMap.put("commiMoney", String.valueOf(superiorCommissionSize));
 						
 					}else
 					{
-						int superiorNotaskRadioTmp = Integer.valueOf(superiorRefereeNTaskRadio); //分销经理不带看费率
-						int superiorCommissionSize=transMoney*superiorNotaskRadioTmp;
+						double superiorCommissionSize=transMoney*Constant.superiorRefereeNoTaskRadio;//分销经理不带看费率
 						
-						commisionMap.put("commi_ratio", superiorRefereeNTaskRadio);
-						commisionMap.put("commi_money", String.valueOf(superiorCommissionSize));
+						commisionMap.put("commiRatio", String.valueOf(Constant.superiorRefereeNoTaskRadio));
+						commisionMap.put("commiMoney", String.valueOf(superiorCommissionSize));
 						
 					}
-					commisionMap.put("commi_status", "1");
-					commisionMap.put("referee_phone", reFereeUserPhone);
-					commisionMap.put("customer_phone", customerPhone);
-					commisionMap.put("customer_name", customerName);
+					commisionMap.put("commiStatus", "1");
+					commisionMap.put("refereePhone", reFereeUserPhone);
+					commisionMap.put("customerPhone", customerPhone);
+					commisionMap.put("customerName", customerName);
 					
 					commissionService.addCommissioin(commisionMap);
 	
 				}
 				
 			}
+		}else
+		{
+			result="新增销售信息异常，结佣失败!";
 		}
 	
 		 return result ;
 	}
+	/*根据导购openId，获取录入的销售信息
+	 * */
+	@RequestMapping(value="/getSaleInfoListByGuideOpenId.do",method = {RequestMethod.GET })
+	@ResponseBody
+	public List<Map<String, Object>> getSaleInfoListByGuideOpenId(@RequestParam Map<String,String> map) throws Exception {
+		LOGGER.info("json返回各个导购录入的销售信息列表");
+		 String openId =map.get("openId");
+		// List<Map<String, Object>> guideInfos = userPowerService.getUserPowerByOpenId(openId);
+//		LOGGER.info("guideInfos:"+guideInfos);
+		 List<Map<String, Object>> salesInfolist = saleInfoService.getSaleInfoList(openId, "0", "10");
+		 
+		return salesInfolist;
+	}
+	
 }
 
 

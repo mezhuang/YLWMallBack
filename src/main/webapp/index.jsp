@@ -23,7 +23,7 @@ $("#saveuddd").click(function(){
 </script>
 </head>
 <body>
-<h2>Hello World!</h2>
+<h2>欢迎来到远联家居，系统开发中，敬请期待。</h2>
 <button></button>
 </body>
 </html>

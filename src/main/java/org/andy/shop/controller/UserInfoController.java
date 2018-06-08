@@ -57,17 +57,7 @@ public class UserInfoController {
 //		LOGGER.info("guideInfos:"+guideInfos);
 		return guideInfos;
 	}
-	/*获取全部导购信息
-	 * */
-	@RequestMapping(value="/getUserPowerList.do",method = {RequestMethod.GET })
-	@ResponseBody
-	public List<Map<String, Object>> getUserPowerList(@RequestParam Map<String,String> map) {
-		LOGGER.info("json返回用户全部的权限");
-		 String openId =map.get("openId");
-		 List<Map<String, Object>> guideInfos = userPowerService.getUserPowerByOpenId(openId);
-//		LOGGER.info("guideInfos:"+guideInfos);
-		return guideInfos;
-	}
+	
 	/*申请分销
 	 * 参数:
 	 * */
@@ -80,5 +70,16 @@ public class UserInfoController {
 	
 //		LOGGER.info("guideInfos:"+guideInfos);
 		 return  "success";
+	}
+	/*根据用户openId，获取用户权限列表
+	 * */
+	@RequestMapping(value="/getUserPowerList.do",method = {RequestMethod.GET })
+	@ResponseBody
+	public List<Map<String, Object>> getUserPowerList(@RequestParam Map<String,String> map) {
+		LOGGER.info("json返回用户全部的权限");
+		 String openId =map.get("openId");
+		 List<Map<String, Object>> guideInfos = userPowerService.getUserPowerByOpenId(openId);
+//		LOGGER.info("guideInfos:"+guideInfos);
+		return guideInfos;
 	}
 }

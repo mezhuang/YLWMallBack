@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
  * @version 2.2 实现接口
  */
 
-@Service("SaleInfoService")
+@Service("saleInfoService")
 public class SaleInfoServiceImpl implements SaleInfoService {
 
 	private static final Logger LOGGER = Logger
@@ -36,6 +36,12 @@ public class SaleInfoServiceImpl implements SaleInfoService {
 	public String addSaleInfo(Map<String, String> map) throws Exception{
 	
 		  return saleInfoDao.addSaleInfo(map);
+	}
+	@Override
+	public List<Map<String, Object>> getSaleInfoList(String openId, String startIndex,
+			String indexSize)throws Exception{
+		return saleInfoDao.getSaleInfoList( openId,  startIndex, indexSize);
+		
 	}
 
 	

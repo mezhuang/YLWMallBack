@@ -47,12 +47,12 @@ public class SaleInfoDaoImpl implements SaleInfoDao {
 			
 			MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
 
-		 String addUserGroupSql ="INSERT INTO sales_info ( product_id, trans_money, trans_time,customer_phone, guide_phone,is_task,task_name,task_phone, remark) VALUES (:product_id, :trans_money, :trans_time,:customer_phone, :guide_phone,:is_task,:task_name,:task_phone,:remark)";
-			paramSourceGroup.addValue("product_id", map.get("productId"));
+		 String addUserGroupSql ="INSERT INTO sales_info ( product_info, trans_money, trans_time,customer_phone, open_id,is_task,task_name,task_phone, remark) VALUES (:product_info, :trans_money, :trans_time,:customer_phone, :open_id,:is_task,:task_name,:task_phone,:remark)";
+			paramSourceGroup.addValue("product_info", map.get("productInfo"));
 			paramSourceGroup.addValue("trans_money", map.get("transMoney"));
 			paramSourceGroup.addValue("trans_time", map.get("transTime"));
 			paramSourceGroup.addValue("customer_phone", map.get("customerPhone"));
-			paramSourceGroup.addValue("guide_phone", map.get("guidePhone"));
+			paramSourceGroup.addValue("open_id", map.get("openId"));
 			paramSourceGroup.addValue("is_task", map.get("isTask"));
 			paramSourceGroup.addValue("task_name", map.get("taskName"));
 			paramSourceGroup.addValue("task_phone", map.get("taskPhone"));
@@ -64,14 +64,14 @@ public class SaleInfoDaoImpl implements SaleInfoDao {
 
 		 return String.valueOf(addSaleResult);
 	}
+
 	@Override
-	public List<Map<String, Object>> getSaleInfo() {
+	public List<Map<String, Object>> getSaleInfoList(String openId,String startIndex,String indexSize) throws Exception{
 	
-		String sql = "select   ";
+		String sql = "select  product_info, trans_money, trans_time,customer_phone, open_id,is_task,task_name,task_phone, remark From sales_info a  where a.open_id='"+openId+"' limit "+startIndex+" , "+indexSize+"   ORDER BY trans_time desc ";
 
-		List<Map<String, Object>> userinfoinfo = jdbcTemplate.queryForList(sql);
+		List<Map<String, Object>> customerReportList = jdbcTemplate.queryForList(sql);
 
-		return userinfoinfo;
+		return customerReportList;
 	}
-
 }

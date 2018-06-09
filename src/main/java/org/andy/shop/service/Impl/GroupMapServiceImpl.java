@@ -31,10 +31,17 @@ public class GroupMapServiceImpl implements GroupMapService {
 	@Autowired
 	private GroupMapDao groupMapDao;
 	
-	public String addUserToGroup(Map<String,String> map)throws Exception
+	@Override
+	public String addUserToGroupMap(Map<String,String> map)throws Exception
 	{
-		  return groupMapDao.addUserToGroup(map);
+		  return groupMapDao.addUserToGroupMap(map);
 	}
+	@Override
+	public String deleteGroupMapByUserIdAndGroupId(Map<String,String> map)throws Exception
+	{
+		return groupMapDao.deleteGroupMapByUserIdAndGroupId(map);
+	}
+
 
 	
 

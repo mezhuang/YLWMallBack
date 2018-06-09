@@ -17,7 +17,10 @@ import org.andy.shop.entity.UserInfoPo;
 
 public interface GroupMapService {
 
-	public String addUserToGroup(Map<String,String> map)throws Exception;
+	public String addUserToGroupMap(Map<String,String> map)throws Exception;
+
+	public String deleteGroupMapByUserIdAndGroupId(Map<String, String> map)
+			throws Exception;
 
 	
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.andy.shop.common.YLConstant;
 import org.andy.shop.controller.UserInfoController;
 import org.andy.shop.dao.UserInfoDao;
 import org.andy.shop.entity.UserInfoPo;
@@ -33,8 +34,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 	}
 
 	@Override
-	public List<UserInfoPo> findAll() {
-		return userInfoDao.findAll();
+	public List<Map<String, Object>> getUserListByGroupCode(String groupCode)throws Exception {
+		return userInfoDao.getUserListByGroupCode(groupCode);
 	}
 
 	@Override
@@ -48,16 +49,23 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Override
 	public List<String> findAllGuideInfo()
 	{
-		List<Map<String, Object>> GuidemapList = userInfoDao.findAllGuideInfo();
 		List<String > guideList= new ArrayList<String >();
+
+		try {
+			List<Map<String, Object>> GuidemapList = userInfoDao.getUserListByGroupCode(YLConstant.GROUP_CODE_GUIDE);
 		
-		for(Map<String, Object> guideMap:GuidemapList)
-		{
-			String guideName = (String)guideMap.get("user_name");
-			String guidePhone = (String)guideMap.get("user_phone");
-			String reGuideInfo =guideName+guidePhone;
-			LOGGER.info("reGuideInfo："+reGuideInfo);
-			guideList.add(reGuideInfo);
+			
+			for(Map<String, Object> guideMap:GuidemapList)
+			{
+				String guideName = (String)guideMap.get("user_name");
+				String guidePhone = (String)guideMap.get("user_phone");
+				String reGuideInfo =guideName+guidePhone;
+				LOGGER.info("reGuideInfo："+reGuideInfo);
+				guideList.add(reGuideInfo);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return guideList;
 	}

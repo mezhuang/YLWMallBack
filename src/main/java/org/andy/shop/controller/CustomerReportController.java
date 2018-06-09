@@ -12,7 +12,7 @@ import org.andy.shop.entity.CustomerReportPo;
 import org.andy.shop.service.CustomerReportService;
 import org.andy.shop.service.GroupMapService;
 import org.andy.shop.service.UserInfoService;
-import org.andy.shop.common.Constant;
+import org.andy.shop.common.YLConstant;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,7 +54,7 @@ public class CustomerReportController {
 
 @RequestMapping(value = "/addCustomerReport.do",method = {RequestMethod.POST })
 @ResponseBody
-public String addCustomerReport(@RequestParam Map<String,String> map) throws Exception{ // spring MVC只能解析外层的json格式，内部的bean转化为Map格式的键值对，需要对map解析
+public String addCustomerReport(@RequestParam Map<String,String> map) { // spring MVC只能解析外层的json格式，内部的bean转化为Map格式的键值对，需要对map解析
 
 //		 List<UserInfoPo> userList = new ArrayList<UserInfoPo>();
 		// JSONObject object = JSONObject.fromObject();
@@ -79,67 +79,72 @@ public String addCustomerReport(@RequestParam Map<String,String> map) throws Exc
 		 //获取是否已报备记录
 		 int customerPhoneCount  = 0;
 			try{
-			customerPhoneCount = userInfoDao.getByCustomerPhone(customerPhone);
-			System.out.println("count:"+customerPhoneCount);
-			LOGGER.info("console-count:"+customerPhoneCount);
+				customerPhoneCount = userInfoDao.getByCustomerPhone(customerPhone);
+				System.out.println("count:"+customerPhoneCount);
+				LOGGER.info("console-count:"+customerPhoneCount);
+				}
+				catch (Exception e) {
+				    e.printStackTrace();
+				}
+				//获取报备时长
+					
+				//客户已存在报备且未过期，返回
+				 if(customerPhoneCount>0)
+				 {
+					 return "10002"; 
+				 }
+				 UUID uuid=UUID.randomUUID();
+			     String customerUserId = uuid.toString();
+			     customerInfo.setUserId(customerUserId);
+				 customerInfo.setUserName(map.get("customerName"));
+				 customerInfo.setUserPhone(customerPhone);
+				 userInfoService.save(customerInfo);
+				 //增加至客户分组
+				 Map<String, String> groupMap = new HashMap<String, String>(); 
+				 groupMap.put("groupId", YLConstant.CUSTOMER_GROUP_ID);
+				 groupMap.put("userId", customerUserId);
+				 try {
+					groupMapService.addUserToGroupMap(groupMap);
+				
+				 
+				 //新增带看人
+				 UserInfoPo taskInfo = new UserInfoPo();
+				 taskInfo.setUserName(map.get("taskName"));
+				 taskInfo.setUserPhone(map.get("taskPhone"));
+				 userInfoService.save(taskInfo);
+				 
+				//增加至带看人分组
+		//		 Map<String, String> taskGroupMap = new HashMap<String, String>(); 
+		//		 groupMap.put("groupId", Constant.TASK_GROUP_ID);
+		//		 groupMap.put("userId", customerUserId);
+		//		 groupMapService.addUserToGroup(groupMap);
+			 
+				 
+				 //新增客户报备表
+				 CustomerReportPo customerReportPo =new CustomerReportPo();
+				 customerReportPo.setCustomerPhone(map.get("customerPhone"));
+				 String guidePhone = map.get("guidePhone");
+				 LOGGER.info("导购信息：" + guidePhone);
+				 customerReportPo.setGuidePhone(guidePhone);
+				 customerReportPo.setTaskPhone(map.get("taskPhone"));
+				 customerReportPo.setVisitTime(map.get("visitTime"));
+				 customerReportPo.setIsTask(map.get("isTask"));
+				 customerReportPo.setRemark(map.get("remark"));
+				 customerReportPo.setOpenId(map.get("openId"));
+				 customerReportService.save(customerReportPo);
+		
+		//	      for(Map<String,String> map : usersList){
+		//	    	  UserInfoPo userInfoPo = new UserInfoPo();
+		//	    	  String customerName = map.get("customerName");
+		//    	  LOGGER.info("客户姓名：" + customerName);
+		//	    	  userInfoPo.setUserName(map.get("customerPhone"));
+		//	    	  LOGGER.info("客户号码：" + customerName);
+		//	          userList.add(userInfoPo);
+		//	      }
+		//	      System.out.println("报备结束");
+		 } catch (Exception e) {
+				e.printStackTrace();
 			}
-			catch (Exception e) {
-			    e.printStackTrace();
-			}
-		//获取报备时长
-			
-		//客户已存在报备且未过期，返回
-		 if(customerPhoneCount>0)
-		 {
-			 return "10002"; 
-		 }
-		 UUID uuid=UUID.randomUUID();
-	     String customerUserId = uuid.toString();
-	     customerInfo.setUserId(customerUserId);
-		 customerInfo.setUserName(map.get("customerName"));
-		 customerInfo.setUserPhone(customerPhone);
-		 userInfoService.save(customerInfo);
-		 //增加至客户分组
-		 Map<String, String> groupMap = new HashMap<String, String>(); 
-		 groupMap.put("groupId", Constant.CUSTOMER_GROUP_ID);
-		 groupMap.put("userId", customerUserId);
-		 groupMapService.addUserToGroup(groupMap);
-		 
-		 //新增带看人
-		 UserInfoPo taskInfo = new UserInfoPo();
-		 taskInfo.setUserName(map.get("taskName"));
-		 taskInfo.setUserPhone(map.get("taskPhone"));
-		 userInfoService.save(taskInfo);
-		 
-		//增加至带看人分组
-//		 Map<String, String> taskGroupMap = new HashMap<String, String>(); 
-//		 groupMap.put("groupId", Constant.TASK_GROUP_ID);
-//		 groupMap.put("userId", customerUserId);
-//		 groupMapService.addUserToGroup(groupMap);
-	 
-		 
-		 //新增客户报备表
-		 CustomerReportPo customerReportPo =new CustomerReportPo();
-		 customerReportPo.setCustomerPhone(map.get("customerPhone"));
-		 String guidePhone = map.get("guidePhone");
-		 LOGGER.info("导购信息：" + guidePhone);
-		 customerReportPo.setGuidePhone(guidePhone);
-		 customerReportPo.setTaskPhone(map.get("taskPhone"));
-		 customerReportPo.setVisitTime(map.get("visitTime"));
-		 customerReportPo.setIsTask(map.get("isTask"));
-		 customerReportPo.setRemark(map.get("remark"));
-		 customerReportPo.setOpenId(map.get("openId"));
-		 customerReportService.save(customerReportPo);
-
-//	      for(Map<String,String> map : usersList){
-//	    	  UserInfoPo userInfoPo = new UserInfoPo();
-//	    	  String customerName = map.get("customerName");
-//    	  LOGGER.info("客户姓名：" + customerName);
-//	    	  userInfoPo.setUserName(map.get("customerPhone"));
-//	    	  LOGGER.info("客户号码：" + customerName);
-//	          userList.add(userInfoPo);
-//	      }
-//	      System.out.println("报备结束");
 	      return  "success";
 	     // 这里就可以使用 userList 了
 	 }

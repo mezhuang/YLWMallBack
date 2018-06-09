@@ -1,8 +1,10 @@
 package org.andy.shop.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.andy.shop.common.YLConstant;
 import org.andy.shop.entity.UserInfoPo;
 import org.andy.shop.service.UserInfoService;
 import org.andy.shop.service.UserPowerService;
@@ -44,9 +46,14 @@ public class UserInfoController {
 //	
 	@RequestMapping(value="/getCustomerInfoList.do",method = {RequestMethod.GET })
 	@ResponseBody
-	public  List<UserInfoPo> getCustomerInfoList() {
+	public  List<Map<String, Object>> getCustomerInfoList() {
 		LOGGER.info("json返回全部用户的信息");
-		List<UserInfoPo> userInfos = userInfoService.findAll();
+		List<Map<String, Object>> userInfos = null;
+		try {
+			userInfos = userInfoService.getUserListByGroupCode(YLConstant.GROUP_CODE_CUSTOMER);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return userInfos;
 	}
 	@RequestMapping(value="/getGuideInfoList.do",method = {RequestMethod.GET })
@@ -70,6 +77,25 @@ public class UserInfoController {
 	
 //		LOGGER.info("guideInfos:"+guideInfos);
 		 return  "success";
+	}
+	/*根据分组编码，获取用户列表
+	 * 参数:
+	 * */
+	@RequestMapping(value="/getUserInfoByGroupCode.do",method = {RequestMethod.GET })
+	@ResponseBody
+	public List<Map<String, Object>> getUserInfoByGroupCode(@RequestParam Map<String,String> map) {
+		LOGGER.info("根据分组编码，获取用户列表");
+		List<Map<String, Object>> userList = new ArrayList<Map<String, Object>>();
+		try {
+			userList = userInfoService.getUserListByGroupCode(YLConstant.GROUP_CODE_REFEREE);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	
+//		LOGGER.info("guideInfos:"+guideInfos);
+		 return  userList;
 	}
 	/*根据用户openId，获取用户权限列表
 	 * */

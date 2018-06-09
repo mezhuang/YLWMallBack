@@ -52,7 +52,7 @@ public class UserInfoDaoImpl implements UserInfoDao {
 	@Override
 	public Integer save(UserInfoPo entity) {
 
-		String sql = "INSERT INTO user_info(user_id,user_type, user_name,user_phone,user_reg_time) VALUES(:user_id,:user_Type, :user_Name,:user_Phone,:user_Reg_Time)";
+		String sql = "INSERT INTO user_info(user_id, user_name,user_phone,user_reg_time) VALUES(:user_id, :user_Name,:user_Phone,:user_Reg_Time)";
 		MapSqlParameterSource paramSource = new MapSqlParameterSource();
 		
 		paramSource.addValue("user_id", entity.getUserId());
@@ -75,11 +75,11 @@ public class UserInfoDaoImpl implements UserInfoDao {
 		return userinfoCount;
 	}
 	@Override
-	public List<Map<String, Object>> findAllGuideInfo() {
+	public List<Map<String, Object>> getUserListByGroupCode(String groupCode)throws Exception {
 	
-		String sql = "select  d.user_name,d.user_phone from group_info a " +
+		String sql = "select  d.user_id,d.user_name,d.user_phone from group_info a " +
 				"INNER JOIN group_user_map b on a.group_id=b.group_id " +
-				"INNER JOIN user_info d on d.user_id=b.user_id where a.group_code='10002' ";
+				"INNER JOIN user_info d on d.user_id=b.user_id where a.group_code='"+groupCode+"'  ";
 
 		List<Map<String, Object>> userinfoinfo = jdbcTemplate.queryForList(sql);
 

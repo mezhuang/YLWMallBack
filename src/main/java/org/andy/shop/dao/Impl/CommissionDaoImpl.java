@@ -13,7 +13,7 @@ import org.andy.shop.dao.SaleInfoDao;
 import org.andy.shop.dao.UserInfoDao;
 import org.andy.shop.dao.UserPowerDao;
 import org.andy.shop.entity.UserInfoPo;
-import org.andy.shop.common.Constant;
+import org.andy.shop.common.YLConstant;
 import org.andy.shop.controller.CustomerReportController;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +47,7 @@ public class CommissionDaoImpl implements CommissioinDao {
 	public String addCommissioin(Map<String, String> map) throws Exception{
 			
 			MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
-
+			LOGGER.info("addCmmission map:"+map);
 			
 //			commisionMap.put("commi_ratio",String.valueOf(Constant.refereeManagerNoTaskRadio));
 //			commisionMap.put("commi_money", String.valueOf(commissionSize));

@@ -12,7 +12,7 @@ import org.andy.shop.dao.SaleInfoDao;
 import org.andy.shop.dao.UserInfoDao;
 import org.andy.shop.dao.UserPowerDao;
 import org.andy.shop.entity.UserInfoPo;
-import org.andy.shop.common.Constant;
+import org.andy.shop.common.YLConstant;
 import org.andy.shop.controller.CustomerReportController;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +68,7 @@ public class SaleInfoDaoImpl implements SaleInfoDao {
 	@Override
 	public List<Map<String, Object>> getSaleInfoList(String openId,String startIndex,String indexSize) throws Exception{
 	
-		String sql = "select  product_info, trans_money, trans_time,customer_phone, open_id,is_task,task_name,task_phone, remark From sales_info a  where a.open_id='"+openId+"' limit "+startIndex+" , "+indexSize+"   ORDER BY trans_time desc ";
+		String sql = "select  product_info, trans_money, trans_time,customer_phone, open_id,is_task,task_name,task_phone, remark From sales_info a  where a.open_id='"+openId+"' order by trans_time,sales_id limit "+startIndex+" , "+indexSize+"   ";
 
 		List<Map<String, Object>> customerReportList = jdbcTemplate.queryForList(sql);
 

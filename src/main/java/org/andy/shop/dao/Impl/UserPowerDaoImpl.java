@@ -10,7 +10,7 @@ import org.andy.shop.common.Utils;
 import org.andy.shop.dao.UserInfoDao;
 import org.andy.shop.dao.UserPowerDao;
 import org.andy.shop.entity.UserInfoPo;
-import org.andy.shop.common.Constant;
+import org.andy.shop.common.YLConstant;
 import org.andy.shop.controller.CustomerReportController;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +78,7 @@ public class UserPowerDaoImpl implements UserPowerDao {
 			int addUserResult = namedParameterJdbcTemplate.update(addUserInfoSql, paramSource);
 			LOGGER.info("插入分销商addUserResult:"+String.valueOf(addUserResult));
 //		 //新增用户分组
-		 String groupId=Constant.REFEREE_GROUP_ID;//分销商组
+		 String groupId=YLConstant.REFEREE_GROUP_ID;//分销商组
 //		 jdbcTemplate.execute(addUserGroupSql);
 		MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
 		String GetUserIdSql = "SELECT user_id FROM user_info WHERE user_phone = ? limit 1";

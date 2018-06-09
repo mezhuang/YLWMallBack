@@ -26,7 +26,7 @@ public interface  UserInfoDao extends Serializable {
 
 	Integer getByCustomerPhone(String customerPhone);
 
-	List<Map<String, Object>> findAllGuideInfo();
+	List<Map<String, Object>> getUserListByGroupCode(String groupCode)throws Exception;
 
 	List<Map<String, Object>> getRefereeInfobyCustomerPhone(String customerPhone)
 			throws Exception;

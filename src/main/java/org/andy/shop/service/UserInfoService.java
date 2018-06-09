@@ -20,8 +20,7 @@ public interface UserInfoService {
 	// 通过Id查询UserInfo
 	UserInfoPo getById(Integer id);
 
-	// 查询全部的UserInfo
-	List<UserInfoPo> findAll();
+	public List<Map<String, Object>> getUserListByGroupCode(String groupCode)throws Exception ;
 
 	// 添加UserInfo
 	Integer save(UserInfoPo userInfo);

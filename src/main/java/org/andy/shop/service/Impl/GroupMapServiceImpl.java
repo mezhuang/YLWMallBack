@@ -41,6 +41,10 @@ public class GroupMapServiceImpl implements GroupMapService {
 	{
 		return groupMapDao.deleteGroupMapByUserIdAndGroupId(map);
 	}
+	@Override
+	public String getByGroupIdByGroupCode(String groupCode)throws Exception{
+		return groupMapDao.getByGroupIdByGroupCode(groupCode);
+	}
 
 
 	

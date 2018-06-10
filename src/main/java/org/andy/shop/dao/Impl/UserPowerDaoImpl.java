@@ -62,23 +62,25 @@ public class UserPowerDaoImpl implements UserPowerDao {
 		 String openId =map.get("openId");
 		 String userName =map.get("userName");
 		 String userPhone = map.get("userPhone");
+		 String ManagerPhone =map.get("ManagerPhone");
 		 String userRegTime = Utils.getCurrentDate();
+		 String groupId = map.get("groupId");
 		 
 		 
 		 
 		 //新增分销商用户
-		 String addUserInfoSql ="insert into user_info (open_id,user_name,user_phone,user_reg_time) values(:open_id,:user_name,:user_phone,:user_reg_time)";
+		 String addUserInfoSql ="insert into user_info (open_id,user_name,user_phone,manager_phone,user_reg_time) values(:open_id,:user_name,:user_phone,:manager_phone,:user_reg_time)";
 //		 jdbcTemplate.execute(addUserInfoSql);
 		 
 			paramSource.addValue("open_id", openId);
 			paramSource.addValue("user_name", userName);
-			paramSource.addValue("user_phone",userPhone );			
+			paramSource.addValue("user_phone",userPhone );	
+			paramSource.addValue("manager_phone", ManagerPhone);
 			paramSource.addValue("user_reg_time", Utils.getCurrentDate());
 
 			int addUserResult = namedParameterJdbcTemplate.update(addUserInfoSql, paramSource);
 			LOGGER.info("插入分销商addUserResult:"+String.valueOf(addUserResult));
-//		 //新增用户分组
-		 String groupId=YLConstant.REFEREE_GROUP_ID;//分销商组
+		 
 //		 jdbcTemplate.execute(addUserGroupSql);
 		MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
 		String GetUserIdSql = "SELECT user_id FROM user_info WHERE user_phone = ? limit 1";

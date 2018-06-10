@@ -71,6 +71,15 @@ public class GroupMapDaoImpl implements GroupMapDao {
 
 		 return String.valueOf(addGroupResult);
 	}
-	
+	@Override
+	public String getByGroupIdByGroupCode(String groupCode) throws Exception{
+
+		String sql = "select group_id From group_info  where group_code=? ";
+
+		String groupId = jdbcTemplate.queryForObject(sql,String.class,
+				new Object[] { groupCode });
+
+		return groupId;
+	}
 
 }

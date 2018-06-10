@@ -77,7 +77,7 @@ public class UserInfoDaoImpl implements UserInfoDao {
 	@Override
 	public List<Map<String, Object>> getUserListByGroupCode(String groupCode)throws Exception {
 	
-		String sql = "select  d.user_id,d.user_name,d.user_phone from group_info a " +
+		String sql = "select  a.group_code,d.user_id,d.user_name,d.user_phone from group_info a " +
 				"INNER JOIN group_user_map b on a.group_id=b.group_id " +
 				"INNER JOIN user_info d on d.user_id=b.user_id where a.group_code='"+groupCode+"'  ";
 
@@ -104,5 +104,6 @@ public class UserInfoDaoImpl implements UserInfoDao {
 
 		return userinfo;
 	}
+	
 
 }

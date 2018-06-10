@@ -18,8 +18,9 @@ static public String     TASK_GROUP_ID="21";//普通用户组Id
 static public String     GROUP_CODE_SYSMANAGER="10001";//系统组编码
 static public String     GROUP_CODE_GUIDE="10002";//导购组编码
 static public String     GROUP_CODE_REFEREE="10003";//分销商组编码
-static public String     GROUP_CODE_CUSTOMER="10004";//客户组编码
-static public String     GROUP_CODE_GENERAL="10005";//普通用户组编码
+static public String     GROUP_CODE_REFERMANAGER="10004";//分销经理组编码
+static public String     GROUP_CODE_REFERDIRECTOR="10005";//分销总监组编码
+static public String     GROUP_CODE_CUSTOMER="10006";//客户组编码
 
 
 static public int  protectDays=7;//保护期时长

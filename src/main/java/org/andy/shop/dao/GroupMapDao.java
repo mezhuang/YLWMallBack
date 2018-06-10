@@ -22,5 +22,7 @@ public interface  GroupMapDao extends Serializable {
 
 	public String deleteGroupMapByUserIdAndGroupId(Map<String,String> map)throws Exception;
 
+	String getByGroupIdByGroupCode(String groupCode)throws Exception;
+
 
 }

@@ -1,11 +1,13 @@
 package org.andy.shop.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.andy.shop.common.YLConstant;
 import org.andy.shop.entity.UserInfoPo;
+import org.andy.shop.service.GroupMapService;
 import org.andy.shop.service.UserInfoService;
 import org.andy.shop.service.UserPowerService;
 import org.apache.log4j.Logger;
@@ -35,6 +37,8 @@ public class UserInfoController {
 	private UserInfoService userInfoService;
 	@Autowired
 	private UserPowerService userPowerService;
+	@Autowired
+	private GroupMapService groupMapService;
 
 //	@RequestMapping("/showInfo/{userId}")
 //	public String showUserInfo(ModelMap modelMap, @PathVariable int userId) {
@@ -72,31 +76,20 @@ public class UserInfoController {
 	@ResponseBody
 	public String applyToReferee(@RequestParam Map<String,String> map) {
 		LOGGER.info("json申请成为分销商结果");
+		//根据分销经纪人分组编码，获取分销经纪人组ID
+		try {
+			String groupId = groupMapService.getByGroupIdByGroupCode(YLConstant.GROUP_CODE_REFEREE);
+			map.put("group_id", groupId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		userPowerService.applytoReferee(map);
 	
 	
 //		LOGGER.info("guideInfos:"+guideInfos);
 		 return  "success";
 	}
-	/*根据分组编码，获取用户列表
-	 * 参数:
-	 * */
-	@RequestMapping(value="/getUserInfoByGroupCode.do",method = {RequestMethod.GET })
-	@ResponseBody
-	public List<Map<String, Object>> getUserInfoByGroupCode(@RequestParam Map<String,String> map) {
-		LOGGER.info("根据分组编码，获取用户列表");
-		List<Map<String, Object>> userList = new ArrayList<Map<String, Object>>();
-		try {
-			userList = userInfoService.getUserListByGroupCode(YLConstant.GROUP_CODE_REFEREE);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	
-	
-//		LOGGER.info("guideInfos:"+guideInfos);
-		 return  userList;
-	}
+
 	/*根据用户openId，获取用户权限列表
 	 * */
 	@RequestMapping(value="/getUserPowerList.do",method = {RequestMethod.GET })
@@ -105,7 +98,78 @@ public class UserInfoController {
 		LOGGER.info("json返回用户全部的权限");
 		 String openId =map.get("openId");
 		 List<Map<String, Object>> guideInfos = userPowerService.getUserPowerByOpenId(openId);
-//		LOGGER.info("guideInfos:"+guideInfos);
 		return guideInfos;
+	}
+	
+	/*根据分组编码，获取用户列表
+	 * 参数:
+	 * */
+	@RequestMapping(value="/getUserInfoByGroupCode.do",method = {RequestMethod.GET })
+	@ResponseBody
+	public List<Map<String, Object>> getUserInfoByGroupCode(@RequestParam Map<String,String> map) {
+		LOGGER.info("根据分组编码，获取用户列表");
+		String requestGroupCode=map.get("groupCode");
+		List<Map<String, Object>> userList = new ArrayList<Map<String, Object>>();
+		try {
+			userList = userInfoService.getUserListByGroupCode(requestGroupCode);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		 return  userList;
+	}
+	/*根据用户ID和分组编码，设置用户岗位
+	 * 参数:
+	 * */
+	@RequestMapping(value="/setUserPosistionByUserIdAndGroupId.do",method = {RequestMethod.GET })
+	@ResponseBody
+	public String setUserPosistionByUserIdAndGroupId(@RequestParam Map<String,String> map) {
+		LOGGER.info("setRefereePosition.do...");
+		String resultStr="0";
+		String userId = map.get("userId");
+		String groupCode = map.get("groupCode");
+		
+		try {
+		String groupId = groupMapService.getByGroupIdByGroupCode(groupCode);
+		
+			 Map<String,String> addMap = new HashMap<String, String>(); 
+			 addMap.put("userId", userId);
+			 addMap.put("groupId", groupId);
+			 resultStr =groupMapService.addUserToGroupMap(addMap) ;//新增分销经理成员关系
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		 return  resultStr;
+	}
+	/*根据用户ID和分组编码，删除用户岗位
+	 * 参数:
+	 * */
+	@RequestMapping(value="/delUserPosistionByUserIdAndGroupId.do",method = {RequestMethod.GET })
+	@ResponseBody
+	public String delUserPosistionByUserIdAndGroupId(@RequestParam Map<String,String> map) {
+		LOGGER.info("setRefereePosition.do...");
+		String resultStr="0";
+		String userId = map.get("userId");
+		String groupCode = map.get("groupCode");
+		
+		try {
+			 String groupId = groupMapService.getByGroupIdByGroupCode(groupCode);
+			 Map<String,String> delMap = new HashMap<String, String>(); 
+			 delMap.put("userId", userId);
+			 delMap.put("groupId", groupId);
+			 resultStr =groupMapService.deleteGroupMapByUserIdAndGroupId(delMap) ;//新增分销经理成员关系
+			
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+	
+		 return  resultStr;
 	}
 }

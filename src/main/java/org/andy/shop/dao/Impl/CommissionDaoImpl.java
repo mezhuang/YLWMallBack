@@ -58,11 +58,12 @@ public class CommissionDaoImpl implements CommissioinDao {
 //		commisionMap.put("customer_phone", customerPhone);
 //		commisionMap.put("customer_name", customerName);
 
-		 String addUserGroupSql ="INSERT INTO commission_info (product_info , commi_ratio,commi_money, commi_status,customer_name,customer_phone,is_task, referee_phone) VALUES (:product_info, :commi_ratio,:commi_money, :commi_status,:customer_name,:customer_phone,:is_task, :referee_phone)";
+		 String addUserGroupSql ="INSERT INTO commission_info (product_info , commi_ratio,commi_money, commi_status,commi_phone,customer_name,customer_phone,is_task, referee_phone) VALUES (:product_info, :commi_ratio,:commi_money, :commi_status,:commi_phone,:customer_name,:customer_phone,:is_task, :referee_phone)";
 			paramSourceGroup.addValue("product_info", map.get("productInfo"));
 			paramSourceGroup.addValue("commi_ratio", map.get("commiRatio"));
 			paramSourceGroup.addValue("commi_money", map.get("commiMoney"));
 			paramSourceGroup.addValue("commi_status", map.get("commiStatus"));
+			paramSourceGroup.addValue("commi_phone", map.get("commi_phone"));
 			paramSourceGroup.addValue("customer_name", map.get("customerName"));
 			paramSourceGroup.addValue("is_task", map.get("isTask"));
 			paramSourceGroup.addValue("customer_phone", map.get("customerPhone"));

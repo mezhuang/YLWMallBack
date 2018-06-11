@@ -23,6 +23,10 @@ public interface CommissionService {
 	List<Map<String, Object>> getCommissioinInfo(String openId)
 			throws Exception;
 
+	String setCommissionByPosistion(String customerPhone, String customerName,
+			String productInfo, double transMoney, String isTask, double Radio,String commiPhone,
+			String reFereeUserPhone) throws Exception;
+
 	
 
 }

@@ -39,8 +39,21 @@ public class UserPowerServiceImpl implements UserPowerService {
 	}
 	
 	@Override
-	public int isRefereeManger(String reFereeUserPhone) throws Exception{
-		return userPowerDao.isRefereeManger(reFereeUserPhone);
+	public int isRefereeManger(String reFereeUserPhone,String groupCode) throws Exception{
+		return userPowerDao.isRefereeManger(reFereeUserPhone, groupCode);
+	}
+	
+	@Override	
+	public List<Map<String, Object>> getUserPowerByUserPhone(String UserPhone) throws Exception{
+		return userPowerDao.getUserPowerByUserPhone(UserPhone);
+	}
+	
+	
+	@Override
+	public int isRefereeDicrector(String reFereeUserPhone, String groupCode)
+	throws Exception{
+		return userPowerDao.isRefereeDicrector(reFereeUserPhone, groupCode);
+		
 	}
 	
 

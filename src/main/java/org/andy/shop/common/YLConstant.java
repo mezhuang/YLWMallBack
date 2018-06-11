@@ -23,13 +23,14 @@ static public String     GROUP_CODE_REFERDIRECTOR="10005";//分销总监组编�
 static public String     GROUP_CODE_CUSTOMER="10006";//客户组编码
 
 
-static public int  protectDays=7;//保护期时长
-static public double  refereeNoTaskRadio=0.01;
-static public double refereeTaskRadio=0.03;
-static public double  refereeManagerNoTaskRadio=0.02;
-static public double refereeManagerTaskRadio=0.05;
-static public double superiorRefereeNoTaskRadio=0.01;
-static public double superiorRefereeTaskRadio=0.02;
+static public int  protectDays_referee=14;//分销经纪人和经理保护期时长
+static public int  protectDays_dicrector=30;//总监保护期时长
+static public double  referee_NoTaskRadio=0.01;
+static public double referee_TaskRadio=0.03;
+static public double  refereeManager_NoTaskRadio=0.02;
+static public double refereeManager_TaskRadio=0.04;
+static public double refereeDicrector_NoTaskRadio=0.03;
+static public double refereeDicrector_TaskRadio=0.05;
 
 
 }

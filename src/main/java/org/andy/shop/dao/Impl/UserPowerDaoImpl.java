@@ -42,11 +42,26 @@ public class UserPowerDaoImpl implements UserPowerDao {
 	@Override
 	public List<Map<String, Object>> getUserPowerByOpenId(String openId) {
 	
-		String sql = "select a.user_name,a.user_phone,d.power_code,d.power_name From user_info a " +
-				" INNER  join group_user_map b on b.user_id=a.user_id " +
-				" INNER JOIN  power_group_map c on c.group_id=b.group_id" +
-				" INNER JOIN  yuanlian.power_info d on d.power_id=c.power_id " +
-				" WHERE  open_id='"+openId+"';";
+//		String sql = "select a.user_name,a.user_phone,d.power_code,d.power_name From user_info a " +
+//				" INNER  join group_user_map b on b.user_id=a.user_id " +
+//				" INNER JOIN  power_group_map c on c.group_id=b.group_id" +
+//				" INNER JOIN  yuanlian.power_info d on d.power_id=c.power_id " +
+//				" WHERE  open_id='"+openId+"';";
+		String sql="select c.user_name,c.user_phone,a.group_code From group_info a INNER JOIN group_user_map b on b.group_id=a.group_id INNER JOIN user_info c on c.user_id=b.user_id where c.open_id='"+openId+"'; ";
+
+		List<Map<String, Object>> userPowerInfo = jdbcTemplate.queryForList(sql);
+
+		return userPowerInfo;
+	}
+	@Override
+	public List<Map<String, Object>> getUserPowerByUserPhone(String UserPhone) throws Exception {
+	
+//		String sql = "select a.user_name,a.user_phone,d.power_code,d.power_name From user_info a " +
+//				" INNER  join group_user_map b on b.user_id=a.user_id " +
+//				" INNER JOIN  power_group_map c on c.group_id=b.group_id" +
+//				" INNER JOIN  yuanlian.power_info d on d.power_id=c.power_id " +
+//				" WHERE  open_id='"+openId+"';";
+		String sql="select c.user_name,c.user_phone,a.group_code From group_info a INNER JOIN group_user_map b on b.group_id=a.group_id INNER JOIN user_info c on c.user_id=b.user_id where c.user_phone='"+UserPhone+"'; ";
 
 		List<Map<String, Object>> userPowerInfo = jdbcTemplate.queryForList(sql);
 
@@ -100,12 +115,25 @@ public class UserPowerDaoImpl implements UserPowerDao {
 	/*判断分销商是否为分销经理
 	 * */
 	@Override
-	public int isRefereeManger(String reFereeUserPhone) throws Exception {
-		String sql = "SELECT COUNT(1) from user_info a INNER JOIN group_user_map b on b.user_id=a.user_id INNER JOIN group_info c on c.group_id=b.group_id  where c.group_code='10003' and a.user_phone=? ;";
+	public int isRefereeManger(String reFereeUserPhone,String groupCode) throws Exception {
+		String sql = "SELECT COUNT(1) from user_info a INNER JOIN group_user_map b on b.user_id=a.user_id INNER JOIN group_info c on c.group_id=b.group_id  where c.group_code=? and a.user_phone=? ;";
 
 
 		int isRefereeCount = jdbcTemplate.queryForObject(sql,Integer.class,
-				new Object[] { reFereeUserPhone });
+				new Object[] { groupCode,reFereeUserPhone });
+
+		return isRefereeCount;
+
+	}
+	/*根据手机号，判断用户是否为总监
+	 * */
+	@Override
+	public int isRefereeDicrector(String reFereeUserPhone,String groupCode) throws Exception {
+		String sql = "SELECT COUNT(1) from user_info a INNER JOIN group_user_map b on b.user_id=a.user_id INNER JOIN group_info c on c.group_id=b.group_id  where c.group_code=? and a.user_phone=? ;";
+
+
+		int isRefereeCount = jdbcTemplate.queryForObject(sql,Integer.class,
+				new Object[] { groupCode,reFereeUserPhone });
 
 		return isRefereeCount;
 

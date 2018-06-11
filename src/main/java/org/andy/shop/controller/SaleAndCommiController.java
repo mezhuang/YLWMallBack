@@ -56,50 +56,186 @@ public class SaleAndCommiController {
 	@ResponseBody
 	public String addSaleInfoAndCommi(@RequestParam Map<String,String> map)  {
 		LOGGER.info("导购增加销售信息");
-		LOGGER.info("保护期时长protectDays:"+YLConstant.protectDays);
+		LOGGER.info("保护期时长protectDays:"+YLConstant.protectDays_referee);
 		String result ="success";
 		//新增销售信息
 		String ret="";
 		try {
 				ret = saleInfoService.addSaleInfo(map);
 				
-				
+				//新增销售信息成功，则立马结佣
 				if(ret.equals("1"))
 				{
 					LOGGER.info("给分销商结佣");
-					String isTask=null;//是否有分销人员带看
-					int transMoney=0;//成交价钱
+					String isTask=map.get("isTask");//是否有分销人员带看
+					
 					String customerPhone = map.get("customerPhone");
 					String customerName  = map.get("customerName");
 					String transTime  = map.get("transTime");
 					String productInfo=map.get("productInfo");
-		
+					int transMoney=0;//成交价钱
 					transMoney=Integer.valueOf((String)map.get("transMoney"));
 					
-					//1、根据客户电话，获取报备时间、分销人员姓名、电话
+					//1、根据客户电话，获取报备时间、分销人员姓名、电话、上级电话
 					List<Map<String, Object>>	refereeList = userInfoService.getRefereeInfobyCustomerPhone(customerPhone);	
 					String reFereeUserPhone=null;
-					String employeeCode=null;//分销经理员工编码
+					String managPhone=null;//分销经理员工编码
 					String reportTime=null;//
-		
-					
+					//2、根据分销员电话，获取分销员角色					
 					for(Map<String, Object> referMap :refereeList)
 					{
 						reportTime=(String)referMap.get("report_time");
 						//判断报备时间是否在保护期内
 						int diffDay =(int)Utils.getDiffDays(transTime, reportTime);
-						if((diffDay+1)<YLConstant.protectDays)
+						if((diffDay+1)<YLConstant.protectDays_referee)
 						{
 							reFereeUserPhone = (String) referMap.get("user_phone");
-							employeeCode=(String)referMap.get("employee_code");
+							managPhone=(String)referMap.get("manager_phone");
 							break;
 						}
 					}
 					
 		
-					//2、根据分销员电话，判断是分销经纪人还是销售经理
-					int isrefereeManager = userPowerService.isRefereeManger(reFereeUserPhone);
-					Map<String, String>  commisionMap = new HashMap<String, String>();		
+					//3、根据分销员电话，获取分销员职位
+					List<Map<String,Object>> referPositionList = userPowerService.getUserPowerByUserPhone(reFereeUserPhone);
+					Map<String, String>  refereePositionMap = new HashMap<String, String>();	
+					//4、如果是总监，直接结佣
+					for(Map<String, Object>  referPositionMap:referPositionList)
+					{
+						
+						
+						if(YLConstant.GROUP_CODE_REFERDIRECTOR.equals(referPositionMap.get("group_code")))
+						{
+							double dicrectorRaio =0;
+							if("1".equals(isTask))
+							{
+								
+								 dicrectorRaio = YLConstant.refereeDicrector_TaskRadio;
+							
+							}else{
+								 dicrectorRaio = YLConstant.refereeDicrector_NoTaskRadio;
+
+							}
+							String dicrestorResult =commissionService.setCommissionByPosistion(customerPhone, customerName, productInfo, transMoney, isTask,dicrectorRaio , reFereeUserPhone,reFereeUserPhone);
+
+							return dicrestorResult ;
+						}
+					}
+					//5、如果是分销经理，则检查上级是否为分销总监，如果是，则结佣
+					for(Map<String, Object>  referPositionMap:referPositionList)
+					{
+						
+						
+						if(YLConstant.GROUP_CODE_REFERMANAGER.equals(referPositionMap.get("group_code")))
+						{
+							double dicrectorRaio =0;
+							if("1".equals(isTask))
+							{
+								
+								 dicrectorRaio = YLConstant.refereeManager_TaskRadio;
+							
+							}else{
+								 dicrectorRaio = YLConstant.refereeManager_NoTaskRadio;
+
+							}
+							String commiManaerResult =commissionService.setCommissionByPosistion(customerPhone, customerName, productInfo, transMoney, isTask,dicrectorRaio , reFereeUserPhone,reFereeUserPhone);
+
+							
+						}
+						
+						//判断分销经理的上级是否为分销总监						
+						if(managPhone != null && managPhone.length() != 0)
+						{
+							int isReStr =userPowerService.isRefereeDicrector(managPhone, YLConstant.GROUP_CODE_REFERDIRECTOR);
+							if(isReStr>=1)
+							{
+								
+								double dicrectorRaio1=0;
+								if("1".equals(isTask)){
+									dicrectorRaio1=YLConstant.refereeDicrector_TaskRadio-YLConstant.refereeManager_TaskRadio;
+								}else
+								{
+									
+								
+								     dicrectorRaio1 =YLConstant.refereeDicrector_NoTaskRadio-YLConstant.refereeManager_NoTaskRadio;
+								}
+								String dicrestorResult =commissionService.setCommissionByPosistion(customerPhone, customerName, productInfo, transMoney, isTask,dicrectorRaio1 , managPhone,reFereeUserPhone);
+	
+							}
+						}
+					  }
+					
+					//6、如果是分销经纪人，则分别判断是否给分销经理和分销总监结佣
+					for(Map<String, Object>  referPositionMap:referPositionList)
+					{
+						
+						
+						if(YLConstant.GROUP_CODE_REFEREE.equals(referPositionMap.get("group_code")))
+						{
+							double refereeRaio =0;
+							if("1".equals(isTask))
+							{
+								
+								refereeRaio = YLConstant.referee_TaskRadio;
+							
+							}else{
+								refereeRaio = YLConstant.referee_NoTaskRadio;
+
+							}
+							String commiRefereeResult =commissionService.setCommissionByPosistion(customerPhone, customerName, productInfo, transMoney, isTask,refereeRaio , reFereeUserPhone,reFereeUserPhone);
+
+							return commiRefereeResult ;
+						}
+						
+						//判断分销经理的上级是否为分销经理						
+						if(managPhone != null && managPhone.length() != 0)
+						{
+							int isReStr =userPowerService.isRefereeManger(managPhone, YLConstant.GROUP_CODE_REFERMANAGER);
+							if(isReStr>=1)
+							{
+								
+								double Raio1=0;
+								if("1".equals(isTask)){
+									Raio1=YLConstant.refereeManager_TaskRadio-YLConstant.referee_TaskRadio;
+								}else
+								{
+									
+								
+									Raio1 =YLConstant.refereeManager_NoTaskRadio-YLConstant.referee_NoTaskRadio;
+								}
+								String managerByreferResult =commissionService.setCommissionByPosistion(customerPhone, customerName, productInfo, transMoney, isTask,Raio1 , managPhone,reFereeUserPhone);
+								//判断分销经理是否为总监，若是，则结佣
+								
+							}
+							
+							
+						}
+						//如果分销员上级是总监，则给总监结佣
+						int  isDicrector=userPowerService.isRefereeDicrector(managPhone, YLConstant.GROUP_CODE_REFERDIRECTOR);
+						if(isDicrector>=1)
+						{
+							double Raio3=0;
+							if("1".equals(isTask)){
+								Raio3=YLConstant.refereeDicrector_TaskRadio-YLConstant.referee_TaskRadio;
+							}else
+							{
+								
+							
+								Raio3 =YLConstant.refereeDicrector_TaskRadio-YLConstant.referee_NoTaskRadio;
+							}
+							String managerByreferResult =commissionService.setCommissionByPosistion(customerPhone, customerName, productInfo, transMoney, isTask,Raio3 , managPhone,managPhone);
+							
+						}
+						
+					  }
+					
+					
+					}
+				
+					
+					
+					
+					/*
 					if(isrefereeManager==1)//分销经理
 					{
 					//4、如果是销售经理，则直接结算；
@@ -196,6 +332,7 @@ public class SaleAndCommiController {
 				{
 					result="新增销售信息异常，结佣失败!";
 				}
+		*/		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

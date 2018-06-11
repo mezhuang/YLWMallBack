@@ -21,7 +21,13 @@ public interface UserPowerService {
 
 	void applytoReferee(Map<String, String> Map);
 
-	int isRefereeManger(String reFereeUserPhone) throws Exception;
+	int isRefereeManger(String reFereeUserPhone,String groupCode) throws Exception;
+
+	List<Map<String, Object>> getUserPowerByUserPhone(String UserPhone)
+			throws Exception;
+
+	int isRefereeDicrector(String reFereeUserPhone, String groupCode)
+			throws Exception;
 
 	
 

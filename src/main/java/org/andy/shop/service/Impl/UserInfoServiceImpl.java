@@ -77,5 +77,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	public List<Map<String, Object>> getRefereeInfobyEmployeeCode(String employeeCode)throws Exception{
 		return getRefereeInfobyEmployeeCode( employeeCode);
 	}
+	
+
 
 }

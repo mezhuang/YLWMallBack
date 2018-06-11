@@ -41,6 +41,7 @@ public class UserInfoDaoImpl implements UserInfoDao {
 
 		return userInfo;
 	}
+
 	
 	@Override
 	public List<UserInfoPo> findAll() {

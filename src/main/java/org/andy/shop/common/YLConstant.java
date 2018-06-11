@@ -32,5 +32,8 @@ static public double refereeManager_TaskRadio=0.04;
 static public double refereeDicrector_NoTaskRadio=0.03;
 static public double refereeDicrector_TaskRadio=0.05;
 
+//错误编码
+static public String ERROR_CODE_COMMIFAIL="10005";//给分销经纪人结佣失败
+
 
 }

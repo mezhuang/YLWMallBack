@@ -61,7 +61,7 @@ public class UserPowerDaoImpl implements UserPowerDao {
 //				" INNER JOIN  power_group_map c on c.group_id=b.group_id" +
 //				" INNER JOIN  yuanlian.power_info d on d.power_id=c.power_id " +
 //				" WHERE  open_id='"+openId+"';";
-		String sql="select c.user_name,c.user_phone,a.group_code From group_info a INNER JOIN group_user_map b on b.group_id=a.group_id INNER JOIN user_info c on c.user_id=b.user_id where c.user_phone='"+UserPhone+"'; ";
+		String sql="select c.user_name,c.user_phone,c.manager_phone,a.group_code From group_info a INNER JOIN group_user_map b on b.group_id=a.group_id INNER JOIN user_info c on c.user_id=b.user_id where c.user_phone='"+UserPhone+"'; ";
 
 		List<Map<String, Object>> userPowerInfo = jdbcTemplate.queryForList(sql);
 
@@ -112,10 +112,10 @@ public class UserPowerDaoImpl implements UserPowerDao {
 
 		 
 	}
-	/*判断分销商是否为分销经理
+	/*判断分销商是否为
 	 * */
 	@Override
-	public int isRefereeManger(String reFereeUserPhone,String groupCode) throws Exception {
+	public int isGroupPositionBygroupCode(String reFereeUserPhone,String groupCode) throws Exception {
 		String sql = "SELECT COUNT(1) from user_info a INNER JOIN group_user_map b on b.user_id=a.user_id INNER JOIN group_info c on c.group_id=b.group_id  where c.group_code=? and a.user_phone=? ;";
 
 

@@ -39,8 +39,8 @@ public class UserPowerServiceImpl implements UserPowerService {
 	}
 	
 	@Override
-	public int isRefereeManger(String reFereeUserPhone,String groupCode) throws Exception{
-		return userPowerDao.isRefereeManger(reFereeUserPhone, groupCode);
+	public int isGroupPositionBygroupCode(String reFereeUserPhone,String groupCode) throws Exception{
+		return userPowerDao.isGroupPositionBygroupCode(reFereeUserPhone, groupCode);
 	}
 	
 	@Override	

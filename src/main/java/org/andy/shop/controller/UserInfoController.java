@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.andy.shop.common.YLConstant;
 import org.andy.shop.entity.UserInfoPo;
+import org.andy.shop.qcloudsms.YLQCloudsms;
 import org.andy.shop.service.GroupMapService;
 import org.andy.shop.service.UserInfoService;
 import org.andy.shop.service.UserPowerService;
@@ -78,6 +79,7 @@ public class UserInfoController {
 		LOGGER.info("json申请成为分销商结果");
 		//根据分销经纪人分组编码，获取分销经纪人组ID
 		try {
+
 			String groupId = groupMapService.getByGroupIdByGroupCode(YLConstant.GROUP_CODE_REFEREE);
 			map.put("group_id", groupId);
 		} catch (Exception e) {
@@ -169,6 +171,17 @@ public class UserInfoController {
 			
 			e.printStackTrace();
 		}
+	
+		 return  resultStr;
+	}
+	//根据手机号，获取手机验证码
+	@RequestMapping(value="/getUserPhoneVerification.do",method = {RequestMethod.GET })
+	@ResponseBody
+	public String getUserPhoneVerification(@RequestParam Map<String,String> map) {
+		LOGGER.info("setRefereePosition.do...");
+		String resultStr="0";
+		String userPhone = map.get("userPhone");
+		resultStr = userInfoService.specifysend(userPhone);
 	
 		 return  resultStr;
 	}

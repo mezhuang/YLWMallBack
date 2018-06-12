@@ -36,6 +36,8 @@ public interface UserInfoService {
 	List<Map<String, Object>> getRefereeInfobyEmployeeCode(String employeeCode)
 			throws Exception;
 
+	String specifysend(String userPhone);
+
 
 
 }

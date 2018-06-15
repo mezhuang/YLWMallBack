@@ -77,19 +77,23 @@ public class UserInfoController {
 	@ResponseBody
 	public String applyToReferee(@RequestParam Map<String,String> map) {
 		LOGGER.info("json申请成为分销商结果");
+		String reStr="fail";
 		//根据分销经纪人分组编码，获取分销经纪人组ID
 		try {
 
 			String groupId = groupMapService.getByGroupIdByGroupCode(YLConstant.GROUP_CODE_REFEREE);
-			map.put("group_id", groupId);
+			map.put("groupId", groupId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		userPowerService.applytoReferee(map);
-	
+		String ret = userPowerService.applytoReferee(map);
+		if("1".equals(ret))
+		{
+			reStr= "success";
+		}
 	
 //		LOGGER.info("guideInfos:"+guideInfos);
-		 return  "success";
+		 return reStr;
 	}
 
 	/*根据用户openId，获取用户权限列表

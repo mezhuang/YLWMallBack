@@ -69,11 +69,11 @@ public class UserPowerDaoImpl implements UserPowerDao {
 	}
 	
 	@Override
-	public void applytoReferee(Map<String,String> map) {
+	public String applytoReferee(Map<String,String> map) {
 		MapSqlParameterSource paramSource = new MapSqlParameterSource();
 
-		 UUID uuid1=UUID.randomUUID();
-	     String userId = uuid1.toString(); 
+//		 UUID uuid1=UUID.randomUUID();
+//	     String userId = uuid1.toString(); 
 		 String openId =map.get("openId");
 		 String userName =map.get("userName");
 		 String userPhone = map.get("userPhone");
@@ -109,6 +109,7 @@ public class UserPowerDaoImpl implements UserPowerDao {
 
 		 int addGroupResult = namedParameterJdbcTemplate.update(addUserGroupSql, paramSourceGroup);
 			LOGGER.info("插入分销商addGroupResult:"+String.valueOf(addGroupResult));
+		return String.valueOf(addGroupResult);
 
 		 
 	}

@@ -34,8 +34,8 @@ public class UserPowerServiceImpl implements UserPowerService {
 		return userPowerDao.getUserPowerByOpenId(openId);
 	}
 	@Override
-	public void applytoReferee(Map<String, String> Map){
-		 userPowerDao.applytoReferee(Map);
+	public String applytoReferee(Map<String, String> Map){
+		 return userPowerDao.applytoReferee(Map);
 	}
 	
 	@Override

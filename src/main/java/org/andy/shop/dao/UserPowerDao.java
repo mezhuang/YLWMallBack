@@ -19,7 +19,7 @@ public interface  UserPowerDao extends Serializable {
 
 	List<Map<String, Object>> getUserPowerByOpenId(String openId);
 
-	void applytoReferee(Map<String, String> Map);
+	String applytoReferee(Map<String, String> Map);
 
 	int isGroupPositionBygroupCode(String reFereeUserPhone,String groupCode) throws Exception;
 

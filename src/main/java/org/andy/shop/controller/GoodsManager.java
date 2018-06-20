@@ -82,7 +82,7 @@ public class GoodsManager {
                 MultipartFile file=multiRequest.getFile(iter.next().toString());
                 if(file!=null)
                 {
-                    String path="F:/yljjImages/goods"+file.getOriginalFilename();
+                    String path="F:/yljj/goodsImages/"+file.getOriginalFilename();
                     //上传
                     file.transferTo(new File(path));
                 }

@@ -10,7 +10,9 @@
 
 <form name="Form2" action="/YLXcxMallBack/springUpload.do" method="post"  enctype="multipart/form-data">
 <h1>使用spring mvc提供的类的方法上传文件</h1>
-<input type="file" name="file">
+<input type="file" name="file1"><br>
+<input type="file" name="file2"><br>
+<input type="file" name="file3"><br>
 <input type="submit" value="upload"/>
 </form>
 </body>

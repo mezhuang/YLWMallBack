@@ -2,11 +2,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.andy.springmvc</groupId>
-	<artifactId>springmvc_demo</artifactId>
+	<artifactId>YLXcxMallBack</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<name>springmvc_demo Maven Webapp</name>
+	<name>YLXcxMallBack Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -275,7 +275,7 @@
     </profiles>
 
 	<build>
-		<finalName>springmvc_demo</finalName>
+		<finalName>YLXcxMallBack</finalName>
 
 		<plugins>
 			<!-- Run the JUnit unit tests in an isolated classloader -->

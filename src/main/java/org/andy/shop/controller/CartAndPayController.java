@@ -58,10 +58,16 @@ public class CartAndPayController {
 	 * */
 	@RequestMapping(value="/getPrePayIdByOrderInfo.do",method = {RequestMethod.GET })
 	@ResponseBody
-	public String getPrePayIdByOrderInfo(@RequestParam Map<String,String> map) throws Exception {
+	public Map<String,String> getPrePayIdByOrderInfo(@RequestParam Map<String,String> map) {
 		LOGGER.info("根据用户提交的预支付信息，申请支付编码");
 		LOGGER.info("dataXml:"+map.get("dataXml"));
-		String reStr = cartAndPayService.getPrePayIdByOrderInfo(map);
+		
+		Map<String, String> reStr = null;
+		try {
+			reStr = cartAndPayService.getPrePayIdByOrderInfo(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return  reStr;
 	}	
 }

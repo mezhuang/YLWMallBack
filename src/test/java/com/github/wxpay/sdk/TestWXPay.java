@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
+import com.github.wxpay.sdk.WXPayConfigImpl;
 
 public class TestWXPay {
 
@@ -201,7 +202,7 @@ public class TestWXPay {
         try {
             System.out.println(xmlStr);
             System.out.println("+++++++++++++++++");
-            System.out.println(WXPayUtil.isSignatureValid(xmlStr, config.getKey()));
+//            System.out.println(WXPayUtil.isSignatureValid(xmlStr, config.getKey()));
             Map<String, String> hm = WXPayUtil.xmlToMap(xmlStr);
             System.out.println("+++++++++++++++++");
             System.out.println(hm);

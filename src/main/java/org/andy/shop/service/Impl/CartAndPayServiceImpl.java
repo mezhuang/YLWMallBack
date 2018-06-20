@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.github.qcloudsms.SmsSingleSender;
 import com.github.qcloudsms.SmsSingleSenderResult;
 import com.github.qcloudsms.httpclient.HTTPException;
+import com.github.wxpay.sdk.WXPayUtil;
 
 /**
  * 创建时间：2015-1-30 上午11:40:19
@@ -47,7 +48,7 @@ public class CartAndPayServiceImpl implements CartAndPayService {
 	public UserInfoPo getById(Integer id) {
 		return userInfoDao.getById(id);
 	}
-	public String getPrePayIdByOrderInfo(@RequestParam Map<String,String> map) throws Exception {
+	public Map<String,String> getPrePayIdByOrderInfo(@RequestParam Map<String,String> map) throws Exception {
 
         String UTF8 = "UTF-8";
         String appid=map.get("appid");
@@ -119,9 +120,10 @@ public class CartAndPayServiceImpl implements CartAndPayService {
         }
 
         System.out.println(resp);
+        Map<String, String> respMap = WXPayUtil.xmlToMap(resp);
 		
 	
-		 return  null;
+		 return  respMap;
 	}
 	
 

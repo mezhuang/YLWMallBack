@@ -20,7 +20,7 @@ public interface CartAndPayService {
 
 	// 通过Id查询UserInfo
 	UserInfoPo getById(Integer id);
-	public String getPrePayIdByOrderInfo(@RequestParam Map<String,String> map) throws Exception ;
+	public Map<String,String> getPrePayIdByOrderInfo(@RequestParam Map<String,String> map) throws Exception ;
 
 
 

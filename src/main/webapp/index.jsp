@@ -1,4 +1,5 @@
 <html>
+
 <head>
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%> 
@@ -23,7 +24,13 @@ $("#saveuddd").click(function(){
 </script>
 </head>
 <body>
-<h2>欢迎来到远联家居，系统开发中，敬请期待。</h2>
+<h2>欢迎来到远联家居，系统开发中，敬请期待。
+
+<tr>
+		<td> 图片<img src="./images/a.png"/></td>
+</tr>
+
+</h2>
 <button></button>
 </body>
 </html>

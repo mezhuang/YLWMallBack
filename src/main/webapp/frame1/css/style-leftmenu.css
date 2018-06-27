@@ -1,0 +1,142 @@
+@charset "utf-8";
+/* CSS Document */
+*{ 
+   padding:0;
+   margin:0;
+   }
+body{
+	margin:o auto;
+	padding:o;
+	font-family: "微软雅黑", "黑体", Arial;
+	font-size: 14px/ 12px;
+	}
+a,a:hover{ text-decoration:none;}
+ul,li{
+	list-style:none;
+	}	
+images,img{
+	border:none
+	}
+/*菜单*/
+
+.leftmenu{
+	 background-color:#2cb0da; 
+	 width:170px; 
+	 height:100%;
+	 }
+/*头像*/ 
+.top1{
+	width:170px;
+	height:98px;
+	background: url(../images/top1_bg.png) #2cb0da repeat-x left bottom ;
+	float:left;
+	z-index:10;
+	}
+
+.photo{
+	width: 80px;
+	height: 80px;
+	border: none;
+	float: left;
+	margin-left:45px;
+	margin-top:10px;
+	z-index: 20;
+	position: absolute;
+	}
+.photo img{
+	width: 80px;
+	height: 80px;
+	}
+
+	
+/*鼠标滑过显示div*/
+.photomassage{
+	height:30px;
+	float:left;
+	margin-left:4px;
+	margin-top:90px;
+	position:relative;
+	display:none;
+	z-index:1000;
+	}
+.top1li-1{
+	width:7px;
+	height:6px;
+	float:left;
+	margin-left:75px;
+	z-index:2000;
+    }
+.top1li-2{
+	width:120px;
+	height:expression(dcount > 10 ? "92px": "69px" );
+	line-height:23px;
+	font-family: "黑体";
+	font-size:12px;
+	color:#000;
+	background:#caf1fd;
+	z-index:3000;
+	float:left;
+	padding:0px 0px;
+	margin-left:25px;
+	white-space:nowrap;
+	TEXT-ALIGN: center
+	}
+ 
+/****menuframe**/
+.lmenu_bg{
+	background-color:#118cc1;
+	width:170px;
+	overflow:hidden;
+
+}
+.menuall{
+	min-height:40px;
+	height:auto;
+	width:100%;
+}
+.menutop{
+	background:url(../images/top1_bg.png) #2cb0da repeat-x left bottom;
+	height:40px;
+	line-height:40px;
+	color:#fff;
+	font-size:14px;
+	font-family:"微软雅黑";
+	cursor: pointer;
+}
+.ico1{
+	height:20px;
+	width:20px;
+	background: url(../images/ico_t_menu.png) no-repeat;
+	float:left;
+	margin:10px 8px 10px 18px;
+}
+
+div.sdmenu {
+	width:170px;
+	background:#118cc1;
+	float:left;
+}
+div.sdmenu>div {
+	overflow: hidden;
+	min-height:30px;
+}
+div.sdmenu>div a{
+	font-family:"微软雅黑";
+	font-size:12px;
+	color:#FFF;
+	height:30px;
+	line-height:30px;
+	width:170px;
+	float:left;
+	padding-left:46px;
+}
+div.sdmenu>div a:hover{
+	color:#000;
+	background:#f0f0f0;
+
+}
+div.sdmenu>div:first-child {
+	
+}
+
+

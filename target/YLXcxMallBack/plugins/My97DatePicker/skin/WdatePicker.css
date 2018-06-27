@@ -1,0 +1,15 @@
+.Wdate{
+	/* tlw 2014.1.18
+	border:#999 1px solid;
+	*/
+	border: none;border-bottom: solid 1px #A1A1A1;
+	height:20px;
+	background:#fff url(../calendar.png) no-repeat right;
+}
+.Wdate:hover{
+	cursor: pointer;
+}
+.WdateFmtErr{
+	font-weight:bold;
+	color:red;
+}

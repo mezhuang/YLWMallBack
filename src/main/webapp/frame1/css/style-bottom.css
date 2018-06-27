@@ -1,0 +1,35 @@
+@charset "utf-8";
+/* CSS Document */
+*{ 
+   padding:0;
+   margin:0;
+   }
+body{
+	margin:o auto;
+	padding:o;
+	font-family: "微软雅黑", "黑体", Arial;
+	font-size: 14px/ 12px;
+	}
+
+images,img{
+	border:none
+	}
+/* top and banner */
+.bottom{
+	height:36px;
+	width:100%;
+	background:url(../images/bottombg1.png) repeat-x;
+	position:fixed;
+	bottom:0px;
+	left:0px;
+	}
+.peoplenum{
+	font-family:"微软雅黑";
+	font-size:14px;
+	color:#000;
+	height:36px;
+	text-align:left;
+	line-height:36px;
+	/*float:left;*/
+	padding-left:24px;
+	}

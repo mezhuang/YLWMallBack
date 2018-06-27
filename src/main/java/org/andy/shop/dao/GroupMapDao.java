@@ -17,7 +17,6 @@ import org.andy.shop.entity.UserInfoPo;
 
 public interface  GroupMapDao extends Serializable {
 
-
 	String addUserToGroupMap(Map<String, String> map) throws Exception;
 
 	public String deleteGroupMapByUserIdAndGroupId(Map<String,String> map)throws Exception;

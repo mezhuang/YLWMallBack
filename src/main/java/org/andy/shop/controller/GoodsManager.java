@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.andy.shop.service.CartAndPayService;
+import org.andy.shop.service.GoodsManagerService;
 import org.andy.shop.service.GroupMapService;
 import org.andy.shop.service.UserInfoService;
 import org.andy.shop.service.UserPowerService;
@@ -35,6 +36,8 @@ public class GoodsManager {
 	private UserPowerService userPowerService;
 	@Autowired
 	private GroupMapService groupMapService;
+	@Autowired
+	private GoodsManagerService goodsManagerService;
 	
 	@Autowired
 	private CartAndPayService cartAndPayService;
@@ -56,6 +59,27 @@ public class GoodsManager {
 //		}
 //		return  reStr;
 //	}
+	/*
+     *采用spring提供的上传文件的方法
+     */
+	
+	@RequestMapping(value = "/addGoodsRecord.do",method = {RequestMethod.POST })
+	@ResponseBody
+	public String addGoodsRecord(@RequestParam Map<String,String> map) {
+ 
+    	String reStr="";
+    	
+    	try {
+			reStr = goodsManagerService.addGoodsRecord(map);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return reStr;
+    }
+	
+	
 	
 	/*
      *采用spring提供的上传文件的方法
@@ -65,6 +89,17 @@ public class GoodsManager {
     public String  springUpload(HttpServletRequest request) throws IllegalStateException, IOException
     {
          long  startTime=System.currentTimeMillis();
+       //获取当前路径
+		 File currentDirectory = new File("");//设定为当前文件夹 
+		 try{ 
+		     System.out.println("当前路径:"+currentDirectory.getCanonicalPath());//获取标准的路径 
+		     System.out.println(currentDirectory.getAbsolutePath());//获取绝对路径 
+		 }catch(Exception e){
+			 e.printStackTrace();
+		 } 
+         
+         
+         
          //将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
         CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver(
                 request.getSession().getServletContext());
@@ -75,16 +110,24 @@ public class GoodsManager {
             MultipartHttpServletRequest multiRequest=(MultipartHttpServletRequest)request;
            //获取multiRequest 中所有的文件名
             Iterator iter=multiRequest.getFileNames();
-             
+            String path=currentDirectory.getCanonicalPath().replace("\\","/") ;
+            String desPath =path+"/../webapps/YLXcxMallBack/images/goodsImages/";
+            LOGGER.info("desPath:"+desPath);
             while(iter.hasNext())
             {
                 //一次遍历所有文件
                 MultipartFile file=multiRequest.getFile(iter.next().toString());
                 if(file!=null)
                 {
-                    String path="F:/yljj/goodsImages/"+file.getOriginalFilename();
+                	String uploadFilePath = desPath+file.getOriginalFilename();
+                    //如果上传的文件已存在，则先删除掉
+                	File uploadFile = new File(uploadFilePath);
+                	if(!uploadFile.exists())  
+                    {  
+                		uploadFile.delete();
+                    }  
                     //上传
-                    file.transferTo(new File(path));
+                    file.transferTo(new File(desPath+file.getOriginalFilename()));
                 }
                  
             }

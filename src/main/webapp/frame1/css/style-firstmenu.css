@@ -1,0 +1,61 @@
+﻿
+.nav_icon_h {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+.stepcarousel {
+	MARGIN: 0px auto; OVERFLOW: scroll; WIDTH: 680px; POSITION: relative; HEIGHT: 90px
+}
+.stepcarousel .belt {
+	right: 0px; POSITION: absolute; TOP: 0px
+}
+#displaycssbelt {
+	VISIBILITY: hidden
+}
+#stocklevels {
+	VISIBILITY: hidden
+}
+.stepcarousel .panel {
+	FLOAT: left; MARGIN: 0px 0px 0px 0px; OVERFLOW: hidden; WIDTH: 85px
+}
+.nav_icon_h_item {
+	float: right;
+	padding: 10px 3px 0 5px;
+	cursor:pointer;
+}
+
+.nav_icon_h_item img {
+	width: 35px;
+	height: 35px;
+}
+
+.nav_icon_h_item a {
+	background-image: url();
+	background-repeat: no-repeat;
+	text-align: center;
+	display: block;
+	width: 68px;
+	height: 61px;
+	overflow: hidden;
+	color: white;
+}
+
+.nav_icon_h_item a:hover {
+	background-image: url(../tab/iconNav_hover.jpg);
+	background-repeat: no-repeat;
+	color: #185690;
+	text-decoration: none;
+}
+
+.nav_icon_h_item .current {
+	background-image: url(../tab/iconNav_hover.jpg);
+	background-repeat: no-repeat;
+	color: #185690;
+	text-decoration: none;
+}
+
+.nav_icon_h_item_img {
+	padding: 5px 0 0 0;
+}
+

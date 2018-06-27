@@ -1,5 +1,6 @@
 package org.andy.shop.test.service;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -91,27 +92,41 @@ public class TestUserInfoService {
 //}
 	//测试申请分销商
 	@Test 
-	public void testapplyToReferee() {
-		
-		UUID uuid1=UUID.randomUUID();
-	     String userId = uuid1.toString(); 
-		 String openId ="fffff";
-		 String userName ="xiaoliu";
-		 String userPhone ="18812345678";
-		 String userRegTime = Utils.getCurrentDate();
-		 Map<String,String> map = new HashMap<String,String>();
-		 map.put("openId", openId);
-		 map.put("userName", userName);
-		 map.put("userPhone", userPhone);
-		 map.put("userRegTime", userRegTime);
-		 userPowerService.applytoReferee(map);
-		
-//		String param ="";
-		//test hello
-//		String returnStr =  httpRequestTest.sendGet("http://localhost/YLXcxMallBack/", param);
-//		System.out.println(returnStr);
-//		LOGGER.info("returnStr:"+returnStr);
-}
+	public void testpath() {
+		//获取当前路径
+		 File directory = new File("");//设定为当前文件夹 
+		 try{ 
+		     System.out.println("当前路径:"+directory.getCanonicalPath());//获取标准的路径 
+		     System.out.println(directory.getAbsolutePath());//获取绝对路径 
+		 }catch(Exception e){
+			 e.printStackTrace();
+		 } 
+	}
+//	
+	
+	//测试申请分销商
+//	@Test 
+//	public void testapplyToReferee() {
+//		
+//		UUID uuid1=UUID.randomUUID();
+//	     String userId = uuid1.toString(); 
+//		 String openId ="fffff";
+//		 String userName ="xiaoliu";
+//		 String userPhone ="18812345678";
+//		 String userRegTime = Utils.getCurrentDate();
+//		 Map<String,String> map = new HashMap<String,String>();
+//		 map.put("openId", openId);
+//		 map.put("userName", userName);
+//		 map.put("userPhone", userPhone);
+//		 map.put("userRegTime", userRegTime);
+//		 userPowerService.applytoReferee(map);
+//		
+////		String param ="";
+//		//test hello
+////		String returnStr =  httpRequestTest.sendGet("http://localhost/YLXcxMallBack/", param);
+////		System.out.println(returnStr);
+////		LOGGER.info("returnStr:"+returnStr);
+//}
 	
 
 }

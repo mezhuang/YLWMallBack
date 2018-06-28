@@ -37,25 +37,41 @@ public class GoodsManagerServiceImpl implements GoodsManagerService {
 	private GoodsManagerDao goodsManagerDao;
 	
 	@Override
-	public
-	String addGoodsRecord(Map<String, String> map) throws Exception{
+	public String addGoodsRecord(Map<String, String> map) throws Exception{
 		return goodsManagerDao.addGoodsRecord(map);
 	}
 	@Override
-	public
-	String updateGoodsRecord(Map<String, String> map) throws Exception{
+	public String updateGoodsRecord(Map<String, String> map) throws Exception{
 		return goodsManagerDao.updateGoodsRecord(map);
 	}
 	@Override
-	public
-	String deleteGoodsReCord(Map<String, String> map) throws Exception{
-		return goodsManagerDao.deleteGoodsReCord(map);
+	public String deleteGoodsInfo(Map<String, String> map) throws Exception{
+		return goodsManagerDao.deleteGoodsInfo(map);
+	}
+	@Override
+	public String deleteGoodsMap(Map<String, String> map) throws Exception{
+		return goodsManagerDao.deleteGoodsMap(map);
+	}
+	@Override 
+	public String deleteGoodsImage(Map<String, String> map) throws Exception{
+		return goodsManagerDao.deleteGoodsImage(map);
 	}
 	@Override
 	public
-	List<Map<String, Object>> getGoodsRecordList(Map<String, String> map)throws Exception{
-		return goodsManagerDao.getGoodsRecordList(map);
+	List<Map<String, Object>> getGoodsRecordList(String startIndex,String indexSize)throws Exception{
+		return goodsManagerDao.getGoodsRecordList(startIndex, indexSize);
 	}
+	@Override
+	public String addGoodsImage(String goodsImageUrl,String goodsId )throws Exception{
+		
+		return goodsManagerDao.addGoodsImage(goodsImageUrl, goodsId);
+	}
+	@Override
+	public Map<String, Object> getGoodsRecordDetail(String goodsId)
+			throws Exception {
+		return goodsManagerDao.getGoodsRecordDetail(goodsId);
+	}
+
 
 
 

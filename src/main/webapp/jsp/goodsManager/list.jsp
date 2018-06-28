@@ -44,7 +44,7 @@
 					nowrap: false,//是否在一行显示数据 
 					striped: true,//奇偶行使用不同背景色，默认为false 
 					collapsible:true,
-					url:'<%=basePath%>InterfaceMapManage_getList.do',//从远程站点请求数据的URL 
+					url:'<%=basePath%>getGoodsRecordList.do',//从远程站点请求数据的URL 
 					//sortName: 'id',//可以排序的列 
 					//sortOrder: 'desc',//定义列的排序顺序，只能用 'asc' 或 'desc' 
 					remoteSort: true,//定义是否从服务器给数据排序
@@ -53,7 +53,7 @@
 					//selectOnCheck:true,//选中checkbox时同时选中改行 
 					fitColumns: true,//自动扩大或缩小列的尺寸以适应表格的宽度并且防止水平滚动 
 					pageNumber:1,//当设置了 pagination 特性时，初始化页码 
-					pageSize: 1,//当设置了 pagination 特性时，初始化页码尺寸，即每页显示的记录条数，默认为10
+					pageSize: 10,//当设置了 pagination 特性时，初始化页码尺寸，即每页显示的记录条数，默认为10
 					pageList:10,//当设置了pagination 特性时，初始化页面尺寸的选择列表，可以设置每页记录条数的列表 
 					idField:'id',//标识字段 
 					frozenColumns:[[
@@ -62,14 +62,21 @@
 					queryParams:{
 							createName:document.getElementById("createName").value,
 							createTime:document.getElementById("createTime").value
+							
+							
+							
 					},	
 					columns:[[				
-						{field:'id',title:'ID',width:fillsize(1),align:'center',hidden:true,sortable:true},
-						{field:'createName',title:'创建人',width:fillsize(1),align:'center',hidden:false,sortable:true	},
-						{field:'createTime',title:'创建时间',width:fillsize(1),align:'center',hidden:false,sortable:true	},
+						{field:'goods_id',title:'ID',width:fillsize(1),align:'center',hidden:true,sortable:true},
+						{field:'goods_tile',title:'标题',width:fillsize(1),align:'center',hidden:false},
+						{field:'goods_model_number',title:'型号',width:fillsize(1),align:'center',hidden:false},
+						{field:'goods_org_price',title:'原价',width:fillsize(1),align:'center',hidden:false},
+						{field:'goods_curr_price',title:'现价',width:fillsize(1),align:'center',hidden:false},					
+						//{field:'createName',title:'创建人',width:fillsize(1),align:'center',hidden:false,sortable:true	},
+						{field:'create_time',title:'创建时间',width:fillsize(1),align:'center',hidden:false,sortable:true	},
+						{field:'goods_image_url',title:'',width:fillsize(1),align:'center',hidden:false}
 							
-						{field:'interfaceId',title:'接口名称',width:fillsize(1),align:'center',hidden:true},
-						{field:'deptId',title:'部门名称',width:fillsize(1),align:'center',hidden:true}
+					
 					]],
 					toolbar:[
 						{
@@ -133,7 +140,7 @@
 					if(result){ 
 						$.ajax({ 
 							type : "POST", 
-							url:'<%=basePath%>InterfaceMapManage_deleteInterfaceMap.do', 
+							url:'<%=basePath%>deleteGoodsRecord.do', 
 							traditional: true,//在struts2下该属性必须有 
 							data:{ids:ids}, 
 							success:function(result){ 
@@ -154,7 +161,7 @@
 					alert('只能选择一条记录！');
 					return;
 				}
-				openWin('<%=basePath%>InterfaceMapManage_toInterfaceMapUpdate.do?id='+rows[0].id, 800, 500, '修改接口映射');
+				openWin('<%=basePath%>getGoodsRecordDetail.do?id='+rows[0].id, 800, 500, '修改接口映射');
 			}
 			
 			function Detail() {
@@ -166,7 +173,7 @@
 					alert('只能选择一条记录！');
 					return;
 				}
-				openWin('<%=basePath%>InterfaceMapManage_toInterfaceMapDetail.do?id='+rows[0].id, 800, 500, '查看接口映射');
+				openWin('<%=basePath%>getGoodsRecordDetail.do?id='+rows[0].id, 800, 500, '查看商品详情');
 			}
 		</script>
 	</head>

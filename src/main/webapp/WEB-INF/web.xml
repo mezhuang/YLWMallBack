@@ -52,14 +52,15 @@
 
 	<servlet-mapping>
 		<servlet-name>rest</servlet-name>
-		<url-pattern>/</url-pattern>
-		<url-pattern>*.*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>  
+		<url-pattern>*.do</url-pattern>
+
+    
+  <!-- 以下为不拦截后缀 -->
+  	</servlet-mapping>
+		<servlet-mapping>  
         <servlet-name>default</servlet-name>  
         <url-pattern>*.css</url-pattern>  
     </servlet-mapping>  
-  
     <servlet-mapping>  
         <servlet-name>default</servlet-name>  
         <url-pattern>*.gif</url-pattern>  
@@ -80,6 +81,7 @@
 		<url-pattern>/</url-pattern>
 		<url-pattern>*.png</url-pattern>
 	</servlet-mapping>
+ 
 	<!-- 配置session超时时间，单位分钟 -->
 	<session-config>
 		<session-timeout>30</session-timeout>

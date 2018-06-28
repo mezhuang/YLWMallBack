@@ -167,7 +167,7 @@ function viewImage(file,imageId,viewId){
                         <div id="errorlist">
                         </div>
                         <!-- 表单 start -->
-                        <form id="add" name="add" action="<%=basePath%>springUpload.do" method="post">
+                        <form id="add" name="add" action="<%=basePath%>addGoodsRecord.do" method="post" enctype="multipart/form-data">
                             
                             <!-- 表单元素table start -->
                             <table cellspacing="0" width="100%" cellpadding="2" border="0">
@@ -204,9 +204,15 @@ function viewImage(file,imageId,viewId){
 								
 								
                             	<tr>
-                            		<td class="td-left">标题：</td>
-                            		<td class="td-right">
+                            		<td >标题：
+                            		
                             			<input type="text" id="goodsTile" name="goodsTile" value=""/>
+                            		</td>
+                            	</tr>
+                            	<tr>
+                            		<td >型号：
+                            		
+                            			<input type="text" id="goodsModelNumber" name="goodsModelNumber" value=""/>
                             		</td>
                             	</tr>
                             	<tr>
@@ -220,28 +226,29 @@ function viewImage(file,imageId,viewId){
 					                    </select>
 					                    
 					                </td>
-					                </tr>
-					                <tr>
+					          </tr>
+					           <tr>
 					                <td>
 					                    <select name="onelevelCode02" id="onelevelCode2">
 					                        <option value="">请选择风格</option>
-					                         <option value="02001">北欧轻奢</option>
+					                        <option value="02001">北欧轻奢</option>
 					                         <option value="02002">现代中式</option>
 					                    </select>
 					                    </td>
-					                </tr>
+					           </tr>
 					                    
-					             <tr>
-					            
+					            <tr>
+					           		 <td>
 					                    <select name="onelevelCode03" id="onelevelCode03">
 					                        <option value="">请选择空间</option>
 					                        <option value="03001">客厅</option>
 					                        <option value="03002">卧室</option>
 					                        
 					                    </select>
-					                </td>
-					            </tr>
-					             <tr><td>
+					              	  </td>
+					           </tr>
+					           <tr>
+					           		<td>
 					                    <select name="onelevelCode04" id="onelevelCode04">
 					                        <option value="">请选择套餐</option>
 					                        <option value="04001">限时特惠</option>
@@ -250,8 +257,9 @@ function viewImage(file,imageId,viewId){
 					                        
 					                    </select>
 					                </td>
-					            </tr>
-					            <tr><td>
+					           </tr>
+					            <tr>
+					            	<td>
 					                    <select name="onelevelCode05" id="onelevelCode05">
 					                        <option value="">请选择品牌</option>
 					                        <option value="05001">中深宅配</option>
@@ -260,7 +268,8 @@ function viewImage(file,imageId,viewId){
 					                    </select>
 					                </td>
 					            </tr>
-					             <tr><td>
+					             <tr>
+					             	<td>
 					                    <select name="onelevelCode06" id="onelevelCode06">
 					                        <option value="">请选择展示位置</option>
 					                        <option value="06001">首页轮播</option>
@@ -272,44 +281,50 @@ function viewImage(file,imageId,viewId){
 					            </tr>
 					            
                             	<tr>
-                            		<td class="td-left">原价：</td>
-                            		<td class="td-right">
-                            			<input type="text" id="goodsOrgPrice" name="goodsOrgPrice" value=""/>
+                            	
+                            		<td >
+                            			<text>原价：</text><input type="text" id="goodsOrgPrice" name="goodsOrgPrice" value=""/>
                             		</td>
                             	</tr>
 								<tr>
-                            		<td class="td-left">现价：</td>
+                            		
                             		<td class="td-right">
+                            		<text>现价：</text>
                             			<input type="text" id="goodsCurrPrice" name="goodsCurrPrice" value=""/>
                             		</td>
                             	</tr>
                             	<tr>
-                            		<td class="td-left">库存：</td>
-                            		<td class="td-right">
+                            		
+                            		<td class="td-right"><text>库存：</text>
                             			<input type="text" id="goodsStock" name="goodsStock" value=""/>
                             		</td>
                             	</tr>
                             	<tr>
-                            		<td class="td-left">商品详情：</td>
+                         
                             		<td class="td-right">
+                            		<text>商品详情：</text>
                             			<input type="text" id="goodsDetails" name="goodsDetails" value=""/>
                             		</td>
                             	</tr>
                             	<tr>
-                            		<td class="td-left">备注：</td>
+                            		
                             		<td class="td-right">
+                            		<text>备注：</text>
                             			<input type="text" id="remark" name="remark" value=""/>
                             		</td>
                             	</tr>
 
 								
                             	<tr>
-                            		<td class="td-left">创建人：</td>
+                            	
                             		<td class="td-right">
+                            		<text>创建人：</text>
                             			<input type="text" id="createName" name="createName" value=""/>
                             		</td>
-                            		<td class="td-left">创建时间：</td>
+                            	</tr>
+                            	<tr>
                             		<td class="td-right">
+                            		<text>创建时间：</text>
                             			<input type="text" id="createTime" name="createTime" readonly class="Wdate" onClick="WdatePicker({el:'createTime', dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
                             		</td>
                             	</tr>

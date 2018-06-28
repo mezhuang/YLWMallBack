@@ -116,7 +116,7 @@
 			}
 			
 			function Add(){
-				openWin('<%=basePath%>gwbl/base/interfacemap/add.jsp', 800, 500, '新建接口映射');
+				openWin('<%=basePath%>jsp/goodsManager/add.jsp', 800, 500, '新建接口映射');
 			}
 			
 			function Delete(){

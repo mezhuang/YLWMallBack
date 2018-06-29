@@ -15,7 +15,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">  
 	<head>
-	    <title>接口映射列表</title>
+	    <title>商品列表</title>
 	    <base href="<%=basePath%>">
 	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<jsp:include page="/common/include/jquery.jsp" flush="true"/>
@@ -123,7 +123,7 @@
 			}
 			
 			function Add(){
-				openWin('<%=basePath%>jsp/goodsManager/add.jsp', 800, 500, '新建接口映射');
+				openWin('<%=basePath%>jsp/goodsManager/add.jsp', 800, 500, '添加商品');
 			}
 			
 			function Delete(){
@@ -161,7 +161,7 @@
 					alert('只能选择一条记录！');
 					return;
 				}
-				openWin('<%=basePath%>getGoodsRecordDetail.do?id='+rows[0].id, 800, 500, '修改接口映射');
+				openWin('<%=basePath%>jsp/goodsManager/update.jsp?id='+rows[0].id, 800, 500, '编辑商品');
 			}
 			
 			function Detail() {
@@ -178,7 +178,7 @@
 		</script>
 	</head>
 	<body>
-		<div id="InterfaceMapPanel" class="easyui-panel" style="width:'100%';padding:6px;" data-options="title:'接口映射',iconCls:'icon-search',collapsible:false,minimizable:false,maximizable:false,closable:false">
+		<div id="InterfaceMapPanel" class="easyui-panel" style="width:'100%';padding:6px;" data-options="title:'商品列表',iconCls:'icon-search',collapsible:false,minimizable:false,maximizable:false,closable:false">
 			<label>创建人</label><input type="text" id="createName" name="createName" />
 			<label>创建时间</label><input type="text" id="createTime" name="createTime" readonly onClick="WdatePicker({el:'createTime', dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
 			<a href="javascript:void(0)" onclick="initTable()" class="easyui-linkbutton" plain="true" icon="icon-search">查询</a>

@@ -22,7 +22,7 @@ public interface  GoodsManagerDao extends Serializable {
 	String updateGoodsRecord(Map<String, String> map) throws Exception;
 	List<Map<String, Object>> getGoodsRecordList(String startIndex,String indexSize)throws Exception;
 
-	public Map<String, Object> getGoodsRecordDetail(String goodsId) throws Exception;
+	public List<Map<String, Object>> getGoodsRecordDetail(String goodsId) throws Exception;
 	
 	public String addGoodsImage(String goodsImageUrl,String goodsId )throws Exception;
 	

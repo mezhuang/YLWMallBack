@@ -175,21 +175,23 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 	}
 	
 	@Override
-	public Map<String, Object> getGoodsRecordDetail(String goodsId) throws Exception{
+	public List<Map<String, Object>> getGoodsRecordDetail(String goodsId) throws Exception{
+		String goodsInfoSql = "select *From goods_info a where a.goods_id = '"+goodsId+"';";
+		String goodsClassSql = "select b.* From goods_class_map a inner JOIN goods_class b on b.twolevel_code=a.goods_twolevel_code where a.goods_id  = '"+goodsId+"' ORDER BY twolevel_code asc;";
+		String goodsImageSql = "select *From goods_image a where a.goods_id = '"+goodsId+"' ORDER BY goods_image_url asc;";
 		
-		String goodsClassSql = "select *From goods_class_map a where a.goods_id = '"+goodsId+"';";
-		String goodsImageSql = "select *From goods_image a where a.goods_id = '"+goodsId+"';";
-		
-
+		List<Map<String, Object>> goodsinfoList = jdbcTemplate.queryForList(goodsInfoSql);
 		List<Map<String, Object>> goodsClassList = jdbcTemplate.queryForList(goodsClassSql);
 		List<Map<String, Object>> goodsImageList = jdbcTemplate.queryForList(goodsImageSql);
-
+		
+		List<Map<String, Object>> reList =  new ArrayList<Map<String, Object>>();
 		Map<String, Object> reMap = new HashMap<String, Object>();
-
+		
 		reMap.put("goodsClassList", goodsClassList);
 		reMap.put("goodsImageList", goodsImageList);
-
-		return reMap;
+		reMap.putAll(goodsinfoList.get(0));
+		reList.add(reMap);
+		return reList;
 	}
 	
 

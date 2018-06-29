@@ -2,6 +2,7 @@ package org.andy.shop.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -91,8 +92,39 @@ public class GoodsManagerController {
     	
     	return reStr;
     }
-	
-	
+
+		@RequestMapping(value = "/updateGoodsRecord.do",method = {RequestMethod.POST })
+		@ResponseBody
+		public String updateGoodsRecord(@RequestParam Map<String,String> map,HttpServletRequest request) {
+	 
+	    	String reStr="";
+	    	//产生uuid
+			String goodsId = map.get("goodsId");
+			map.put("ids", goodsId);
+			try{
+				this.deleteGoodsRecord(map);
+			}catch (IllegalStateException e1) {
+				e1.printStackTrace();
+			}
+			
+			map.put("goodsId", goodsId);
+	    	//1、上传图片
+	    	try {
+				this.springUpload( request,goodsId);
+			} catch (IllegalStateException e1) {
+				e1.printStackTrace();
+			}
+	    	
+	    	//2、新增记录
+	    	try {
+				reStr = goodsManagerService.addGoodsRecord(map);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	
+	    	return reStr;
+	    }
 	
 	/*
      *采用spring提供的上传文件的方法
@@ -107,12 +139,15 @@ public class GoodsManagerController {
 		 try{ 
 		     System.out.println("当前路径:"+currentDirectory.getCanonicalPath());//获取标准的路径 
 		     System.out.println(currentDirectory.getAbsolutePath());//获取绝对路径 
+		     
+				
 		 }catch(Exception e){
 			 e.printStackTrace();
 		 } 
-         
-         
-         
+		 //获取访问路径
+		 String path1 = request.getContextPath();
+			String basePath = request.getScheme() + "://"+ request.getServerName() + ":" + request.getServerPort()+ path1 + "/";
+		 
          //将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
         CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver(
                 request.getSession().getServletContext());
@@ -128,6 +163,7 @@ public class GoodsManagerController {
 				path = currentDirectory.getCanonicalPath().replace("\\","/");
 			
 	            String desPath =path+"/../webapps/YLXcxMallBack/images/goodsImages/";
+	            String recordPathTmp =basePath+"images/goodsImages/";
 	            
 	            LOGGER.info("desPath:"+desPath);
 	            int i=1;
@@ -139,7 +175,8 @@ public class GoodsManagerController {
 	                {
 	                	
 	//                	String uploadFilePath = desPath+file.getOriginalFilename();
-	                	String uploadFilePath = desPath+"goodsimage00"+String.valueOf(i);
+	                	String uploadFilePath = desPath+"goodsimage00"+String.valueOf(i)+".jpg";
+	                	String recordPath =recordPathTmp+"goodsimage00"+String.valueOf(i)+".jpg";
 	                	i++;
 	                    //如果上传的文件已存在，则先删除掉
 	                	File uploadFile = new File(uploadFilePath);
@@ -151,7 +188,7 @@ public class GoodsManagerController {
 	                    //上传
 	                    file.transferTo(new File(uploadFilePath));
 	                    try {
-							goodsManagerService.addGoodsImage(uploadFilePath, goodsId);
+							goodsManagerService.addGoodsImage(recordPath, goodsId);
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -219,9 +256,9 @@ public class GoodsManagerController {
     
     @RequestMapping(value = "/getGoodsRecordDetail.do",method = {RequestMethod.GET })
 	@ResponseBody
-	public Map<String, Object> getGoodsRecordDetail(@RequestParam Map<String,String> map) {
+	public List<Map<String, Object>>getGoodsRecordDetail(@RequestParam Map<String,String> map) {
     	String goodsId = map.get("id");
-    	Map<String, Object> reMap = new HashMap<String, Object>();
+    	List<Map<String, Object>> reMap = new ArrayList<Map<String, Object>>();
     	try {
     		reMap =goodsManagerService.getGoodsRecordDetail(goodsId);
 		} catch (Exception e) {

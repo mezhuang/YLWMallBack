@@ -67,7 +67,7 @@ public class GoodsManagerServiceImpl implements GoodsManagerService {
 		return goodsManagerDao.addGoodsImage(goodsImageUrl, goodsId);
 	}
 	@Override
-	public Map<String, Object> getGoodsRecordDetail(String goodsId)
+	public List<Map<String, Object>> getGoodsRecordDetail(String goodsId)
 			throws Exception {
 		return goodsManagerDao.getGoodsRecordDetail(goodsId);
 	}

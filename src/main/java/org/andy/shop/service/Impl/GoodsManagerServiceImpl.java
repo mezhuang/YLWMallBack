@@ -71,6 +71,29 @@ public class GoodsManagerServiceImpl implements GoodsManagerService {
 			throws Exception {
 		return goodsManagerDao.getGoodsRecordDetail(goodsId);
 	}
+	@Override
+	public String addGoodsFormatAndPrice(Map<String,String> map)throws Exception{
+		String goodsId=null;
+		String formatName=null;
+		String formatCode=null;
+		String orgPrice=null;
+		String currPrice=null;
+		String retSult="";
+		//map.get("goodsFormat0"+)
+		
+		int formatAndPriceNO =Integer.parseInt(map.get("formatAndPriceNO"));
+		for(int i=1;i<=formatAndPriceNO;i++)
+		{
+			formatCode = map.get("formatCode0"+String.valueOf(i));
+			formatName = map.get("formatName0"+String.valueOf(i));
+			orgPrice = map.get("orgPrice0"+String.valueOf(i));
+			currPrice = map.get("currPrice0"+String.valueOf(i));
+			retSult=goodsManagerDao.addGoodsFormatAndPrice(goodsId, formatName, formatCode, orgPrice, currPrice);
+			
+		}
+		
+		return retSult;
+	}
 
 
 

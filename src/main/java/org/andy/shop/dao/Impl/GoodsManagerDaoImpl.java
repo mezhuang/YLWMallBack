@@ -116,6 +116,23 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 			
 			
 	}
+	@Override 
+	public String addGoodsFormatAndPrice(String goodsId,String formatName,String formatCode,String orgPrice,String currPrice )throws Exception{
+		MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
+		String addGoodsFormatPriceSql ="insert into goods_formatprice (goods_id,format_name,format_code,org_price,curr_price) values(:goods_id,:format_name,:format_code,:org_price,:curr_price)";
+			paramSourceGroup.addValue("goods_id", goodsId);
+			paramSourceGroup.addValue("format_name", formatName);
+			paramSourceGroup.addValue("format_code", formatCode);
+			paramSourceGroup.addValue("org_price", orgPrice);
+			paramSourceGroup.addValue("curr_price", currPrice);
+			
+			 int addResult = namedParameterJdbcTemplate.update(addGoodsFormatPriceSql, paramSourceGroup);
+				LOGGER.info("增加规格和价格Result:"+String.valueOf(addResult));
+				
+				return String.valueOf(addResult);
+			
+			
+	}
 	
 	
 	@Override 

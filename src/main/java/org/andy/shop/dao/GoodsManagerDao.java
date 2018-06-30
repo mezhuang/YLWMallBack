@@ -29,5 +29,6 @@ public interface  GoodsManagerDao extends Serializable {
 	String deleteGoodsInfo(Map<String, String> map) throws Exception;
 	String deleteGoodsMap(Map<String, String> map) throws Exception;
 	String deleteGoodsImage(Map<String, String> map) throws Exception;
+	String addGoodsFormatAndPrice(String goodsId, String formatName,String formatCode, String orgPrice, String currPrice)throws Exception;
 
 }

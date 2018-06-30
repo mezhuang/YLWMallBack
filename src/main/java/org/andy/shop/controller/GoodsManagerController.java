@@ -82,9 +82,17 @@ public class GoodsManagerController {
 			e1.printStackTrace();
 		}
     	
-    	//2、新增记录
+		
+    	//2、新增商品基本信息
     	try {
 			reStr = goodsManagerService.addGoodsRecord(map);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//新增商品规格和价格
+		try {
+			reStr = goodsManagerService.addGoodsFormatAndPrice(map);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

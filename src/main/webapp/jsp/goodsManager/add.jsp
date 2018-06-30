@@ -67,7 +67,7 @@
     
     				$('#add').submit();
     			
-			}
+			};
 	
 			//关闭窗口
 			function closeWindow(){
@@ -113,7 +113,8 @@ function viewImage(file,imageId,viewId){
                 document.selection.empty(); 
                 } 
                 return true; 
-        }
+        };
+        
         
         //实现产品类型（品类、风格、空间）二级联动
          $(function(){
@@ -134,6 +135,21 @@ function viewImage(file,imageId,viewId){
                 }
             });
         });
+        
+        	//添加规格和价格标签
+        	var formatAndPriceNO=1;//分组序号
+			function addFormatAndPrice(){
+				formatAndPriceNO++;
+				$("#formatAndPriceId").after("<tr><td name='formatCode"+formatAndPriceNO+"' value='00"+formatAndPriceNO+"' hidden='true'></td><td ><input type='text'  name='formatName"+formatAndPriceNO+"' value=''/></td><td ><input type='text'  name='orgPrice"+formatAndPriceNO+"' value=''/></td><td ><input type='text'  name='currPrice"+formatAndPriceNO+"' value=''/></td><td><button type='button' class='btn btn-danger btn-xs' style='border-radius:4px; margin-top:-5px;' onclick='deleteCurrent(this)'><i class='icon-trash icon-on-right bigger-110'></i>删除</button></td><tr>");
+				$("#formatAndPriceId").val(formatAndPriceNO);
+			}
+			/**********删除规格和价格标签***********/
+			function deleteCurrent(obj){
+				$(obj).parent().parent().remove();
+				formatAndPriceNO--;
+				$("#formatAndPriceId").val(formatAndPriceNO);
+			}
+
 			
 		</script>
 	</head>
@@ -166,11 +182,30 @@ function viewImage(file,imageId,viewId){
                     <td class="content" id="tdcontent">
                         <div id="errorlist">
                         </div>
+                        <div>
                         <!-- 表单 start -->
                         <form id="add" name="add" action="<%=basePath%>addGoodsRecord.do" method="post" enctype="multipart/form-data">
-                            
+                            <div>
                             <!-- 表单元素table start -->
-                            <table cellspacing="0" width="100%" cellpadding="2" border="0">
+                            <table id ="addTableId"  cellspacing="0" width="100%" cellpadding="2" border="0">
+                            <tr>
+                            		<td >标题：
+                            		
+                            			<input type="text" id="goodsTile" name="goodsTile" value=""/>
+                            		</td>
+                            	</tr>
+                            	<tr>
+                            		<td >型号：
+                            		
+                            			<input type="text" id="goodsModelNumber" name="goodsModelNumber" value=""/>
+                            		</td>
+                            	</tr>
+                            <div>
+                                <tr class="FormatPriceGroup" id="FormatPriceGroup">
+                            		<td class="td-left">
+                            			<text>上传图片及设置图片用途</text>
+                            		</td>
+                            	</tr>
                             	<tr height="30" align="left" valign="middle">
                             	<td><input type="file" name="caseImage1"  onchange="viewImage(this,'localImag1','preview1')">
                             	</td>
@@ -201,20 +236,34 @@ function viewImage(file,imageId,viewId){
 										</div>
 								</td>
 								</tr>
-								
-								
-                            	<tr>
-                            		<td >标题：
-                            		
-                            			<input type="text" id="goodsTile" name="goodsTile" value=""/>
+								<tr class="FormatPriceGroup" id="FormatPriceGroup">
+                            		<td class="td-left">
+                            		<text>产品规格</text>
                             		</td>
+                            		<td class="td-right"><text>价格</text></td>
                             	</tr>
-                            	<tr>
-                            		<td >型号：
-                            		
-                            			<input type="text" id="goodsModelNumber" name="goodsModelNumber" value=""/>
+								<tr id="formatAndPriceId" >
+									<td id= "formatAndPriceId" name="formatAndPriceNO"  hidden='true'></td>
+									<td name='formatCode01' value='001' hidden='true'></td>
+                            		<td >
+                            			<input type="text" id="formatName01" name="formatName01" value=""/>
                             		</td>
+                            		<td >
+                            			<input type="text" id="orgPrice01" name="orgPrice01" value=""/>
+                            		</td>
+                            		<td >
+                            			<input type="text" id="currPrice01" name="currPrice01" value=""/>
+                            		</td>
+                            		 <td style="padding:10px;">
+										        	<button type="button" class="btn btn-success btn-xs" style="border-radius:4px; margin-top:-5px; margin-left:-4px;" onclick="addFormatAndPrice()">
+														<i class="icon-plus icon-on-right bigger-110"></i>添加
+													</button>
+									</td>
+                            		
+                            			
                             	</tr>
+								
+                            	
                             	<tr>
 					             
 					                <td>
@@ -279,20 +328,9 @@ function viewImage(file,imageId,viewId){
 					                    </select>
 					                </td>
 					            </tr>
-					            
-                            	<tr>
+				
+
                             	
-                            		<td >
-                            			<text>原价：</text><input type="text" id="goodsOrgPrice" name="goodsOrgPrice" value=""/>
-                            		</td>
-                            	</tr>
-								<tr>
-                            		
-                            		<td class="td-right">
-                            		<text>现价：</text>
-                            			<input type="text" id="goodsCurrPrice" name="goodsCurrPrice" value=""/>
-                            		</td>
-                            	</tr>
                             	<tr>
                             		
                             		<td class="td-right"><text>库存：</text>
@@ -328,11 +366,18 @@ function viewImage(file,imageId,viewId){
                             			<input type="text" id="createTime" name="createTime" readonly class="Wdate" onClick="WdatePicker({el:'createTime', dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
                             		</td>
                             	</tr>
+                            	
+                            
+                            	
+			    
+                            	
 		
-                               
+                               </div>
                             </table>
+                             </div>
                             <!-- 表单元素table end -->
                         </form>
+                         </div>
                         <!-- 表单 end -->
                     </td>
                 </tr>

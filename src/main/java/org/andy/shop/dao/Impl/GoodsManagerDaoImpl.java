@@ -51,15 +51,16 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 			
 			String goodsId = map.get("goodsId");
 			//1、新增商品信息
-			String addUserGroupSql ="insert into goods_info (goods_id,goods_tile,goods_model_number,goods_org_price,goods_curr_price,goods_stock,goods_details) values(:goods_id,:goods_tile,:goods_model_number,:goods_org_price,:goods_curr_price,:goods_stock,:goods_details)";
+			String addUserGroupSql ="insert into goods_info (goods_id,goods_tile,goods_model_number,goods_stock,image_file_no,format_price_no,create_name,create_time) values(:goods_id,:goods_tile,:goods_model_number,:goods_stock,:image_file_no,:format_price_no,:create_name,:create_time)";
 		 	paramSourceGroup.addValue("goods_id",goodsId);
 		 	paramSourceGroup.addValue("goods_tile", map.get("goodsTile"));
 			paramSourceGroup.addValue("goods_model_number", map.get("goodsModelNumber"));
-			paramSourceGroup.addValue("goods_org_price", map.get("goodsOrgPrice"));
-			paramSourceGroup.addValue("goods_curr_price", map.get("goodsCurrPrice"));
+
 			paramSourceGroup.addValue("goods_stock", map.get("goodsStock"));
-			paramSourceGroup.addValue("goods_details", map.get("goodsDetails"));
-			paramSourceGroup.addValue("create_time", map.get("createTime"));
+			paramSourceGroup.addValue("image_file_no", map.get("imageFileNO"));
+			paramSourceGroup.addValue("format_price_no", map.get("formatAndPriceNO"));
+			paramSourceGroup.addValue("create_name", map.get("createName"));
+			paramSourceGroup.addValue("create_time", Utils.getCurrentDate());
 			
 
 		 int addGroupResult = namedParameterJdbcTemplate.update(addUserGroupSql, paramSourceGroup);
@@ -103,11 +104,12 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 }
 	
 	@Override 
-	public String addGoodsImage(String goodsImageUrl,String goodsId )throws Exception{
+	public String addGoodsImage(String goodsImageUrl,String goodsId,String displayPosition )throws Exception{
 		MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
-		String addGoodsImageSql ="insert into goods_image (goods_id,goods_image_url) values(:goods_id,:goods_image_url)";
+		String addGoodsImageSql ="insert into goods_image (goods_id,goods_image_url,display_position) values(:goods_id,:goods_image_url,:display_position)";
 			paramSourceGroup.addValue("goods_id", goodsId);
 			paramSourceGroup.addValue("goods_image_url", goodsImageUrl);
+			paramSourceGroup.addValue("displayPosition", displayPosition);
 			
 			 int addResult = namedParameterJdbcTemplate.update(addGoodsImageSql, paramSourceGroup);
 				LOGGER.info("增加图片管理Result:"+String.valueOf(addResult));
@@ -117,12 +119,12 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 			
 	}
 	@Override 
-	public String addGoodsFormatAndPrice(String goodsId,String formatName,String formatCode,String orgPrice,String currPrice )throws Exception{
+	public String addGoodsFormatAndPrice(String goodsId,String formatName,String orgPrice,String currPrice )throws Exception{
 		MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
-		String addGoodsFormatPriceSql ="insert into goods_formatprice (goods_id,format_name,format_code,org_price,curr_price) values(:goods_id,:format_name,:format_code,:org_price,:curr_price)";
+		String addGoodsFormatPriceSql ="insert into goods_formatprice (goods_id,format_name,org_price,curr_price) values(:goods_id,:format_name,:org_price,:curr_price)";
 			paramSourceGroup.addValue("goods_id", goodsId);
 			paramSourceGroup.addValue("format_name", formatName);
-			paramSourceGroup.addValue("format_code", formatCode);
+//			paramSourceGroup.addValue("format_code", formatCode);
 			paramSourceGroup.addValue("org_price", orgPrice);
 			paramSourceGroup.addValue("curr_price", currPrice);
 			
@@ -147,6 +149,20 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 		 int addResult = namedParameterJdbcTemplate.update(deleteGoodsInfoSql, paramSourceGroup);
 
 			LOGGER.info("删除商品信息Result:"+String.valueOf(addResult));
+			
+			return String.valueOf(addResult);
+		
+	}
+	
+	@Override
+	public String deleteGoodsFormatPrice(Map<String, String> map) throws Exception{
+		MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
+		
+		String deleteGoodsClassMapSql ="DELETE From goods_formatprice  where goods_id =:goods_id";
+		paramSourceGroup.addValue("goods_id", map.get("id"));
+		 int addResult = namedParameterJdbcTemplate.update(deleteGoodsClassMapSql, paramSourceGroup);
+
+			LOGGER.info("删除商品规格和价格Result:"+String.valueOf(addResult));
 			
 			return String.valueOf(addResult);
 		
@@ -182,8 +198,8 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 	@Override
 	public List<Map<String, Object>> getGoodsRecordList(String startIndex,String indexSize) throws Exception{
 		
-		String sql = "select DISTINCT a.goods_id as id,a.goods_tile,a.goods_model_number,a.goods_org_price,a.goods_curr_price,a.create_time " +
-				"  From goods_info a INNER JOIN goods_image b on b.goods_id =a.goods_id ORDER BY a.create_time desc  LIMIT "+startIndex+" , "+indexSize+"   ";
+		String sql = "select DISTINCT a.goods_id as id,a.goods_tile,a.goods_model_number,a.create_time " +
+				"  From goods_info a  ORDER BY a.create_time desc  LIMIT "+startIndex+" , "+indexSize+"   ";
 
 		List<Map<String, Object>> customerReportList = jdbcTemplate.queryForList(sql);
 		
@@ -195,17 +211,19 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 	public List<Map<String, Object>> getGoodsRecordDetail(String goodsId) throws Exception{
 		String goodsInfoSql = "select *From goods_info a where a.goods_id = '"+goodsId+"';";
 		String goodsClassSql = "select b.* From goods_class_map a inner JOIN goods_class b on b.twolevel_code=a.goods_twolevel_code where a.goods_id  = '"+goodsId+"' ORDER BY twolevel_code asc;";
-		String goodsImageSql = "select *From goods_image a where a.goods_id = '"+goodsId+"' ORDER BY goods_image_url asc;";
-		
+		String goodsImageSql = "select DISTINCT a.* ,b.twolevel_code,b.twolevel_name From goods_image a INNER  JOIN goods_class b on b.twolevel_code=a.display_position  where a.goods_id = '"+goodsId+"' ORDER BY goods_image_url asc;";
+		String goodsFormatPriceSql = "select * from yuanlian.goods_formatprice a where a.goods_id=  '"+goodsId+"' ORDER BY format_price_id ASC";
 		List<Map<String, Object>> goodsinfoList = jdbcTemplate.queryForList(goodsInfoSql);
 		List<Map<String, Object>> goodsClassList = jdbcTemplate.queryForList(goodsClassSql);
 		List<Map<String, Object>> goodsImageList = jdbcTemplate.queryForList(goodsImageSql);
+		List<Map<String, Object>> goodsFormatList = jdbcTemplate.queryForList(goodsFormatPriceSql);
 		
 		List<Map<String, Object>> reList =  new ArrayList<Map<String, Object>>();
 		Map<String, Object> reMap = new HashMap<String, Object>();
 		
 		reMap.put("goodsClassList", goodsClassList);
 		reMap.put("goodsImageList", goodsImageList);
+		reMap.put("goodsFormatList", goodsFormatList);
 		reMap.putAll(goodsinfoList.get(0));
 		reList.add(reMap);
 		return reList;

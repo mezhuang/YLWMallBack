@@ -144,7 +144,7 @@
 							traditional: true,//在struts2下该属性必须有 
 							data:{ids:ids}, 
 							success:function(result){ 
-								alert(result); 
+							
 								initTable(); 
 							}
 						});

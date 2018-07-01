@@ -24,11 +24,11 @@ public interface  GoodsManagerDao extends Serializable {
 
 	public List<Map<String, Object>> getGoodsRecordDetail(String goodsId) throws Exception;
 	
-	public String addGoodsImage(String goodsImageUrl,String goodsId )throws Exception;
+	public String addGoodsImage(String goodsImageUrl,String goodsId,String displayPosition )throws Exception;
 	
 	String deleteGoodsInfo(Map<String, String> map) throws Exception;
 	String deleteGoodsMap(Map<String, String> map) throws Exception;
 	String deleteGoodsImage(Map<String, String> map) throws Exception;
-	String addGoodsFormatAndPrice(String goodsId, String formatName,String formatCode, String orgPrice, String currPrice)throws Exception;
-
+	public String addGoodsFormatAndPrice(String goodsId,String formatName,String orgPrice,String currPrice )throws Exception;
+	String deleteGoodsFormatPrice(Map<String, String> map) throws Exception;
 }

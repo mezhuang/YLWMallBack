@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class GoodsManagerController {
@@ -69,16 +70,20 @@ public class GoodsManagerController {
 	
 	@RequestMapping(value = "/addGoodsRecord.do",method = {RequestMethod.POST })
 	@ResponseBody
-	public String addGoodsRecord(@RequestParam Map<String,String> map,HttpServletRequest request) {
+	public ModelAndView  addGoodsRecord(@RequestParam Map<String,String> map,HttpServletRequest request) {
  
-    	String reStr="";
+		 ModelAndView modelAndView = new ModelAndView();
+		 String reStr="";
+    	boolean  reFlag=true;
     	//产生uuid
 		String goodsId = UUID.randomUUID().toString();
 		map.put("goodsId", goodsId);
     	//1、上传图片
     	try {
-			this.springUpload( request,goodsId);
+    		reStr =this.uploadImages( request,goodsId,map);
 		} catch (IllegalStateException e1) {
+			
+			reFlag=false;
 			e1.printStackTrace();
 		}
     	
@@ -87,18 +92,27 @@ public class GoodsManagerController {
     	try {
 			reStr = goodsManagerService.addGoodsRecord(map);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			reFlag=false;
 			e.printStackTrace();
 		}
 		//新增商品规格和价格
 		try {
 			reStr = goodsManagerService.addGoodsFormatAndPrice(map);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			reFlag=false;
 			e.printStackTrace();
 		}
-    	
-    	return reStr;
+		if(reFlag)
+		{
+		 modelAndView.setViewName("success");
+		 modelAndView.addObject("param", "1wxyz");
+		 
+		}else
+		{
+			 modelAndView.setViewName("fail");
+			 modelAndView.addObject("param", "1wxyz");
+		}
+    	return modelAndView;
     }
 
 		@RequestMapping(value = "/updateGoodsRecord.do",method = {RequestMethod.POST })
@@ -118,7 +132,7 @@ public class GoodsManagerController {
 			map.put("goodsId", goodsId);
 	    	//1、上传图片
 	    	try {
-				this.springUpload( request,goodsId);
+				this.uploadImages( request,goodsId,map);
 			} catch (IllegalStateException e1) {
 				e1.printStackTrace();
 			}
@@ -139,7 +153,7 @@ public class GoodsManagerController {
      */
 //    @RequestMapping(value="/springUpload.do",method = {RequestMethod.POST })
 //	@ResponseBody
-    public String  springUpload(HttpServletRequest request,String goodsId) 
+    public String  uploadImages(HttpServletRequest request,String goodsId,Map<String,String> map) 
     {
          long  startTime=System.currentTimeMillis();
        //获取当前路径
@@ -164,6 +178,7 @@ public class GoodsManagerController {
         {
             //将request变成多部分request
             MultipartHttpServletRequest multiRequest=(MultipartHttpServletRequest)request;
+            
            //获取multiRequest 中所有的文件名
             Iterator iter=multiRequest.getFileNames();
             String path;
@@ -183,8 +198,9 @@ public class GoodsManagerController {
 	                {
 	                	
 	//                	String uploadFilePath = desPath+file.getOriginalFilename();
-	                	String uploadFilePath = desPath+"goodsimage00"+String.valueOf(i)+".jpg";
-	                	String recordPath =recordPathTmp+"goodsimage00"+String.valueOf(i)+".jpg";
+	                	String uploadFilePath  = desPath+"goodsimage00"+String.valueOf(i)+".jpg";
+	                	String recordPath	   = recordPathTmp+"goodsimage00"+String.valueOf(i)+".jpg";
+	                	String displayPosition = map.get("imagediplay0"+String.valueOf(i));
 	                	i++;
 	                    //如果上传的文件已存在，则先删除掉
 	                	File uploadFile = new File(uploadFilePath);
@@ -196,7 +212,7 @@ public class GoodsManagerController {
 	                    //上传
 	                    file.transferTo(new File(uploadFilePath));
 	                    try {
-							goodsManagerService.addGoodsImage(recordPath, goodsId);
+							goodsManagerService.addGoodsImage(recordPath, goodsId,displayPosition);
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -215,8 +231,8 @@ public class GoodsManagerController {
     
     @RequestMapping(value = "/deleteGoodsRecord.do",method = {RequestMethod.POST })
 	@ResponseBody
-	public String deleteGoodsRecord(@RequestParam Map<String,String> map) {
-  
+	public ModelAndView deleteGoodsRecord(@RequestParam Map<String,String> map) {
+    	ModelAndView modelAndView = new ModelAndView();
     	String reStr =null;
     	map.put("id", map.get("ids"));
     	
@@ -238,7 +254,22 @@ public class GoodsManagerController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return reStr;
+		try{
+			reStr = goodsManagerService.deleteGoodsFormatPrice(map);
+		}catch(Exception e){
+			
+		}
+		if(reStr.equals("0"))
+		{
+		 modelAndView.setViewName("success");
+		 modelAndView.addObject("param", "1wxyz");
+		 
+		}else
+		{
+			 modelAndView.setViewName("fail");
+			 modelAndView.addObject("param", "1wxyz");
+		}
+    	return modelAndView;
     	
     }
     @RequestMapping(value = "/getGoodsRecordList.do",method = {RequestMethod.POST })

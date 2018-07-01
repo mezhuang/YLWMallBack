@@ -30,7 +30,8 @@
 		<script type="text/javascript" src="<%= basePath %>plugins/My97DatePicker/WdatePicker.js"></script>
 		<script language="javascript">
 				
-		
+		var imageFileNO=1;//上传图片分组序号
+		 var formatAndPriceNO=1;//商品规格和价格序号
 			$(document).ready(function(){
 				$.formValidator.initConfig( {
 					formID : "add",
@@ -109,11 +110,45 @@
 										var imageListTmp = dataList[i].goodsImageList;
 										console.log(dataList[i].goodsImageList[i].goods_image_url);
 										//var imageList = eval("(" + dataList[i].goodsImageList + ")");
-									
-										$("#preview1").attr('src',dataList[i].goodsImageList[i].goods_image_url); 
-										$("#preview2").attr('src',dataList[i].goodsImageList[i1].goods_image_url); 
-										$("#preview3").attr('src',dataList[i].goodsImageList[i2].goods_image_url); 
-										
+									   var reImagesFileNo =parseInt(dataList[i].image_file_no);
+									   imageFileNO=reImagesFileNo;
+									   console.log("reImagesFileNo:"+reImagesFileNo);
+									   
+									   //显示图片
+									   var one=1;
+									   var zore=one-1;
+									   $("#preview"+one+"").attr('src',dataList[i].goodsImageList[zore].goods_image_url); 
+									   $("#imagediplay"+one+"").val(dataList[i].goodsImageList[zore].position_code); 
+									  $("#imagediplay"+one+"").text(dataList[i].goodsImageList[zore].twolevel_name);
+									    
+									   for(var j=2;j<=reImagesFileNo;j++)
+									   {
+										  	var rJ=j-1;
+										   $("#imageFile"+rJ+"").after("<tr id=\"imageFile"+j+"\"><td name='imageFileNO' hidden='true'></td>"+
+				                            	"<td><input type='file' name='caseImage"+j+"'  onchange=\"viewImage(this,'localImag"+j+"','preview"+j+"')\"></td>"+
+				                            	"<td><div id=\"localImag"+j+"\"><img id=\"preview"+j+"\" width='100px' height='120px' style='diplay:none' /></td>"+
+											 	"<td> <select name='imagediplay"+j+"' id='imagediplay"+j+"'><option value=''>请选择显示位置</option><option value='07001'>滚动轮播</option> <option value='07002'>详情明细</option> </select></>"+
+											 	"<td><button type='button' class='btn btn-danger btn-xs' style='border-radius:4px; margin-top:-5px;' onclick='deleteImageTr(this)'><i class='icon-trash icon-on-right bigger-110'></i>删除</button></td></tr>");
+										   
+											$("#preview"+j+"").attr('src',dataList[i].goodsImageList[rJ].goods_image_url); 
+											$("#imagediplay"+j+"").val(dataList[i].goodsImageList[rJ].position_code); 
+									  		$("#imagediplay"+j+"").text(dataList[i].goodsImageList[rJ].twolevel_name);
+					 
+										}
+										//回显规格和价格列表
+										 var reFomatPriceFileNo =parseInt(dataList[i].format_price_no);
+										  formatAndPriceNO = reFomatPriceFileNo;
+										 $("#formatName"+one+"").val(dataList[i].goodsImageList[zore].format_name); 
+										 $("#orgPrice"+one+"").val(dataList[i].goodsImageList[zore].org_price); 
+										 $("#currPrice"+one+"").val(dataList[i].goodsImageList[zore].curr_price); 
+											for(var k =2;k<=reFomatPriceFileNo;k++)
+											{	
+												 var rk=k-1;
+												 $("#formatAndPriceId"+rk+"").after("<tr id=\"formatAndPriceId"+k+"\"><td ><input type='text'  name='formatName"+k+"' value=''/></td><td ><input type='text'  name='orgPrice"+k+"' value=''/></td><td ><input type='text'  id='currPrice"+k+"' name='currPrice"+k+"' value=''/></td><td><button type='button' class='btn btn-danger btn-xs' style='border-radius:4px; margin-top:-5px;' onclick='deleteCurrent(this)'><i class='icon-trash icon-on-right bigger-110'></i>删除</button></td><tr>");
+												 $("#formatName"+k+"").val(dataList[i].goodsImageList[rk].format_name); 
+												 $("#orgPrice"+k+"").val(dataList[i].goodsImageList[rk].org_price); 
+												 $("#currPrice"+k+"").val(dataList[i].goodsImageList[rk].curr_price);
+											}
 						
 										$('#onelevelCode01 option:selected').text(dataList[i].goodsClassList[i].twolevel_name);//选中的文本
 									   $('#onelevelCode01 option:selected').val(dataList[i].goodsClassList[i].twolevel_code);//选中的值
@@ -222,6 +257,46 @@ function viewImage(file,imageId,viewId){
             
             initUpdateRecord();
         });
+        
+        
+        //添加规格和价格标签
+    
+			function addFormatAndPrice(){
+				var preformatAndPriceNO=formatAndPriceNO;
+				formatAndPriceNO++;
+				$("#formatAndPriceId"+preformatAndPriceNO+"").after("<tr id=\"formatAndPriceId"+formatAndPriceNO+"\"><td name='formatCode"+formatAndPriceNO+"' value='00"+formatAndPriceNO+"' hidden='true'></td><td ><input type='text'  name='formatName"+formatAndPriceNO+"' value=''/></td><td ><input type='text'  name='orgPrice"+formatAndPriceNO+"' value=''/></td><td ><input type='text'  id='currPrice"+formatAndPriceNO+"' name='currPrice"+formatAndPriceNO+"' value=''/></td><td><button type='button' class='btn btn-danger btn-xs' style='border-radius:4px; margin-top:-5px;' onclick='deleteCurrent(this)'><i class='icon-trash icon-on-right bigger-110'></i>删除</button></td><tr>");
+				$("#formatAndPriceNO").val(formatAndPriceNO);
+			}
+			/**********删除规格和价格标签***********/
+			function deleteCurrent(obj){
+				$(obj).parent().parent().remove();
+				formatAndPriceNO--;
+				$("#formatAndPriceNO").val(formatAndPriceNO);
+			}
+			
+			
+			//添加图片上传标签
+			
+			function addImageFileTr(){
+				//保留上一张图片位置
+				var preImageFileNO=imageFileNO;
+				imageFileNO++;
+				$("#imageFile"+preImageFileNO+"").after("<tr id=\"imageFile"+imageFileNO+"\"><td name='imageFileNO' hidden='true'></td>"+
+			                            	"<td><input type='file' name='caseImage"+imageFileNO.toString()+"'  onchange=\"viewImage(this,'localImag"+imageFileNO.toString()+"','preview"+imageFileNO.toString()+"')\"></td>"+
+			                            	"<td><div id=\"localImag"+imageFileNO.toString()+"\"><img id=\"preview"+imageFileNO.toString()+"\" width=-1 height=-1 style='diplay:none' /></td>"+
+										 	"<td> <select name='imagediplay"+imageFileNO.toString()+"' id='imagediplay"+imageFileNO.toString()+"'><option value=''>请选择显示位置</option><option value='001'>轮播</option> <option value='002'>详情介绍</option> </select></>"+
+										 	"<td><button type='button' class='btn btn-danger btn-xs' style='border-radius:4px; margin-top:-5px;' onclick='deleteImageTr(this)'><i class='icon-trash icon-on-right bigger-110'></i>删除</button></td></tr>");
+				$("#imageFileNO").val(imageFileNO);
+			}
+			/**********删除图片上传标签***********/
+			function deleteImageTr(obj){
+				$(obj).parent().parent().remove();
+				imageFileNO--;
+				$("#imageFileNO").val(imageFileNO);
+			}
+			
+				                           
+        
 			
 		</script>
 	</head>
@@ -260,38 +335,6 @@ function viewImage(file,imageId,viewId){
                             <!-- 表单元素table start -->
                             <table cellspacing="0" width="100%" cellpadding="2" border="0">
                             	<input type="hidden" name="goodsId" id="goodsId"/>
-                            	
-                            	<tr height="30" align="left" valign="middle">
-                            	<td><input type="file" name="caseImage1"  onchange="viewImage(this,'localImag1','preview1')">
-                            	</td>
-                            	<td>
-                            	<!--<p class="help-block">建议尺寸88*88</p>-->
-										</div>
-										<div id="localImag1"><img id="preview1" width="300px" height="120px" style="diplay:none" />
-										</div>
-								</td>
-								</tr>
-								<tr height="30" align="left" valign="middle">
-                            	<td><input type="file" name="caseImage2"  onchange="viewImage(this,'localImag2','preview2')">
-                            	</td>
-                            	<td>
-                            	<!--<p class="help-block">建议尺寸88*88</p>-->
-										</div>
-										<div id="localImag2"><img id="preview2" width="300px" height="120px" style="diplay:none" />
-										</div>
-								</td>
-								</tr>
-								<tr height="30" align="left" valign="middle">
-                            	<td><input type="file" name="caseImage3"  onchange="viewImage(this,'localImag3','preview3')">
-                            	</td>
-                            	<td>
-                            	<!--<p class="help-block">建议尺寸88*88</p>-->
-										</div>
-										<div id="localImag3"><img id="preview3" width="300px" height="120px" style="diplay:none" />
-										</div>
-								</td>
-								</tr>
-								
 								
                             	<tr>
                             		<td >标题：
@@ -305,8 +348,78 @@ function viewImage(file,imageId,viewId){
                             			<input type="text" id="goodsModelNumber" name="goodsModelNumber" value=""/>
                             		</td>
                             	</tr>
-                            	<tr>
-					             
+                            	
+                            	
+                            	<!-- ---------------- 上传图片及设置图片显示位置------------------------------->
+                                <tr class="FormatPriceGroup" id="FormatPriceGroup">
+                            		<td class="td-left">
+                            			<text>上传图片</text>
+                            		</td>
+                            		<td >
+                            			<text>预览图片</text>
+                            		</td>
+                            		<td >
+                            			<text>设置图片显示位置</text>
+                            		</td>
+                            		
+                            	</tr>
+                            	<tr id ="imageFile1" height="30" align="left" valign="middle">
+                            				<input id="imageFileNO"  name="imageFileNO"  value="1" hidden="true"/>
+			                            	<td><input type="file" name="caseImage1"  onchange="viewImage(this,'localImag1','preview1')">
+			                            	</td>
+			                            	<td>
+			                            	<!--<p class="help-block">建议尺寸88*88</p>-->
+													</div>
+													<div id="localImag1"><img id="preview1" width='100px' height='120px' style="diplay:none" />
+													</div>
+											</td>
+										 	<td witdth='100px' >
+						                    <select name="imagediplay1" id="imagediplay1">
+						                        <option value="">请选择位置</option>
+						                        <option value="001">轮播</option>
+						                        <option value="002">详情介绍</option>
+						                    </select>
+					                    
+							                </td>
+							                <td style="padding:10px;">
+										        	<button type="button" class="btn btn-success btn-xs" style="border-radius:4px; margin-top:-5px; margin-left:-4px;" onclick="addImageFileTr()">
+														<i class="icon-plus icon-on-right bigger-110"></i>添加
+													</button>
+											</td>
+								</tr>
+								
+								<!---------产品规格和价格--------------------------->
+								<tr class="FormatPriceGroup" id="FormatPriceGroup">
+                            		<td class="td-left">
+                            		<text>产品规格</text>
+                            		</td>
+                            		<td class="td-right"><text>原价</text></td>
+                            		<td class="td-right"><text>现价</text></td>
+                            	</tr>
+								<tr id="formatAndPriceId1" >
+									<input id= "formatAndPriceNO" name="formatAndPriceNO" value="1" hidden='true'/>
+									<td name='formatCode1' value='001' hidden='true'>300</td>
+                            		<td >
+                            			<input type="text" id="formatName1" name="formatName1" value=""/>
+                            		</td>
+                            		<td >
+                            			<input type="text" id="orgPrice1" name="orgPrice1" value=""/>
+                            		</td>
+                            		<td >
+                            			<input type="text" id="currPrice1" name="currPrice1" value=""/>
+                            		</td>
+                            		 <td style="padding:10px;">
+										        	<button type="button" class="btn btn-success btn-xs" style="border-radius:4px; margin-top:-5px; margin-left:-4px;" onclick="addFormatAndPrice()">
+														<i class="icon-plus icon-on-right bigger-110"></i>添加
+													</button>
+									</td>
+
+                            			
+                            	</tr>
+                            	
+                            	
+                            	
+                            	<tr> 
 					                <td>
 					                    <select name="onelevelCode01" id="onelevelCode01">
 					                        <option value="">请选择品类</option>

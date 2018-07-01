@@ -20,12 +20,13 @@ public interface GoodsManagerService {
 	String addGoodsRecord(Map<String, String> map) throws Exception;
 	String updateGoodsRecord(Map<String, String> map) throws Exception;
 	List<Map<String, Object>> getGoodsRecordList(String startIndex,String indexSize)throws Exception;
-	public String addGoodsImage(String goodsImageUrl,String goodsId )throws Exception;
+	public String addGoodsImage(String goodsImageUrl,String goodsId ,String displayPosition)throws Exception;
 	public List<Map<String, Object>> getGoodsRecordDetail(String goodsId) throws Exception;
 	String deleteGoodsInfo(Map<String, String> map) throws Exception;
 	String deleteGoodsMap(Map<String, String> map) throws Exception;
 	String deleteGoodsImage(Map<String, String> map) throws Exception;
 	String addGoodsFormatAndPrice(Map<String,String> map)throws Exception;
+	String deleteGoodsFormatPrice(Map<String, String> map) throws Exception;
 	
 
 }

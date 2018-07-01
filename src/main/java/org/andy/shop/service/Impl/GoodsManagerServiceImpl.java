@@ -49,6 +49,10 @@ public class GoodsManagerServiceImpl implements GoodsManagerService {
 		return goodsManagerDao.deleteGoodsInfo(map);
 	}
 	@Override
+	public String deleteGoodsFormatPrice(Map<String, String> map) throws Exception{
+		return goodsManagerDao.deleteGoodsFormatPrice(map);
+	}
+	@Override
 	public String deleteGoodsMap(Map<String, String> map) throws Exception{
 		return goodsManagerDao.deleteGoodsMap(map);
 	}
@@ -62,9 +66,9 @@ public class GoodsManagerServiceImpl implements GoodsManagerService {
 		return goodsManagerDao.getGoodsRecordList(startIndex, indexSize);
 	}
 	@Override
-	public String addGoodsImage(String goodsImageUrl,String goodsId )throws Exception{
+	public String addGoodsImage(String goodsImageUrl,String goodsId,String displayPosition )throws Exception{
 		
-		return goodsManagerDao.addGoodsImage(goodsImageUrl, goodsId);
+		return goodsManagerDao.addGoodsImage(goodsImageUrl, goodsId,displayPosition);
 	}
 	@Override
 	public List<Map<String, Object>> getGoodsRecordDetail(String goodsId)
@@ -84,11 +88,12 @@ public class GoodsManagerServiceImpl implements GoodsManagerService {
 		int formatAndPriceNO =Integer.parseInt(map.get("formatAndPriceNO"));
 		for(int i=1;i<=formatAndPriceNO;i++)
 		{
-			formatCode = map.get("formatCode0"+String.valueOf(i));
-			formatName = map.get("formatName0"+String.valueOf(i));
-			orgPrice = map.get("orgPrice0"+String.valueOf(i));
-			currPrice = map.get("currPrice0"+String.valueOf(i));
-			retSult=goodsManagerDao.addGoodsFormatAndPrice(goodsId, formatName, formatCode, orgPrice, currPrice);
+//			formatCode = map.get("formatCode0"+String.valueOf(i));
+			formatName = map.get("formatName"+String.valueOf(i));
+			orgPrice = map.get("orgPrice"+String.valueOf(i));
+			currPrice = map.get("currPrice"+String.valueOf(i));
+			goodsId=map.get("goodsId");
+			retSult=goodsManagerDao.addGoodsFormatAndPrice(goodsId, formatName, orgPrice, currPrice);
 			
 		}
 		

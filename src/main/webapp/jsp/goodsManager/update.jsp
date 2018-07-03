@@ -64,12 +64,22 @@
 		
 		
 			});
+			function validator()
+			{}
 			
 			var submitPage;//定义用于提交流程的 子窗口对象
 			//提交表单
 			function submitForm() {
-    			$('#submitBtn').linkbutton('disable');//把提交按钮设置 为不可用
+    				//校验表单
+    				
+    				//设置图片张数和规格条数
+    				$('#imageFileNO').val(imageFileNO);
+    				$('#formatAndPriceNO').val(formatAndPriceNO);
+    			
+    				$('#submitBtn').linkbutton('disable');//把提交按钮设置 为不可用
+    	
     
+    		
     				$('#add').submit();
     			
 			}
@@ -118,37 +128,42 @@
 									   var one=1;
 									   var zore=one-1;
 									   $("#preview"+one+"").attr('src',dataList[i].goodsImageList[zore].goods_image_url); 
-									   $("#imagediplay"+one+"").val(dataList[i].goodsImageList[zore].position_code); 
-									  $("#imagediplay"+one+"").text(dataList[i].goodsImageList[zore].twolevel_name);
+									   $("#positionCode"+one+"  option:selected").val(dataList[i].goodsImageList[zore].position_code); 
+									  $("#positionCode"+one+"  option:selected").text(dataList[i].goodsImageList[zore].position_name);
 									    
 									   for(var j=2;j<=reImagesFileNo;j++)
 									   {
+									   console.log("j:"+j);
 										  	var rJ=j-1;
-										   $("#imageFile"+rJ+"").after("<tr id=\"imageFile"+j+"\"><td name='imageFileNO' hidden='true'></td>"+
+										   $("#imageFile"+rJ+"").after("<tr id=\"imageFile"+j+"\">"+
 				                            	"<td><input type='file' name='caseImage"+j+"'  onchange=\"viewImage(this,'localImag"+j+"','preview"+j+"')\"></td>"+
 				                            	"<td><div id=\"localImag"+j+"\"><img id=\"preview"+j+"\" width='100px' height='120px' style='diplay:none' /></td>"+
-											 	"<td> <select name='imagediplay"+j+"' id='imagediplay"+j+"'><option value=''>请选择显示位置</option><option value='07001'>滚动轮播</option> <option value='07002'>详情明细</option> </select></>"+
+											 	"<td> <select name='positionCode"+j+"' id='positionCode"+j+"'><option value=''>请选择显示位置</option><option value='07001'>滚动轮播</option> <option value='07002'>详情明细</option> </select></>"+
 											 	"<td><button type='button' class='btn btn-danger btn-xs' style='border-radius:4px; margin-top:-5px;' onclick='deleteImageTr(this)'><i class='icon-trash icon-on-right bigger-110'></i>删除</button></td></tr>");
 										   
 											$("#preview"+j+"").attr('src',dataList[i].goodsImageList[rJ].goods_image_url); 
-											$("#imagediplay"+j+"").val(dataList[i].goodsImageList[rJ].position_code); 
-									  		$("#imagediplay"+j+"").text(dataList[i].goodsImageList[rJ].twolevel_name);
+											$("#positionCode"+j+"  option:selected").val(dataList[i].goodsImageList[rJ].position_code); 
+									  		$("#positionCode"+j+"  option:selected").text(dataList[i].goodsImageList[rJ].position_name);
 					 
 										}
 										//回显规格和价格列表
 										 var reFomatPriceFileNo =parseInt(dataList[i].format_price_no);
 										  formatAndPriceNO = reFomatPriceFileNo;
-										 $("#formatName"+one+"").val(dataList[i].goodsImageList[zore].format_name); 
-										 $("#orgPrice"+one+"").val(dataList[i].goodsImageList[zore].org_price); 
-										 $("#currPrice"+one+"").val(dataList[i].goodsImageList[zore].curr_price); 
+										 $("#formatName"+one+"").val(dataList[i].goodsFormatList[zore].format_name); 
+										 $("#orgPrice"+one+"").val(dataList[i].goodsFormatList[zore].org_price); 
+										 $("#currPrice"+one+"").val(dataList[i].goodsFormatList[zore].curr_price); 
 											for(var k =2;k<=reFomatPriceFileNo;k++)
 											{	
 												 var rk=k-1;
-												 $("#formatAndPriceId"+rk+"").after("<tr id=\"formatAndPriceId"+k+"\"><td ><input type='text'  name='formatName"+k+"' value=''/></td><td ><input type='text'  name='orgPrice"+k+"' value=''/></td><td ><input type='text'  id='currPrice"+k+"' name='currPrice"+k+"' value=''/></td><td><button type='button' class='btn btn-danger btn-xs' style='border-radius:4px; margin-top:-5px;' onclick='deleteCurrent(this)'><i class='icon-trash icon-on-right bigger-110'></i>删除</button></td><tr>");
-												 $("#formatName"+k+"").val(dataList[i].goodsImageList[rk].format_name); 
-												 $("#orgPrice"+k+"").val(dataList[i].goodsImageList[rk].org_price); 
-												 $("#currPrice"+k+"").val(dataList[i].goodsImageList[rk].curr_price);
+												 $("#formatAndPriceId"+rk+"").after("<tr id=\"formatAndPriceId"+k+"\"><td ><input type='text' id='formatName"+k+"' name='formatName"+k+"' value=''/></td><td ><input type='text' id='orgPrice"+k+"'  name='orgPrice"+k+"' value=''/></td><td ><input type='text'  id='currPrice"+k+"' name='currPrice"+k+"' value=''/></td><td><button type='button' class='btn btn-danger btn-xs' style='border-radius:4px; margin-top:-5px;' onclick='deleteCurrent(this)'><i class='icon-trash icon-on-right bigger-110'></i>删除</button></td><tr>");
+												 $("#formatName"+k+"").val(dataList[i].goodsFormatList[rk].format_name); 
+												 $("#orgPrice"+k+"").val(dataList[i].goodsFormatList[rk].org_price); 
+												 $("#currPrice"+k+"").val(dataList[i].goodsFormatList[rk].curr_price);
 											}
+						
+						
+						
+						
 						
 										$('#onelevelCode01 option:selected').text(dataList[i].goodsClassList[i].twolevel_name);//选中的文本
 									   $('#onelevelCode01 option:selected').val(dataList[i].goodsClassList[i].twolevel_code);//选中的值
@@ -281,10 +296,10 @@ function viewImage(file,imageId,viewId){
 				//保留上一张图片位置
 				var preImageFileNO=imageFileNO;
 				imageFileNO++;
-				$("#imageFile"+preImageFileNO+"").after("<tr id=\"imageFile"+imageFileNO+"\"><td name='imageFileNO' hidden='true'></td>"+
+				$("#imageFile"+preImageFileNO+"").after("<tr id=\"imageFile"+imageFileNO+"\">"+
 			                            	"<td><input type='file' name='caseImage"+imageFileNO.toString()+"'  onchange=\"viewImage(this,'localImag"+imageFileNO.toString()+"','preview"+imageFileNO.toString()+"')\"></td>"+
 			                            	"<td><div id=\"localImag"+imageFileNO.toString()+"\"><img id=\"preview"+imageFileNO.toString()+"\" width=-1 height=-1 style='diplay:none' /></td>"+
-										 	"<td> <select name='imagediplay"+imageFileNO.toString()+"' id='imagediplay"+imageFileNO.toString()+"'><option value=''>请选择显示位置</option><option value='001'>轮播</option> <option value='002'>详情介绍</option> </select></>"+
+										 	"<td> <select name='positionCode"+imageFileNO.toString()+"' id='positionCode"+imageFileNO.toString()+"'><option value=''>请选择显示位置</option><option value='001'>轮播</option> <option value='002'>详情介绍</option> </select></>"+
 										 	"<td><button type='button' class='btn btn-danger btn-xs' style='border-radius:4px; margin-top:-5px;' onclick='deleteImageTr(this)'><i class='icon-trash icon-on-right bigger-110'></i>删除</button></td></tr>");
 				$("#imageFileNO").val(imageFileNO);
 			}
@@ -364,7 +379,7 @@ function viewImage(file,imageId,viewId){
                             		
                             	</tr>
                             	<tr id ="imageFile1" height="30" align="left" valign="middle">
-                            				<input id="imageFileNO"  name="imageFileNO"  value="1" hidden="true"/>
+                            				<input id="imageFileNO"  name="imageFileNO"   hidden="true"/>
 			                            	<td><input type="file" name="caseImage1"  onchange="viewImage(this,'localImag1','preview1')">
 			                            	</td>
 			                            	<td>
@@ -374,7 +389,7 @@ function viewImage(file,imageId,viewId){
 													</div>
 											</td>
 										 	<td witdth='100px' >
-						                    <select name="imagediplay1" id="imagediplay1">
+						                    <select name="positionCode1" id="positionCode1">
 						                        <option value="">请选择位置</option>
 						                        <option value="001">轮播</option>
 						                        <option value="002">详情介绍</option>
@@ -483,32 +498,14 @@ function viewImage(file,imageId,viewId){
 					                </td>
 					            </tr>
 					            
-                            	<tr>
                             	
-                            		<td >
-                            			<text>原价：</text><input type="text" id="goodsOrgPrice" name="goodsOrgPrice" value=""/>
-                            		</td>
-                            	</tr>
-								<tr>
-                            		
-                            		<td class="td-right">
-                            		<text>现价：</text>
-                            			<input type="text" id="goodsCurrPrice" name="goodsCurrPrice" value=""/>
-                            		</td>
-                            	</tr>
                             	<tr>
                             		
                             		<td class="td-right"><text>库存：</text>
                             			<input type="text" id="goodsStock" name="goodsStock" value=""/>
                             		</td>
                             	</tr>
-                            	<tr>
-                         
-                            		<td class="td-right">
-                            		<text>商品详情：</text>
-                            			<input type="text" id="goodsDetails" name="goodsDetails" value=""/>
-                            		</td>
-                            	</tr>
+                            	
                             	<tr>
                             		
                             		<td class="td-right">

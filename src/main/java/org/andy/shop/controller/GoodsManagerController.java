@@ -65,7 +65,7 @@ public class GoodsManagerController {
 //		return  reStr;
 //	}
 	/*
-     *采用spring提供的上传文件的方法
+     *新增商品记录
      */
 	
 	@RequestMapping(value = "/addGoodsRecord.do",method = {RequestMethod.POST })
@@ -117,35 +117,56 @@ public class GoodsManagerController {
 
 		@RequestMapping(value = "/updateGoodsRecord.do",method = {RequestMethod.POST })
 		@ResponseBody
-		public String updateGoodsRecord(@RequestParam Map<String,String> map,HttpServletRequest request) {
-	 
+		public ModelAndView updateGoodsRecord(@RequestParam Map<String,String> map,HttpServletRequest request) {
+			ModelAndView modelAndView = new ModelAndView();
 	    	String reStr="";
-	    	//产生uuid
+	    	boolean reFlag=true;
+	    	//获取原记录goodsId
 			String goodsId = map.get("goodsId");
 			map.put("ids", goodsId);
 			try{
-				this.deleteGoodsRecord(map);
+				this.deleteInfoForUpdate(map);
 			}catch (IllegalStateException e1) {
 				e1.printStackTrace();
 			}
 			
-			map.put("goodsId", goodsId);
-	    	//1、上传图片
+			//1、上传图片
 	    	try {
-				this.uploadImages( request,goodsId,map);
+	    		reStr =this.uploadImages( request,goodsId,map);
 			} catch (IllegalStateException e1) {
+				
+				reFlag=false;
 				e1.printStackTrace();
 			}
 	    	
-	    	//2、新增记录
+			
+	    	//2、新增商品基本信息
 	    	try {
 				reStr = goodsManagerService.addGoodsRecord(map);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				reFlag=false;
 				e.printStackTrace();
 			}
+			//新增商品规格和价格
+			try {
+				reStr = goodsManagerService.addGoodsFormatAndPrice(map);
+			} catch (Exception e) {
+				reFlag=false;
+				e.printStackTrace();
+			}
+			if(reFlag)
+			{
+			 modelAndView.setViewName("success");
+			 modelAndView.addObject("param", "1wxyz");
+			 
+			}else
+			{
+				 modelAndView.setViewName("fail");
+				 modelAndView.addObject("param", "1wxyz");
+			}
+	    	return modelAndView;
 	    	
-	    	return reStr;
+	    	
 	    }
 	
 	/*
@@ -189,22 +210,22 @@ public class GoodsManagerController {
 	            String recordPathTmp =basePath+"images/goodsImages/";
 	            
 	            LOGGER.info("desPath:"+desPath);
-	            int i=1;
+	            int i=0;
 	            while(iter.hasNext())
 	            {
+	            	i++;
 	                //一次遍历所有文件
 	                MultipartFile file=multiRequest.getFile(iter.next().toString());
-	                if(file!=null)
+	                if(file!=null&&file.getSize()!=0)
 	                {
 	                	
-	//                	String uploadFilePath = desPath+file.getOriginalFilename();
 	                	String uploadFilePath  = desPath+"goodsimage00"+String.valueOf(i)+".jpg";
 	                	String recordPath	   = recordPathTmp+"goodsimage00"+String.valueOf(i)+".jpg";
-	                	String displayPosition = map.get("imagediplay0"+String.valueOf(i));
-	                	i++;
+	                	String positionCode = map.get("positionCode"+String.valueOf(i));
+	                	
 	                    //如果上传的文件已存在，则先删除掉
 	                	File uploadFile = new File(uploadFilePath);
-	                	if(!uploadFile.exists())  
+	                	if(uploadFile.exists())  
 	                    {  
 	                		uploadFile.delete();
 	                    } 
@@ -212,7 +233,7 @@ public class GoodsManagerController {
 	                    //上传
 	                    file.transferTo(new File(uploadFilePath));
 	                    try {
-							goodsManagerService.addGoodsImage(recordPath, goodsId,displayPosition);
+							goodsManagerService.addGoodsImage(recordPath, goodsId,positionCode);
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -270,6 +291,39 @@ public class GoodsManagerController {
 			 modelAndView.addObject("param", "1wxyz");
 		}
     	return modelAndView;
+    	
+    }
+
+    //专用于更改功能，不删除图片
+	private boolean deleteInfoForUpdate(@RequestParam Map<String,String> map) {
+    	ModelAndView modelAndView = new ModelAndView();
+    	String reStr =null;
+    	boolean reFlag= true;
+    	map.put("id", map.get("ids"));
+    	
+    	//
+		  try {
+			reStr =goodsManagerService.deleteGoodsInfo(map);
+			
+		} catch (Exception e) {
+			reFlag=false;
+			e.printStackTrace();
+		}
+		  try {
+			reStr =goodsManagerService.deleteGoodsMap(map);
+		} catch (Exception e) {
+			reFlag=false;
+			e.printStackTrace();
+		}
+		try{
+			reStr = goodsManagerService.deleteGoodsFormatPrice(map);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			reFlag=false;
+			
+		}
+		return reFlag;
     	
     }
     @RequestMapping(value = "/getGoodsRecordList.do",method = {RequestMethod.POST })

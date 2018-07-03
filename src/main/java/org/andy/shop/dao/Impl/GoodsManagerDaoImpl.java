@@ -228,8 +228,34 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 		reList.add(reMap);
 		return reList;
 	}
+	@Override
+	public List<Map<String, Object>>  getGoodsClassList(Map<String, String> map) throws Exception{
+			
+			String oneLevel =map.get("oneLevel");
+			
+			String sql = "select *From goods_class a  where a.onelevel_code='"+oneLevel+"' ORDER BY a.twolevel_code ASC";
 	
-
+			List<Map<String, Object>> goodsClassList = jdbcTemplate.queryForList(sql);
+			
+	
+			return goodsClassList;
+	}
+	//获取商品初次显示信息
+	@Override
+	public List<Map<String, Object>>  getGoodsIndexInfo(Map<String, String> map) throws Exception{
+			
+			String oneLevel =map.get("oneLevel");
+			
+			String sql = "select b.goods_id,a.onelevel_code,c.goods_tile,c.goods_model_number,d.goods_image_url,min(e.curr_price),MAX(e.curr_price) From goods_class a INNER JOIN goods_class_map b on b.goods_twolevel_code= a.twolevel_code"+
+						"INNER JOIN  goods_info c on c.goods_id=b.goods_id  INNER JOIN  goods_image d on d.goods_id=b.goods_id INNER JOIN  goods_formatprice e on e.goods_id=b.goods_id "+																	
+						"where a.onelevel_code='"+oneLevel+"' and d.goods_image_url like '%001%' GROUP BY goods_id ORDER BY a.twolevel_code ASC;";
+	
+			List<Map<String, Object>> goodsClassList = jdbcTemplate.queryForList(sql);
+			
+	
+			return goodsClassList;
+	}
+	
 	
 
 }

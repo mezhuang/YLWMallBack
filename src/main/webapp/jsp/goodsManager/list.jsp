@@ -173,7 +173,7 @@
 					alert('只能选择一条记录！');
 					return;
 				}
-				openWin('<%=basePath%>getGoodsRecordDetail.do?id='+rows[0].id, 800, 500, '查看商品详情');
+				openWin('<%=basePath%>jsp/goodsManager/detail.jsp?id='+rows[0].id, 1600, 800, '查看商品详情');
 			}
 		</script>
 	</head>

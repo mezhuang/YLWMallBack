@@ -115,140 +115,6 @@ public class GoodsManagerController {
     	return modelAndView;
     }
 
-		@RequestMapping(value = "/updateGoodsRecord.do",method = {RequestMethod.POST })
-		@ResponseBody
-		public ModelAndView updateGoodsRecord(@RequestParam Map<String,String> map,HttpServletRequest request) {
-			ModelAndView modelAndView = new ModelAndView();
-	    	String reStr="";
-	    	boolean reFlag=true;
-	    	//获取原记录goodsId
-			String goodsId = map.get("goodsId");
-			map.put("ids", goodsId);
-			try{
-				this.deleteInfoForUpdate(map);
-			}catch (IllegalStateException e1) {
-				e1.printStackTrace();
-			}
-			
-			//1、上传图片
-	    	try {
-	    		reStr =this.uploadImages( request,goodsId,map);
-			} catch (IllegalStateException e1) {
-				
-				reFlag=false;
-				e1.printStackTrace();
-			}
-	    	
-			
-	    	//2、新增商品基本信息
-	    	try {
-				reStr = goodsManagerService.addGoodsRecord(map);
-			} catch (Exception e) {
-				reFlag=false;
-				e.printStackTrace();
-			}
-			//新增商品规格和价格
-			try {
-				reStr = goodsManagerService.addGoodsFormatAndPrice(map);
-			} catch (Exception e) {
-				reFlag=false;
-				e.printStackTrace();
-			}
-			if(reFlag)
-			{
-			 modelAndView.setViewName("success");
-			 modelAndView.addObject("param", "1wxyz");
-			 
-			}else
-			{
-				 modelAndView.setViewName("fail");
-				 modelAndView.addObject("param", "1wxyz");
-			}
-	    	return modelAndView;
-	    	
-	    	
-	    }
-	
-	/*
-     *采用spring提供的上传文件的方法
-     */
-//    @RequestMapping(value="/springUpload.do",method = {RequestMethod.POST })
-//	@ResponseBody
-    public String  uploadImages(HttpServletRequest request,String goodsId,Map<String,String> map) 
-    {
-         long  startTime=System.currentTimeMillis();
-       //获取当前路径
-		 File currentDirectory = new File("");//设定为当前文件夹 
-		 try{ 
-		     System.out.println("当前路径:"+currentDirectory.getCanonicalPath());//获取标准的路径 
-		     System.out.println(currentDirectory.getAbsolutePath());//获取绝对路径 
-		     
-				
-		 }catch(Exception e){
-			 e.printStackTrace();
-		 } 
-		 //获取访问路径
-		 String path1 = request.getContextPath();
-			String basePath = request.getScheme() + "://"+ request.getServerName() + ":" + request.getServerPort()+ path1 + "/";
-		 
-         //将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
-        CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver(
-                request.getSession().getServletContext());
-        //检查form中是否有enctype="multipart/form-data"
-        if(multipartResolver.isMultipart(request))
-        {
-            //将request变成多部分request
-            MultipartHttpServletRequest multiRequest=(MultipartHttpServletRequest)request;
-            
-           //获取multiRequest 中所有的文件名
-            Iterator iter=multiRequest.getFileNames();
-            String path;
-			try {
-				path = currentDirectory.getCanonicalPath().replace("\\","/");
-			
-	            String desPath =path+"/../webapps/YLXcxMallBack/images/goodsImages/";
-	            String recordPathTmp =basePath+"images/goodsImages/";
-	            
-	            LOGGER.info("desPath:"+desPath);
-	            int i=0;
-	            while(iter.hasNext())
-	            {
-	            	i++;
-	                //一次遍历所有文件
-	                MultipartFile file=multiRequest.getFile(iter.next().toString());
-	                if(file!=null&&file.getSize()!=0)
-	                {
-	                	
-	                	String uploadFilePath  = desPath+"goodsimage00"+String.valueOf(i)+".jpg";
-	                	String recordPath	   = recordPathTmp+"goodsimage00"+String.valueOf(i)+".jpg";
-	                	String positionCode = map.get("positionCode"+String.valueOf(i));
-	                	
-	                    //如果上传的文件已存在，则先删除掉
-	                	File uploadFile = new File(uploadFilePath);
-	                	if(uploadFile.exists())  
-	                    {  
-	                		uploadFile.delete();
-	                    } 
-	              
-	                    //上传
-	                    file.transferTo(new File(uploadFilePath));
-	                    try {
-							goodsManagerService.addGoodsImage(recordPath, goodsId,positionCode);
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-	                }
-	                 
-	            }
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-        }
-        long  endTime=System.currentTimeMillis();
-        System.out.println("方法三的运行时间："+String.valueOf(endTime-startTime)+"ms");
-    return "/success"; 
-    }
     
     @RequestMapping(value = "/deleteGoodsRecord.do",method = {RequestMethod.POST })
 	@ResponseBody
@@ -326,6 +192,160 @@ public class GoodsManagerController {
 		return reFlag;
     	
     }
+	
+
+	@RequestMapping(value = "/updateGoodsRecord.do",method = {RequestMethod.POST })
+	@ResponseBody
+	public ModelAndView updateGoodsRecord(@RequestParam Map<String,String> map,HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+    	String reStr="";
+    	boolean reFlag=true;
+    	//获取原记录goodsId
+		String goodsId = map.get("goodsId");
+		map.put("ids", goodsId);
+		try{
+			this.deleteInfoForUpdate(map);
+		}catch (IllegalStateException e1) {
+			e1.printStackTrace();
+		}
+		
+		//1、上传图片
+    	try {
+    		reStr =this.uploadImages( request,goodsId,map);
+		} catch (IllegalStateException e1) {
+			
+			reFlag=false;
+			e1.printStackTrace();
+		}
+    	
+		
+    	//2、新增商品基本信息
+    	try {
+			reStr = goodsManagerService.addGoodsRecord(map);
+		} catch (Exception e) {
+			reFlag=false;
+			e.printStackTrace();
+		}
+		//新增商品规格和价格
+		try {
+			reStr = goodsManagerService.addGoodsFormatAndPrice(map);
+		} catch (Exception e) {
+			reFlag=false;
+			e.printStackTrace();
+		}
+		if(reFlag)
+		{
+		 modelAndView.setViewName("success");
+		 modelAndView.addObject("param", "1wxyz");
+		 
+		}else
+		{
+			 modelAndView.setViewName("fail");
+			 modelAndView.addObject("param", "1wxyz");
+		}
+    	return modelAndView;
+    	
+    	
+    }
+
+/*
+ *采用spring提供的上传文件的方法
+ */
+//@RequestMapping(value="/springUpload.do",method = {RequestMethod.POST })
+//@ResponseBody
+public String  uploadImages(HttpServletRequest request,String goodsId,Map<String,String> map) 
+{
+     long  startTime=System.currentTimeMillis();
+   //获取当前路径
+	 File currentDirectory = new File("");//设定为当前文件夹 
+	 try{ 
+	     System.out.println("当前路径:"+currentDirectory.getCanonicalPath());//获取标准的路径 
+	     System.out.println(currentDirectory.getAbsolutePath());//获取绝对路径 
+	     
+			
+	 }catch(Exception e){
+		 e.printStackTrace();
+	 } 
+	 //获取访问路径
+	 String path1 = request.getContextPath();
+		String basePath = request.getScheme() + "://"+ request.getServerName() + ":" + request.getServerPort()+ path1 + "/";
+	 
+     //将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
+    CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver(
+            request.getSession().getServletContext());
+    //检查form中是否有enctype="multipart/form-data"
+    if(multipartResolver.isMultipart(request))
+    {
+        //将request变成多部分request
+        MultipartHttpServletRequest multiRequest=(MultipartHttpServletRequest)request;
+        
+       //获取multiRequest 中所有的文件名
+        Iterator iter=multiRequest.getFileNames();
+        String path;
+		try {
+			path = currentDirectory.getCanonicalPath().replace("\\","/");
+		
+            String desPath =path+"/../webapps/YLXcxMallBack/images/goodsImages/";
+            String recordPathTmp =basePath+"images/goodsImages/";
+            
+            LOGGER.info("desPath:"+desPath);
+            int i=0;
+            while(iter.hasNext())
+            {
+            	i++;
+                //一次遍历所有文件
+                MultipartFile file=multiRequest.getFile(iter.next().toString());
+                if(file!=null&&file.getSize()!=0)
+                {
+                	
+                	String uploadFilePath  = desPath+"goodsimage00"+String.valueOf(i)+".jpg";
+                	String recordPath	   = recordPathTmp+"goodsimage00"+String.valueOf(i)+".jpg";
+                	String positionCode = map.get("positionCode"+String.valueOf(i));
+                	
+                    //如果上传的文件已存在，则先删除掉
+                	File uploadFile = new File(uploadFilePath);
+                	if(uploadFile.exists())  
+                    {  
+                		uploadFile.delete();
+                    } 
+              
+                    //上传
+                    file.transferTo(new File(uploadFilePath));
+                    try {
+						goodsManagerService.addGoodsImage(recordPath, goodsId,positionCode);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                }
+                 
+            }
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+    }
+    long  endTime=System.currentTimeMillis();
+    System.out.println("方法三的运行时间："+String.valueOf(endTime-startTime)+"ms");
+    return "/success"; 
+}
+
+
+@RequestMapping(value = "/getGoodsRecordDetail.do",method = {RequestMethod.GET })
+@ResponseBody
+public List<Map<String, Object>>getGoodsRecordDetail(@RequestParam Map<String,String> map) {
+	String goodsId = map.get("id");
+	List<Map<String, Object>> reMap = new ArrayList<Map<String, Object>>();
+	try {
+		reMap =goodsManagerService.getGoodsRecordDetail(goodsId);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	 
+	return reMap;
+	
+}
+
     @RequestMapping(value = "/getGoodsRecordList.do",method = {RequestMethod.POST })
 	@ResponseBody
 	public List<Map<String, Object>> getGoodsRecordList(@RequestParam Map<String,String> map) {
@@ -347,19 +367,25 @@ public class GoodsManagerController {
     	
     }
     
-    @RequestMapping(value = "/getGoodsRecordDetail.do",method = {RequestMethod.GET })
+
+    @RequestMapping(value = "/getGoodsClassList.do",method = {RequestMethod.POST })
 	@ResponseBody
-	public List<Map<String, Object>>getGoodsRecordDetail(@RequestParam Map<String,String> map) {
-    	String goodsId = map.get("id");
-    	List<Map<String, Object>> reMap = new ArrayList<Map<String, Object>>();
+	public List<Map<String, Object>> getGoodsClassList(@RequestParam Map<String,String> map) {
+//    	int indexSize=10;
+//    	int pageIndex =(Integer.parseInt(map.get("page"))-1)*indexSize;
+//    	if(pageIndex<0){
+//    		pageIndex=0;
+//    	}
+//    	String startIndex=String.valueOf(pageIndex);
+//    	
+    	List<Map<String, Object>>  reList =null;
     	try {
-    		reMap =goodsManagerService.getGoodsRecordDetail(goodsId);
+			  reList =goodsManagerService.getGoodsClassList(map);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 
-		return reMap;
+		return reList;
     	
     }
     

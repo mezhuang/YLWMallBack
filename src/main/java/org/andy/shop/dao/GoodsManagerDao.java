@@ -20,9 +20,7 @@ public interface  GoodsManagerDao extends Serializable {
 
 	String addGoodsRecord(Map<String, String> map) throws Exception;
 	String updateGoodsRecord(Map<String, String> map) throws Exception;
-	List<Map<String, Object>> getGoodsRecordList(String startIndex,String indexSize)throws Exception;
 
-	public List<Map<String, Object>> getGoodsRecordDetail(String goodsId) throws Exception;
 	
 	public String addGoodsImage(String goodsImageUrl,String goodsId,String displayPosition )throws Exception;
 	
@@ -31,4 +29,13 @@ public interface  GoodsManagerDao extends Serializable {
 	String deleteGoodsImage(Map<String, String> map) throws Exception;
 	public String addGoodsFormatAndPrice(String goodsId,String formatName,String orgPrice,String currPrice )throws Exception;
 	String deleteGoodsFormatPrice(Map<String, String> map) throws Exception;
+	List<Map<String, Object>> getGoodsRecordList(String startIndex,String indexSize)throws Exception;
+
+	public List<Map<String, Object>> getGoodsRecordDetail(String goodsId) throws Exception;
+	List<Map<String, Object>> getGoodsClassList(Map<String, String> map)
+			throws Exception;
+	List<Map<String, Object>> getGoodsIndexInfo(Map<String, String> map)
+			throws Exception;
+	
+
 }

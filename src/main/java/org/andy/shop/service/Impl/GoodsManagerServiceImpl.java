@@ -100,6 +100,15 @@ public class GoodsManagerServiceImpl implements GoodsManagerService {
 		return retSult;
 	}
 
+	@Override
+	public List<Map<String, Object>> getGoodsClassList(Map<String, String> map)throws Exception{
+		return goodsManagerDao.getGoodsClassList(map);
+	}
+	@Override
+	public List<Map<String, Object>> getGoodsIndexInfo(Map<String, String> map) throws Exception{
+		return goodsManagerDao.getGoodsIndexInfo(map);
+		 
+	}
 
 
 

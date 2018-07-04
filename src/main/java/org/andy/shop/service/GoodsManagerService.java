@@ -29,7 +29,7 @@ public interface GoodsManagerService {
 	String deleteGoodsFormatPrice(Map<String, String> map) throws Exception;
 	List<Map<String, Object>> getGoodsClassList(Map<String, String> map)
 			throws Exception;
-	List<Map<String, Object>> getGoodsIndexInfo(Map<String, String> map)
+	List<Map<String, Object>> getGoodsInfoBytwolevelCode(Map<String, String> map)
 			throws Exception;
 	
 

@@ -32,10 +32,13 @@ public interface  GoodsManagerDao extends Serializable {
 	List<Map<String, Object>> getGoodsRecordList(String startIndex,String indexSize)throws Exception;
 
 	public List<Map<String, Object>> getGoodsRecordDetail(String goodsId) throws Exception;
+	List<Map<String, Object>> getGoodsOnelevelClassList(Map<String, String> map)
+	throws Exception;
 	List<Map<String, Object>> getGoodsClassList(Map<String, String> map)
 			throws Exception;
-	List<Map<String, Object>> getGoodsIndexInfo(Map<String, String> map)
+	List<Map<String, Object>> getGoodsInfoBytwolevelCode(Map<String, String> map)
 			throws Exception;
+	
 	
 
 }

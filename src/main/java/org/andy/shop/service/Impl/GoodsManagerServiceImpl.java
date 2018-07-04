@@ -1,6 +1,7 @@
 package org.andy.shop.service.Impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -102,11 +103,38 @@ public class GoodsManagerServiceImpl implements GoodsManagerService {
 
 	@Override
 	public List<Map<String, Object>> getGoodsClassList(Map<String, String> map)throws Exception{
-		return goodsManagerDao.getGoodsClassList(map);
+		List<Map<String, Object>> reList = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> oneLevelClass =goodsManagerDao.getGoodsOnelevelClassList(map);
+		
+		
+
+		for(Map<String,Object> fMap:oneLevelClass)
+		{ 
+			String onelevelCode = (String) fMap.get("onelevel_code");
+			String onelevelName = (String) fMap.get("onelevel_name");
+
+			Map<String, String> twoLevelClass = new HashMap<String, String>();
+			twoLevelClass.put("onelevelCode",onelevelCode );
+			List<Map<String, Object>>  twoClassList = goodsManagerDao.getGoodsClassList(twoLevelClass);
+			Map<String, Object> reMap = new HashMap<String, Object>();
+			reMap.put("onelevel_code",onelevelCode);
+			reMap.put("onelevel_name",onelevelName);
+			if(twoClassList.size()>0)
+			{
+				reMap.put("isHaveTwoCalss", true);
+			}
+			else
+			{
+				reMap.put("isHaveTwoCalss", false);
+			}
+			reMap.put("twoClassList", twoClassList);
+			reList.add(reMap);
+		}
+		return reList;
 	}
 	@Override
-	public List<Map<String, Object>> getGoodsIndexInfo(Map<String, String> map) throws Exception{
-		return goodsManagerDao.getGoodsIndexInfo(map);
+	public List<Map<String, Object>> getGoodsInfoBytwolevelCode(Map<String, String> map) throws Exception{
+		return goodsManagerDao.getGoodsInfoBytwolevelCode(map);
 		 
 	}
 

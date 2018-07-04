@@ -381,13 +381,30 @@ public List<Map<String, Object>>getGoodsRecordDetail(@RequestParam Map<String,St
     	List<Map<String, Object>>  reList =null;
     	try {
 			  reList =goodsManagerService.getGoodsClassList(map);
+			  
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		LOGGER.info("reList:"+reList);
 		return reList;
     	
     }
     
+    @RequestMapping(value = "/getGoodsInfoBytwolevelCode.do",method = {RequestMethod.GET })
+	@ResponseBody
+	public List<Map<String, Object>> getGoodsInfoBytwolevelCode(@RequestParam Map<String,String> map) {
+  
+    	List<Map<String, Object>>  reList =null;
+    	try {
+			  reList =goodsManagerService.getGoodsInfoBytwolevelCode(map);
+			  
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		LOGGER.info("reList:"+reList);
+		return reList;
+	}
 }
 

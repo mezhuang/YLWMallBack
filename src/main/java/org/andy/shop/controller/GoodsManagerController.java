@@ -368,7 +368,7 @@ public List<Map<String, Object>>getGoodsRecordDetail(@RequestParam Map<String,St
     }
     
 
-    @RequestMapping(value = "/getGoodsClassList.do",method = {RequestMethod.POST })
+    @RequestMapping(value = "/getGoodsClassList.do",method = {RequestMethod.GET })
 	@ResponseBody
 	public List<Map<String, Object>> getGoodsClassList(@RequestParam Map<String,String> map) {
 //    	int indexSize=10;

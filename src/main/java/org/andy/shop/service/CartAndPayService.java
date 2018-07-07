@@ -21,6 +21,10 @@ public interface CartAndPayService {
 	// 通过Id查询UserInfo
 	UserInfoPo getById(Integer id);
 	public Map<String,String> getPrePayIdByOrderInfo(@RequestParam Map<String,String> map) throws Exception ;
+	String addToShoppingCart(Map<String, String> map) throws Exception;
+	String deleteShoppingCart(Map<String, String> map) throws Exception;
+	List<Map<String, Object>> getShoppingCartListByOpenId(
+			Map<String, String> map) throws Exception;
 
 
 

@@ -20,6 +20,13 @@ public interface  CartAndPayDao extends Serializable {
 
 	UserInfoPo getById(Integer id);
 
+	String addToShoppingCart(Map<String, String> map) throws Exception;
+
+	String deleteShoppingCart(Map<String, String> map) throws Exception;
+
+	List<Map<String, Object>> getShoppingCartListByOpenId(
+			Map<String, String> map) throws Exception;
+
 
 	
 

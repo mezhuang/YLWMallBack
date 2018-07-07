@@ -70,4 +70,50 @@ public class CartAndPayController {
 		}
 		return  reStr;
 	}	
+	
+	@RequestMapping(value="/addToShoppingCart.do",method = {RequestMethod.GET })
+	@ResponseBody
+	public String addToShoppingCart(@RequestParam Map<String,String> map) {
+		LOGGER.info("加入购物车");
+		
+		
+		String  reStr = null;
+		try {
+			reStr = cartAndPayService.addToShoppingCart(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return  reStr;
+	}	
+	
+	@RequestMapping(value="/deleteShoppingCart.do",method = {RequestMethod.GET })
+	@ResponseBody
+	public String deleteShoppingCart(@RequestParam Map<String,String> map) {
+		LOGGER.info("加入购物车");
+		
+		
+		String  reStr = null;
+		try {
+			reStr = cartAndPayService.deleteShoppingCart(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return  reStr;
+	}	
+	
+	@RequestMapping(value="/getShoppingCartListByOpenId.do",method = {RequestMethod.GET })
+	@ResponseBody
+	public List<Map<String, Object>> getShoppingCartListByOpenId(@RequestParam Map<String,String> map) {
+		LOGGER.info("获取购物车列表");
+		
+		
+		List<Map<String, Object>>  reStr = null;
+		try {
+			reStr = cartAndPayService.getShoppingCartListByOpenId(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return  reStr;
+	}
+	
 }

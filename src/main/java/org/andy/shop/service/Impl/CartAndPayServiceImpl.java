@@ -14,6 +14,7 @@ import java.util.Random;
 
 import org.andy.shop.common.YLConstant;
 import org.andy.shop.controller.UserInfoController;
+import org.andy.shop.dao.CartAndPayDao;
 import org.andy.shop.dao.UserInfoDao;
 import org.andy.shop.entity.UserInfoPo;
 import org.andy.shop.service.CartAndPayService;
@@ -43,6 +44,9 @@ public class CartAndPayServiceImpl implements CartAndPayService {
 	.getLogger(CartAndPayServiceImpl.class);
 	@Autowired
 	private UserInfoDao userInfoDao;
+	@Autowired
+	private CartAndPayDao cartAndPayDao;
+
 
 	@Override
 	public UserInfoPo getById(Integer id) {
@@ -125,7 +129,20 @@ public class CartAndPayServiceImpl implements CartAndPayService {
 	
 		 return  respMap;
 	}
-	
+	@Override
+	public String addToShoppingCart(Map<String, String> map) throws Exception{
+		return cartAndPayDao.addToShoppingCart(map);
+	}
+	@Override
+	public String deleteShoppingCart(Map<String, String> map) throws Exception{
+		return cartAndPayDao.addToShoppingCart(map);
+		
+	}
+	@Override
+	public List<Map<String, Object>> getShoppingCartListByOpenId(
+			Map<String, String> map) throws Exception{
+		return cartAndPayDao.getShoppingCartListByOpenId(map);
+	}
 
 
 }

@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.andy.shop.common.Utils;
+import org.andy.shop.controller.CustomerReportController;
 import org.andy.shop.dao.CartAndPayDao;
 import org.andy.shop.dao.UserInfoDao;
 import org.andy.shop.entity.UserInfoPo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -25,7 +27,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("cartAndPayDao")
 public class CartAndPayDaoImpl implements CartAndPayDao {
-
+	private static final Logger LOGGER = Logger
+	.getLogger(CustomerReportController.class);
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
@@ -42,7 +45,52 @@ public class CartAndPayDaoImpl implements CartAndPayDao {
 
 		return userInfo;
 	}
-
+	@Override 
+	public String addToShoppingCart(Map<String,String> map )throws Exception{
+		MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
+		String addShoppingCartSql ="INSERT INTO yuanlian.shopping_cart (open_id, goods_image_url,goods_id, buy_number, is_select,create_time) VALUES (:open_id, :goods_image_url,:goods_id, :buy_number, :is_select,:create_time);";
+			paramSourceGroup.addValue("open_id", map.get("openId"));
+			paramSourceGroup.addValue("goods_image_url", map.get("goodsImageUrl"));
+			paramSourceGroup.addValue("goods_id", map.get("goodsId"));
+//			paramSourceGroup.addValue("format_code", formatCode);
+			paramSourceGroup.addValue("buy_number", map.get("buyNumber"));
+			paramSourceGroup.addValue("is_select", map.get("isSelect"));
+			paramSourceGroup.addValue("create_time", Utils.getCurrentDate());
+			
+			 int addResult = namedParameterJdbcTemplate.update(addShoppingCartSql, paramSourceGroup);
+				LOGGER.info("增加购物车记录:"+String.valueOf(addResult));
+				
+				return String.valueOf(addResult);
+			
+			
+	}
+	@Override 
+	public String deleteShoppingCart(Map<String,String> map )throws Exception{
+		MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
+		String addShoppingCartSql ="DELETE from yuanlian.shopping_cart where shopping_cart_id=:";
+			paramSourceGroup.addValue("shopping_cart_id", map.get("shoppingCartId"));
+			
+			
+			 int addResult = namedParameterJdbcTemplate.update(addShoppingCartSql, paramSourceGroup);
+				LOGGER.info("增加购物车记录:"+String.valueOf(addResult));
+				
+				return String.valueOf(addResult);
+			
+			
+	}
+	@Override
+	public List<Map<String, Object>>  getShoppingCartListByOpenId(Map<String, String> map) throws Exception{
+			
+			String openId =map.get("openId");
+			
+			String sql = "select *From shopping_cart a  where a.open_id='"+openId+"' ORDER BY shopping_cart_id ASC  ;";
+	
+			List<Map<String, Object>> goodsClassList = jdbcTemplate.queryForList(sql);
+			
+	
+			return goodsClassList;
+	}
+	
 	
 
 	

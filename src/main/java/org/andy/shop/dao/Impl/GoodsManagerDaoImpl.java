@@ -211,7 +211,7 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 	public List<Map<String, Object>> getGoodsRecordDetail(String goodsId) throws Exception{
 		String goodsInfoSql = "select *From goods_info a where a.goods_id = '"+goodsId+"';";
 		String goodsClassSql = "select b.* From goods_class_map a inner JOIN goods_class b on b.twolevel_code=a.goods_twolevel_code where a.goods_id  = '"+goodsId+"' ORDER BY twolevel_code asc;";
-		String goodsImageSql = "select DISTINCT a.* ,b.twolevel_name as position_name From goods_image a INNER  JOIN goods_class b on b.twolevel_code=a.position_code  where a.goods_id = '"+goodsId+"' ORDER BY goods_image_url asc;";
+		String goodsImageSql = "select *From goods_image a where a.goods_id = '"+goodsId+"' ORDER BY goods_image_url asc;";
 		String goodsFormatPriceSql = "select * from yuanlian.goods_formatprice a where a.goods_id=  '"+goodsId+"' ORDER BY format_price_id ASC";
 		List<Map<String, Object>> goodsinfoList = jdbcTemplate.queryForList(goodsInfoSql);
 		List<Map<String, Object>> goodsClassList = jdbcTemplate.queryForList(goodsClassSql);

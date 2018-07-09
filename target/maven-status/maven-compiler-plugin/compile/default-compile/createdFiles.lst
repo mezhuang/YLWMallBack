@@ -9,17 +9,13 @@ org\andy\shop\dao\Impl\CommissionDaoImpl.class
 org\andy\shop\controller\SaleAndCommiController.class
 org\andy\shop\dao\GoodsManagerDao.class
 com\github\wxpay\sdk\WXPayConfig.class
-org\andy\shop\service\CartAndPayService.class
-org\andy\shop\service\Impl\CartAndPayServiceImpl.class
 org\andy\shop\common\Utils.class
 org\andy\shop\service\Impl\GoodsManagerServiceImpl.class
 org\andy\shop\common\YLConstant.class
 com\github\wxpay\sdk\IWXPayDomain.class
 org\andy\shop\dao\CommissioinDao.class
 com\github\wxpay\sdk\WXPayConfigImpl.class
-org\andy\shop\controller\CartAndPayController.class
 org\andy\shop\service\SaleInfoService.class
-org\andy\shop\dao\CartAndPayDao.class
 com\github\wxpay\sdk\WXPayUtil.class
 com\github\wxpay\sdk\WXPayReport$1.class
 com\github\wxpay\sdk\WXPayReport.class
@@ -31,7 +27,6 @@ org\andy\shop\service\GroupMapService.class
 com\github\wxpay\sdk\IWXPayDomain$DomainInfo.class
 org\andy\shop\dao\UserInfoDao.class
 org\andy\shop\dao\Impl\GroupMapDaoImpl.class
-org\andy\shop\controller\GoodsManager.class
 org\andy\shop\service\Impl\CustomerReportServiceImpl.class
 org\andy\shop\controller\UserInfoController.class
 com\github\wxpay\sdk\WXPayRequest.class
@@ -54,4 +49,3 @@ org\andy\shop\dao\Impl\SaleInfoDaoImpl.class
 org\andy\shop\dao\CustomerReportDao.class
 org\andy\shop\dao\UserPowerDao.class
 org\andy\shop\controller\CustomerReportController.class
-org\andy\shop\dao\Impl\CartAndPayDaoImpl.class

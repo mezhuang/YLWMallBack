@@ -298,8 +298,8 @@ public String  uploadImages(HttpServletRequest request,String goodsId,Map<String
                 if(file!=null&&file.getSize()!=0)
                 {
                 	
-                	String uploadFilePath  = desPath+"goodsimage00"+String.valueOf(i)+".jpg";
-                	String recordPath	   = recordPathTmp+"goodsimage00"+String.valueOf(i)+".jpg";
+                	String uploadFilePath  = desPath+goodsId.toString()+"00"+String.valueOf(i)+".jpg";
+                	String recordPath	   = recordPathTmp+goodsId.toString()+"00"+String.valueOf(i)+".jpg";
                 	String positionCode = map.get("positionCode"+String.valueOf(i));
                 	
                     //如果上传的文件已存在，则先删除掉

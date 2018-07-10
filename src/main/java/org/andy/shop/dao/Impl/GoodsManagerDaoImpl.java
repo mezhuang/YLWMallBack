@@ -261,7 +261,7 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 			
 			String twolevelCode =map.get("twolevelCode");
 			
-			String sql = "select b.goods_id,a.twolevel_code,a.twolevel_name,c.goods_tile,c.goods_model_number,d.goods_image_url,CONCAT(min(e.curr_price),'~',MAX(e.curr_price)) as curr_price From goods_class a INNER JOIN goods_class_map b on b.goods_twolevel_code= a.twolevel_code"+ 
+			String sql = "select b.goods_id,a.twolevel_code,a.twolevel_name,c.goods_tile,c.goods_model_number,d.goods_image_url,min(e.curr_price) as curr_price From goods_class a INNER JOIN goods_class_map b on b.goods_twolevel_code= a.twolevel_code"+ 
 						" INNER JOIN  goods_info c on c.goods_id=b.goods_id  INNER JOIN  goods_image d on d.goods_id=b.goods_id INNER JOIN  goods_formatprice e on e.goods_id=b.goods_id  "+																
 						" where b.goods_twolevel_code='"+twolevelCode+"' and d.goods_image_url like '%001%' GROUP BY goods_id ORDER BY a.twolevel_code ASC;";
 	

@@ -48,10 +48,11 @@ public class CartAndPayDaoImpl implements CartAndPayDao {
 	@Override 
 	public String addToShoppingCart(Map<String,String> map )throws Exception{
 		MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
-		String addShoppingCartSql ="INSERT INTO yuanlian.shopping_cart (open_id, goods_image_url,goods_id,goods_Price, format_code,buy_number, is_select,create_time) VALUES (:open_id, :goods_image_url,:goods_id, :format_code,:buy_number, :is_select,:create_time);";
+		String addShoppingCartSql ="INSERT INTO yuanlian.shopping_cart (open_id, goods_image_url,goods_id,goods_tile,goods_Price, format_code,buy_number, is_select,create_time) VALUES (:open_id, :goods_image_url,:goods_id, :goods_tile,:goods_price,:format_code,:buy_number, :is_select,:create_time);";
 			paramSourceGroup.addValue("open_id", map.get("openId"));
 			paramSourceGroup.addValue("goods_image_url", map.get("goodsImageUrl"));
 			paramSourceGroup.addValue("goods_id", map.get("goodsId"));
+			paramSourceGroup.addValue("goods_tile", map.get("goodsTile"));
 			paramSourceGroup.addValue("goods_price", map.get("goodsPrice"));
 			paramSourceGroup.addValue("format_code", map.get("formatCode"));
 			paramSourceGroup.addValue("buy_number", map.get("buyNumber"));

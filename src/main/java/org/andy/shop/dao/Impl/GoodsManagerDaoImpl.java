@@ -51,9 +51,9 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 			
 			String goodsId = map.get("goodsId");
 			//1、新增商品信息
-			String addUserGroupSql ="insert into goods_info (goods_id,goods_tile,goods_model_number,goods_stock,image_file_no,format_price_no,create_name,create_time) values(:goods_id,:goods_tile,:goods_model_number,:goods_stock,:image_file_no,:format_price_no,:create_name,:create_time)";
+			String addUserGroupSql ="insert into goods_info (goods_id,goods_title,goods_model_number,goods_stock,image_file_no,format_price_no,create_name,create_time) values(:goods_id,:goods_title,:goods_model_number,:goods_stock,:image_file_no,:format_price_no,:create_name,:create_time)";
 		 	paramSourceGroup.addValue("goods_id",goodsId);
-		 	paramSourceGroup.addValue("goods_tile", map.get("goodsTile"));
+		 	paramSourceGroup.addValue("goods_title", map.get("goodsTitle"));
 			paramSourceGroup.addValue("goods_model_number", map.get("goodsModelNumber"));
 
 			paramSourceGroup.addValue("goods_stock", map.get("goodsStock"));
@@ -199,7 +199,7 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 	@Override
 	public List<Map<String, Object>> getGoodsRecordList(String startIndex,String indexSize) throws Exception{
 		
-		String sql = "select DISTINCT a.goods_id as id,a.goods_tile,a.goods_model_number,a.create_time " +
+		String sql = "select DISTINCT a.goods_id as id,a.goods_title,a.goods_model_number,a.create_time " +
 				"  From goods_info a  ORDER BY a.create_time desc  LIMIT "+startIndex+" , "+indexSize+"   ";
 
 		List<Map<String, Object>> customerReportList = jdbcTemplate.queryForList(sql);
@@ -262,7 +262,7 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 			
 			String twolevelCode =map.get("twolevelCode");
 			
-			String sql = "select b.goods_id,a.twolevel_code,a.twolevel_name,c.goods_tile,c.goods_model_number,d.goods_image_url,min(e.curr_price) as curr_price ,d.goods_image_url_sl From goods_class a INNER JOIN goods_class_map b on b.goods_twolevel_code= a.twolevel_code"+ 
+			String sql = "select b.goods_id,a.twolevel_code,a.twolevel_name,c.goods_title,c.goods_model_number,d.goods_image_url,min(e.curr_price) as curr_price ,d.goods_image_url_sl From goods_class a INNER JOIN goods_class_map b on b.goods_twolevel_code= a.twolevel_code"+ 
 						" INNER JOIN  goods_info c on c.goods_id=b.goods_id  INNER JOIN  goods_image d on d.goods_id=b.goods_id INNER JOIN  goods_formatprice e on e.goods_id=b.goods_id  "+																
 						" where b.goods_twolevel_code='"+twolevelCode+"' and d.goods_image_url like '%001%' GROUP BY goods_id ORDER BY a.twolevel_code ASC;";
 	

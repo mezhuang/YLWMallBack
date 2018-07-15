@@ -53,8 +53,8 @@
 					//selectOnCheck:true,//选中checkbox时同时选中改行 
 					fitColumns: true,//自动扩大或缩小列的尺寸以适应表格的宽度并且防止水平滚动 
 					pageNumber:1,//当设置了 pagination 特性时，初始化页码 
-					pageSize: 10,//当设置了 pagination 特性时，初始化页码尺寸，即每页显示的记录条数，默认为10
-					pageList:10,//当设置了pagination 特性时，初始化页面尺寸的选择列表，可以设置每页记录条数的列表 
+					pageSize: 50,//当设置了 pagination 特性时，初始化页码尺寸，即每页显示的记录条数，默认为10
+					pageList:50,//当设置了pagination 特性时，初始化页面尺寸的选择列表，可以设置每页记录条数的列表 
 					idField:'id',//标识字段 
 					frozenColumns:[[
 						{field:'ck',checkbox:true}

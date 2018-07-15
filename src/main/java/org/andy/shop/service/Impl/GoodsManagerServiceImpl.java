@@ -1,9 +1,13 @@
 package org.andy.shop.service.Impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import net.coobird.thumbnailator.Thumbnails;
 
 import org.andy.shop.controller.UserInfoController;
 import org.andy.shop.dao.GoodsManagerDao;
@@ -67,9 +71,9 @@ public class GoodsManagerServiceImpl implements GoodsManagerService {
 		return goodsManagerDao.getGoodsRecordList(startIndex, indexSize);
 	}
 	@Override
-	public String addGoodsImage(String goodsImageUrl,String goodsId,String displayPosition )throws Exception{
+	public String addGoodsImage(String goodsImageUrl,String goodsImageUrlSl,String goodsId,String displayPosition )throws Exception{
 		
-		return goodsManagerDao.addGoodsImage(goodsImageUrl, goodsId,displayPosition);
+		return goodsManagerDao.addGoodsImage(goodsImageUrl,goodsImageUrlSl, goodsId,displayPosition);
 	}
 	@Override
 	public List<Map<String, Object>> getGoodsRecordDetail(String goodsId)
@@ -137,6 +141,24 @@ public class GoodsManagerServiceImpl implements GoodsManagerService {
 		return goodsManagerDao.getGoodsInfoBytwolevelCode(map);
 		 
 	}
+    /**
+    * @param standardImgPath 原图片path
+    * @param thumName 缩略图path
+    */
+	@Override
+    public String storeThumbnail(String standardImgPath, String thumName) {
+        File file = new File(standardImgPath);
+        if(file!=null&&file.isFile()){
+            try {
+                File outFIle = new File(thumName);
+                Thumbnails.of(file).size(100, 150).toFile(outFIle);
+                return outFIle.getName();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 
 
 

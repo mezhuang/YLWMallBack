@@ -1,11 +1,14 @@
 package org.andy.shop.test.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import net.coobird.thumbnailator.Thumbnails;
 
 import org.andy.shop.common.Utils;
 import org.andy.shop.dao.CustomerReportDao;
@@ -127,6 +130,23 @@ public class TestUserInfoService {
 ////		System.out.println(returnStr);
 ////		LOGGER.info("returnStr:"+returnStr);
 //}
-	
+	/**
+    * @param standardImgPath 原图片path
+    * @param thumName 缩略图path
+    */
+	@Test
+    private String storeThumbnail(String standardImgPath, String thumName) {
+        File file = new File(standardImgPath);
+        if(file!=null&&file.isFile()){
+            try {
+                File outFIle = new File(thumName);
+                Thumbnails.of(file).size(100, 150).toFile(outFIle);
+                return outFIle.getName();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 
 }

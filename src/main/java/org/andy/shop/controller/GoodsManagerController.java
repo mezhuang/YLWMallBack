@@ -285,9 +285,11 @@ public String  uploadImages(HttpServletRequest request,String goodsId,Map<String
 		try {
 			path = currentDirectory.getCanonicalPath().replace("\\","/");
 		
-            String desPath =path+"/../webapps/YLXcxMallBack/images/goodsImages/";
-            String recordPathTmp =basePath+"images/goodsImages/";
-            
+            String desPath =path+"/../webapps/YLXcxMallBack/images/goodsImages/";//原图路径
+            String desPath_sl =path+"/../webapps/YLXcxMallBack/images/goodsImages_sl/";//缩略图片存储路径
+            String recordPathTmp =basePath+"images/goodsImages/";//原图访问路径
+            String recordPathTmpSl =basePath+"images/goodsImages_sl/";//缩略图访问路径
+
             LOGGER.info("desPath:"+desPath);
             int i=0;
             while(iter.hasNext())
@@ -297,9 +299,14 @@ public String  uploadImages(HttpServletRequest request,String goodsId,Map<String
                 MultipartFile file=multiRequest.getFile(iter.next().toString());
                 if(file!=null&&file.getSize()!=0)
                 {
-                	
+                	//原图路径
                 	String uploadFilePath  = desPath+goodsId.toString()+"00"+String.valueOf(i)+".jpg";
-                	String recordPath	   = recordPathTmp+goodsId.toString()+"00"+String.valueOf(i)+".jpg";
+                	//缩略图路径
+                	String uploadFilePath_sl  = desPath_sl+goodsId.toString()+"00"+String.valueOf(i)+".jpg";
+                	//原图访问地址
+                	String goodsImageUrl	   = recordPathTmp+goodsId.toString()+"00"+String.valueOf(i)+".jpg";
+                	//缩略图访问地址
+                	String goodsImageUrlSl =recordPathTmpSl+goodsId.toString()+"00"+String.valueOf(i)+".jpg";
                 	String positionCode = map.get("positionCode"+String.valueOf(i));
                 	
                     //如果上传的文件已存在，则先删除掉
@@ -309,10 +316,12 @@ public String  uploadImages(HttpServletRequest request,String goodsId,Map<String
                 		uploadFile.delete();
                     } 
               
-                    //上传
+                    //上传原图
                     file.transferTo(new File(uploadFilePath));
+                    //生成缩略图
+                    goodsManagerService.storeThumbnail(uploadFilePath, uploadFilePath_sl);
                     try {
-						goodsManagerService.addGoodsImage(recordPath, goodsId,positionCode);
+						goodsManagerService.addGoodsImage(goodsImageUrl, goodsImageUrlSl,goodsId,positionCode);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

@@ -110,7 +110,7 @@
 				$(p).pagination( {
 					onBeforeRefresh : function() {
 						//alert('before refresh');
-						//initTable();
+						initTable();
 					},
 					beforePageText : '第',//页数文本框前显示的汉字 
 					afterPageText : '共{pages}页',

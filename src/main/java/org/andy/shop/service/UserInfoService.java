@@ -38,6 +38,11 @@ public interface UserInfoService {
 
 	String specifysend(String userPhone);
 
+	Integer addReceiGoodsAdress(Map<String, String> map);
+
+	List<Map<String, Object>> getReceiGoodsAdressByOpenId(
+			Map<String, String> map) throws Exception;
+
 
 
 }

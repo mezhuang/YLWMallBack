@@ -31,6 +31,11 @@ public interface  UserInfoDao extends Serializable {
 	List<Map<String, Object>> getRefereeInfobyCustomerPhone(String customerPhone)
 			throws Exception;
 
+	Integer addReceiGoodsAdress(Map<String, String> map);
+
+	List<Map<String, Object>> getReceiGoodsAdressByOpenId(
+			Map<String, String> map) throws Exception;
+
 	
 
 }

@@ -95,6 +95,25 @@ public class UserInfoController {
 //		LOGGER.info("guideInfos:"+guideInfos);
 		 return reStr;
 	}
+	//增加收货地址
+	@RequestMapping(value="/addReceiGoodsAdress.do",method = {RequestMethod.GET })
+	@ResponseBody
+	public String addReceiGoodsAdress(@RequestParam Map<String,String> map) {
+		LOGGER.info("json申请成为分销商结果");
+		String reStr="fail";
+		//根据分销经纪人分组编码，获取分销经纪人组ID
+		Integer addRet=0;
+		try {
+
+			 addRet = userInfoService.addReceiGoodsAdress(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		reStr.valueOf(addRet);
+	
+//		LOGGER.info("guideInfos:"+guideInfos);
+		 return reStr;
+	}
 
 	/*根据用户openId，获取用户权限列表
 	 * */
@@ -188,5 +207,19 @@ public class UserInfoController {
 		resultStr = userInfoService.specifysend(userPhone);
 	
 		 return  resultStr;
+	}
+	
+	@RequestMapping(value="/getReceiGoodsAdressList.do",method = {RequestMethod.GET })
+	@ResponseBody
+	public List<Map<String, Object>> getReceiGoodsAdressList(@RequestParam Map<String,String> map) {
+		LOGGER.info("json返回用户全部的权限");
+		 List<Map<String, Object>> guideInfos = null;
+		try {
+			guideInfos = userInfoService.getReceiGoodsAdressByOpenId(map);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return guideInfos;
 	}
 }

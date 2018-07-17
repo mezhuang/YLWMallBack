@@ -27,6 +27,8 @@ public interface  CartAndPayDao extends Serializable {
 	List<Map<String, Object>> getShoppingCartListByOpenId(
 			Map<String, String> map) throws Exception;
 
+	public String updateShoppingCartNum(Map<String,String> map )throws Exception;
+
 
 	
 

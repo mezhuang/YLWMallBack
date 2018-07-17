@@ -143,6 +143,10 @@ public class CartAndPayServiceImpl implements CartAndPayService {
 			Map<String, String> map) throws Exception{
 		return cartAndPayDao.getShoppingCartListByOpenId(map);
 	}
-
+	@Override
+	public String updateShoppingCartNum(Map<String, String> map) throws Exception{
+		return cartAndPayDao.updateShoppingCartNum(map);
+		
+	}
 
 }

@@ -71,15 +71,37 @@ public class CartAndPayController {
 		return  reStr;
 	}	
 	
-	@RequestMapping(value="/addToShoppingCart.do",method = {RequestMethod.GET })
+	@RequestMapping(value="/addToShoppingCart.do",method = {RequestMethod.POST })
 	@ResponseBody
 	public String addToShoppingCart(@RequestParam Map<String,String> map) {
 		LOGGER.info("加入购物车");
+		boolean addFlag=true;
 		
 		
 		String  reStr = null;
 		try {
-			reStr = cartAndPayService.addToShoppingCart(map);
+			//判断购物车是否已存在该记录，若有，则增加记录即可。
+			 List<Map<String, Object>> list=	cartAndPayService.getShoppingCartListByOpenId(map);
+			 for(Map<String, Object> reMap:list)
+			 {
+				if(reMap.get("goods_id").equals(map.get("goodsId")))
+				{
+					if( reMap.get("format_code").equals(map.get("formatCode")))
+					{
+						Long  addTmp =(Long)reMap.get("num");
+						Integer addnum= addTmp.intValue()+Integer.parseInt(map.get("buyNumber"));
+						map.put("buyNumber", String.valueOf(addnum));
+						map.put("shoppingCartId", String.valueOf( reMap.get("shopping_cart_id")));
+						reStr = cartAndPayService.updateShoppingCartNum(map);
+						addFlag=false;
+					}
+				}
+				 
+			 }
+			if(addFlag)
+			{
+				reStr = cartAndPayService.addToShoppingCart(map);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

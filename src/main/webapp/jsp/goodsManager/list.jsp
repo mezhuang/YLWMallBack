@@ -68,7 +68,7 @@
 					},	
 					columns:[[				
 						{field:'goods_id',title:'ID',width:fillsize(1),align:'center',hidden:true,sortable:true},
-						{field:'goods_tile',title:'标题',width:fillsize(1),align:'center',hidden:false},
+						{field:'goods_title',title:'标题',width:fillsize(1),align:'center',hidden:false},
 						{field:'goods_model_number',title:'型号',width:fillsize(1),align:'center',hidden:false},
 						{field:'goods_org_price',title:'原价',width:fillsize(1),align:'center',hidden:false},
 						{field:'goods_curr_price',title:'现价',width:fillsize(1),align:'center',hidden:false},					

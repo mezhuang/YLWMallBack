@@ -108,9 +108,9 @@
 										var i5=5;
 										
 										
-										console.log(dataList[i].goods_tile + dataList[i].goods_model_number);
+										console.log(dataList[i].goods_title + dataList[i].goods_model_number);
 										$("#goodsId").val(dataList[i].goods_id);
-									   $("#goodsTile").val(dataList[i].goods_tile);
+									   $("#goodsTitle").val(dataList[i].goods_title);
 									   $("#goodsModelNumber").val(dataList[i].goods_model_number);
 									   $("#goodsOrgPrice").val(dataList[i].goods_org_price);
 									   $("#goodsCurrPrice").val(dataList[i].goods_curr_price);
@@ -354,7 +354,7 @@ function viewImage(file,imageId,viewId){
                             	<tr>
                             		<td >标题：
                             		
-                            			<input type="text" id="goodsTile" name="goodsTile" value=""/>
+                            			<input type="text" id="goodsTitle" name="goodsTitle" value=""/>
                             		</td>
                             	</tr>
                             	<tr>

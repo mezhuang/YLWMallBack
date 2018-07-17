@@ -104,10 +104,11 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 }
 	
 	@Override 
-	public String addGoodsImage(String goodsImageUrl,String goodsImageUrlSl,String goodsId,String positionCode )throws Exception{
+	public String addGoodsImage(String goodsImageServer,String goodsImageUrl,String goodsImageUrlSl,String goodsId,String positionCode )throws Exception{
 		MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
-		String addGoodsImageSql ="insert into goods_image (goods_id,goods_image_url,goods_image_url_sl,position_code) values(:goods_id,:goods_image_url,:goods_image_url_sl,:position_code)";
+		String addGoodsImageSql ="insert into goods_image (goods_id,goods_image_server,goods_image_url,goods_image_url_sl,position_code) values(:goods_id,:goods_image_server,:goods_image_url,:goods_image_url_sl,:position_code)";
 			paramSourceGroup.addValue("goods_id", goodsId);
+			paramSourceGroup.addValue("goods_image_server", goodsImageServer);
 			paramSourceGroup.addValue("goods_image_url", goodsImageUrl);
 			paramSourceGroup.addValue("goods_image_url_sl", goodsImageUrlSl);
 			paramSourceGroup.addValue("position_code", positionCode);
@@ -262,7 +263,7 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 			
 			String twolevelCode =map.get("twolevelCode");
 			
-			String sql = "select b.goods_id,a.twolevel_code,a.twolevel_name,c.goods_title,c.goods_model_number,d.goods_image_url,min(e.curr_price) as curr_price ,d.goods_image_url_sl From goods_class a INNER JOIN goods_class_map b on b.goods_twolevel_code= a.twolevel_code"+ 
+			String sql = "select b.goods_id,a.twolevel_code,a.twolevel_name,c.goods_title,c.goods_model_number,d.goods_image_server,d.goods_image_url,min(e.curr_price) as curr_price ,d.goods_image_url_sl From goods_class a INNER JOIN goods_class_map b on b.goods_twolevel_code= a.twolevel_code"+ 
 						" INNER JOIN  goods_info c on c.goods_id=b.goods_id  INNER JOIN  goods_image d on d.goods_id=b.goods_id INNER JOIN  goods_formatprice e on e.goods_id=b.goods_id  "+																
 						" where b.goods_twolevel_code='"+twolevelCode+"' and d.goods_image_url like '%001%' GROUP BY goods_id ORDER BY a.twolevel_code ASC;";
 	

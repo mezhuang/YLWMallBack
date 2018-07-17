@@ -296,7 +296,7 @@ function viewImage(file,imageId,viewId){
                             <tr>
                             		<td >标题：
                             		
-                            			<input type="text" id="goodsTile" name="goodsTile" value=""/>
+                            			<input type="text" id="goodsTitle" name="goodsTitle" value=""/>
                             		</td>
                             	</tr>
                             	<tr>

@@ -287,8 +287,8 @@ public String  uploadImages(HttpServletRequest request,String goodsId,Map<String
 		
             String desPath =path+"/../webapps/YLXcxMallBack/images/goodsImages/";//原图路径
             String desPath_sl =path+"/../webapps/YLXcxMallBack/images/goodsImages_sl/";//缩略图片存储路径
-            String recordPathTmp =basePath+"images/goodsImages/";//原图访问路径
-            String recordPathTmpSl =basePath+"images/goodsImages_sl/";//缩略图访问路径
+            String recordPathTmp ="images/goodsImages/";//原图访问路径
+            String recordPathTmpSl ="images/goodsImages_sl/";//缩略图访问路径
 
             LOGGER.info("desPath:"+desPath);
             int i=0;
@@ -309,11 +309,17 @@ public String  uploadImages(HttpServletRequest request,String goodsId,Map<String
                 	String goodsImageUrlSl =recordPathTmpSl+goodsId.toString()+"00"+String.valueOf(i)+".jpg";
                 	String positionCode = map.get("positionCode"+String.valueOf(i));
                 	
-                    //如果上传的文件已存在，则先删除掉
+                    //如果上传的原图已存在，则先删除掉
                 	File uploadFile = new File(uploadFilePath);
                 	if(uploadFile.exists())  
                     {  
                 		uploadFile.delete();
+                    } 
+                	//如果上传的缩略图已存在，则先删除掉
+                	File uploadFile_sl = new File(uploadFilePath_sl);
+                	if(uploadFile_sl.exists())  
+                    {  
+                		uploadFile_sl.delete();
                     } 
               
                     //上传原图
@@ -321,7 +327,7 @@ public String  uploadImages(HttpServletRequest request,String goodsId,Map<String
                     //生成缩略图
                     goodsManagerService.storeThumbnail(uploadFilePath, uploadFilePath_sl);
                     try {
-						goodsManagerService.addGoodsImage(goodsImageUrl, goodsImageUrlSl,goodsId,positionCode);
+						goodsManagerService.addGoodsImage(basePath,goodsImageUrl, goodsImageUrlSl,goodsId,positionCode);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

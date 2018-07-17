@@ -25,6 +25,7 @@ public interface CartAndPayService {
 	String deleteShoppingCart(Map<String, String> map) throws Exception;
 	List<Map<String, Object>> getShoppingCartListByOpenId(
 			Map<String, String> map) throws Exception;
+	String updateShoppingCartNum(Map<String, String> map) throws Exception;
 
 
 

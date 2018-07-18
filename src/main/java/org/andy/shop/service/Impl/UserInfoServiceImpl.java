@@ -134,6 +134,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 		return userInfoDao.addReceiGoodsAdress(map);
 	}
 	@Override
+	public Integer updateReceiGoodsAdress(Map<String, String> map){
+		return userInfoDao.updateReceiGoodsAdress(map);
+	}
+	@Override
 	public List<Map<String, Object>> getReceiGoodsAdressByOpenId(
 			Map<String, String> map) throws Exception{
 		return userInfoDao.getReceiGoodsAdressByOpenId(map);

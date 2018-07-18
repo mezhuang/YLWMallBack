@@ -112,9 +112,9 @@ public class UserInfoDaoImpl implements UserInfoDao {
 //		detailed_address
 //		create_time
 
-		String sql = "INSERT INTO receive_goods_address(receive_name, receive_phone,receive_area,detailed_address,create_time) VALUES(:receive_name, :receive_phone,:receive_area,:detailed_address,:create_time)";
+		String sql = "INSERT INTO receive_goods_address(open_id,receive_name, receive_phone,receive_area,detailed_address,create_time) VALUES(:open_id,:receive_name, :receive_phone,:receive_area,:detailed_address,:create_time)";
 		MapSqlParameterSource paramSource = new MapSqlParameterSource();
-		
+		paramSource.addValue("open_id", map.get("openId"));
 		paramSource.addValue("receive_name", map.get("receiveName"));
 		paramSource.addValue("receive_phone", map.get("receivePhone"));
 		paramSource.addValue("receive_area", map.get("receiveArea"));
@@ -125,11 +125,32 @@ public class UserInfoDaoImpl implements UserInfoDao {
 		return result;
 	}
 	@Override
+	public Integer updateReceiGoodsAdress(Map<String, String> map) {
+//		receive_goods_id
+//		receive_name
+//		receive_phone
+//		receive_area
+//		detailed_address
+//		create_time
+
+		String sql = "update receive_goods_address set receive_name=:receive_name, receive_phone=:receive_phone,receive_area=:receive_area,detailed_address=:detailed_address where receive_goods_id=:receive_goods_id";
+		MapSqlParameterSource paramSource = new MapSqlParameterSource();
+	
+		paramSource.addValue("receive_name", map.get("receiveName"));
+		paramSource.addValue("receive_phone", map.get("receivePhone"));
+		paramSource.addValue("receive_area", map.get("receiveArea"));
+		paramSource.addValue("detailed_address", map.get("detailedAddress"));
+		paramSource.addValue("receive_goods_id", map.get("receiveGoodsId"));
+		int result = namedParameterJdbcTemplate.update(sql, paramSource);
+		
+		return result;
+	}
+	@Override
 	public List<Map<String, Object>>  getReceiGoodsAdressByOpenId(Map<String, String> map) throws Exception{
 			
 			String openId =map.get("openId");
 			
-			String sql = "select *from receive_goods_address  where a.open_id='"+openId+"' ORDER BY create_time ASC  ;";
+			String sql = "select *from receive_goods_address a where a.open_id='"+openId+"' ORDER BY create_time ASC  ;";
 	
 			List<Map<String, Object>> goodsClassList = jdbcTemplate.queryForList(sql);
 			

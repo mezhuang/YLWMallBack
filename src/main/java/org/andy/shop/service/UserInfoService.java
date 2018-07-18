@@ -43,6 +43,8 @@ public interface UserInfoService {
 	List<Map<String, Object>> getReceiGoodsAdressByOpenId(
 			Map<String, String> map) throws Exception;
 
+	Integer updateReceiGoodsAdress(Map<String, String> map);
+
 
 
 }

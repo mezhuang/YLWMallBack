@@ -96,7 +96,7 @@ public class UserInfoController {
 		 return reStr;
 	}
 	//增加收货地址
-	@RequestMapping(value="/addReceiGoodsAdress.do",method = {RequestMethod.GET })
+	@RequestMapping(value="/addReceiGoodsAdress.do",method = {RequestMethod.POST })
 	@ResponseBody
 	public String addReceiGoodsAdress(@RequestParam Map<String,String> map) {
 		LOGGER.info("json申请成为分销商结果");
@@ -106,6 +106,25 @@ public class UserInfoController {
 		try {
 
 			 addRet = userInfoService.addReceiGoodsAdress(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		reStr.valueOf(addRet);
+	
+//		LOGGER.info("guideInfos:"+guideInfos);
+		 return reStr;
+	}
+	//修改收货地址
+	@RequestMapping(value="/updateReceiGoodsAdress.do",method = {RequestMethod.POST })
+	@ResponseBody
+	public String updateReceiGoodsAdress(@RequestParam Map<String,String> map) {
+		LOGGER.info("修改收货地址");
+		String reStr="fail";
+		//根据分销经纪人分组编码，获取分销经纪人组ID
+		Integer addRet=0;
+		try {
+
+			 addRet = userInfoService.updateReceiGoodsAdress(map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -208,6 +227,7 @@ public class UserInfoController {
 	
 		 return  resultStr;
 	}
+	
 	
 	@RequestMapping(value="/getReceiGoodsAdressList.do",method = {RequestMethod.GET })
 	@ResponseBody

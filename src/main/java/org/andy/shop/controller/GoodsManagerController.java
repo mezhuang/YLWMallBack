@@ -168,27 +168,27 @@ public class GoodsManagerController {
     	map.put("id", map.get("ids"));
     	
     	//
-		  try {
-			reStr =goodsManagerService.deleteGoodsInfo(map);
-			
-		} catch (Exception e) {
-			reFlag=false;
-			e.printStackTrace();
-		}
+//		  try {
+//			reStr =goodsManagerService.deleteGoodsInfo(map);
+//			
+//		} catch (Exception e) {
+//			reFlag=false;
+//			e.printStackTrace();
+//		}
 		  try {
 			reStr =goodsManagerService.deleteGoodsMap(map);
 		} catch (Exception e) {
 			reFlag=false;
 			e.printStackTrace();
 		}
-		try{
-			reStr = goodsManagerService.deleteGoodsFormatPrice(map);
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			reFlag=false;
-			
-		}
+//		try{
+//			reStr = goodsManagerService.deleteGoodsFormatPrice(map);
+//			
+//		}catch(Exception e){
+//			e.printStackTrace();
+//			reFlag=false;
+//			
+//		}
 		return reFlag;
     	
     }
@@ -203,11 +203,11 @@ public class GoodsManagerController {
     	//获取原记录goodsId
 		String goodsId = map.get("goodsId");
 		map.put("ids", goodsId);
-		try{
-			this.deleteInfoForUpdate(map);
-		}catch (IllegalStateException e1) {
-			e1.printStackTrace();
-		}
+//		try{
+//			this.deleteInfoForUpdate(map);
+//		}catch (IllegalStateException e1) {
+//			e1.printStackTrace();
+//		}
 		
 		//1、上传图片
     	try {
@@ -221,14 +221,14 @@ public class GoodsManagerController {
 		
     	//2、新增商品基本信息
     	try {
-			reStr = goodsManagerService.addGoodsRecord(map);
+			reStr = goodsManagerService.updateGoodsRecord(map);
 		} catch (Exception e) {
 			reFlag=false;
 			e.printStackTrace();
 		}
 		//新增商品规格和价格
 		try {
-			reStr = goodsManagerService.addGoodsFormatAndPrice(map);
+			reStr = goodsManagerService.updateGoodsFormatAndPrice(map);
 		} catch (Exception e) {
 			reFlag=false;
 			e.printStackTrace();

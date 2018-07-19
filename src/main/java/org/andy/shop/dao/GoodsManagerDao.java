@@ -38,6 +38,8 @@ public interface  GoodsManagerDao extends Serializable {
 			throws Exception;
 	List<Map<String, Object>> getGoodsInfoBytwolevelCode(Map<String, String> map)
 			throws Exception;
+	String updateGoodsFormatAndPrice(String goodsId, String formatName,
+			String orgPrice, String currPrice) throws Exception;
 	
 	
 

@@ -103,6 +103,47 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 	 return String.valueOf(addResult);
 }
 	
+	@Override
+	public String updateGoodsRecord(Map<String,String> map)throws Exception{
+			
+			MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
+			
+			String goodsId = map.get("goodsId");
+			//1、修改商品信息
+			String addUserGroupSql ="update goods_info set goods_title=:goods_title,goods_model_number=:goods_model_number,goods_stock=:goods_stock,image_file_no=:image_file_no,format_price_no=:format_price_no,create_name=:create_name,create_time=:create_time  where goods_id=:goods_id";
+		 	paramSourceGroup.addValue("goods_id",goodsId);
+		 	paramSourceGroup.addValue("goods_title", map.get("goodsTitle"));
+			paramSourceGroup.addValue("goods_model_number", map.get("goodsModelNumber"));
+
+			paramSourceGroup.addValue("goods_stock", map.get("goodsStock"));
+			paramSourceGroup.addValue("image_file_no", map.get("imageFileNO"));
+			paramSourceGroup.addValue("format_price_no", map.get("formatAndPriceNO"));
+			paramSourceGroup.addValue("create_name", map.get("createName"));
+			paramSourceGroup.addValue("create_time", Utils.getCurrentDate());
+			
+
+		 int addGroupResult = namedParameterJdbcTemplate.update(addUserGroupSql, paramSourceGroup);
+			LOGGER.info("修改商品记录结果addGoods_infoResult:"+String.valueOf(addGroupResult));
+
+		//2、更新商品映射关系，采用删除再修改方式
+			this.deleteGoodsMap(map);
+			String result="";
+			    for(int i=1;i<7;i++){
+			    	String goodsTwolevelCode =  map.get("onelevelCode0"+String.valueOf(i));
+			    	if(!"".equals(goodsTwolevelCode)&&null!=goodsTwolevelCode)
+			    	{
+			    		result=this.addGoodsMap(goodsId, goodsTwolevelCode);
+			    		
+			    	}
+			    	
+			    }
+	  
+				
+			
+		 return String.valueOf(addGroupResult);
+	}
+	
+	
 	@Override 
 	public String addGoodsImage(String goodsImageServer,String goodsImageUrl,String goodsImageUrlSl,String goodsId,String positionCode )throws Exception{
 		MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
@@ -137,12 +178,26 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 			
 			
 	}
-	
-	
 	@Override 
-	public String updateGoodsRecord(Map<String, String> map) throws Exception{
-		return null;
+	public String updateGoodsFormatAndPrice(String goodsId,String formatName,String orgPrice,String currPrice )throws Exception{
+		MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
+		String addGoodsFormatPriceSql ="update goods_formatprice set format_name=:format_name,org_price=:org_price,curr_price=:curr_price where goods_id=:goods_id";
+			paramSourceGroup.addValue("goods_id", goodsId);
+			paramSourceGroup.addValue("format_name", formatName);
+//			paramSourceGroup.addValue("format_code", formatCode);
+			paramSourceGroup.addValue("org_price", orgPrice);
+			paramSourceGroup.addValue("curr_price", currPrice);
+			
+			 int addResult = namedParameterJdbcTemplate.update(addGoodsFormatPriceSql, paramSourceGroup);
+				LOGGER.info("增加规格和价格Result:"+String.valueOf(addResult));
+				
+				return String.valueOf(addResult);
+			
+			
 	}
+	
+	
+
 	@Override 
 	public String deleteGoodsInfo(Map<String, String> map) throws Exception{
 		MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();

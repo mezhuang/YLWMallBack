@@ -32,6 +32,7 @@ public interface GoodsManagerService {
 	List<Map<String, Object>> getGoodsInfoBytwolevelCode(Map<String, String> map)
 			throws Exception;
 	String storeThumbnail(String standardImgPath, String thumName);
+	String updateGoodsFormatAndPrice(Map<String, String> map) throws Exception;
 	
 
 }

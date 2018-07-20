@@ -31,4 +31,8 @@ public interface  SaleInfoDao extends Serializable {
 	String addGoodsdetailList(Map<String, String> map) throws Exception;
 
 
+	List<Map<String, Object>> getGoodsOrderListByOpenId(Map<String, String> map)
+			throws Exception;
+
+
 }

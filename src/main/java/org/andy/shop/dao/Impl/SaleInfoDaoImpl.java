@@ -1,7 +1,9 @@
 package org.andy.shop.dao.Impl;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -82,7 +84,7 @@ public class SaleInfoDaoImpl implements SaleInfoDao {
 			MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
 
 		 String addUserGroupSql ="INSERT INTO goods_order ( goods_order_id, open_id, order_status,total_num, total_fee,receive_address_id,pay_time,create_time) VALUES (:goods_order_id, :open_id, :order_status,:total_num, :total_fee,:receive_address_id,:pay_time,:create_time)";
-			paramSourceGroup.addValue("goods_order_id", map.get("goods_order_id"));
+			paramSourceGroup.addValue("goods_order_id", map.get("goodsOrderId"));
 			paramSourceGroup.addValue("open_id", map.get("openId"));
 			paramSourceGroup.addValue("order_status", map.get("orderStatus"));
 			paramSourceGroup.addValue("total_num", map.get("totalNum"));
@@ -112,7 +114,7 @@ public class SaleInfoDaoImpl implements SaleInfoDao {
 			MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
 
 		 String addUserGroupSql ="INSERT INTO goods_order_map ( goods_order_id,goods_id, goods_tile, goods_format,goods_price, buy_number,goods_image_url,create_time) VALUES (:goods_order_id,:goods_id, :goods_tile, :goods_format,:goods_price, :buy_number,:goods_image_url,:create_time)";
-			paramSourceGroup.addValue("goods_order_id", map.get("goods_order_id"));
+			paramSourceGroup.addValue("goods_order_id", map.get("goodsOrderId"));
 			paramSourceGroup.addValue("goods_id", map.get("goods_id"));
 			paramSourceGroup.addValue("open_id", map.get("openId"));
 			paramSourceGroup.addValue("goods_tile", map.get("goods_title"));
@@ -129,6 +131,37 @@ public class SaleInfoDaoImpl implements SaleInfoDao {
 			LOGGER.info("增加销售信息结果:"+String.valueOf(addSaleResult));
 
 		 return String.valueOf(addSaleResult);
+	}
+	@Override
+	public List<Map<String, Object>>  getGoodsOrderListByOpenId(Map<String, String> map) throws Exception{
+			
+		List<Map<String, Object>> reList=new ArrayList<Map<String,Object>>();
+			String openId =map.get("openId");
+			
+			String sql = "select a.* from goods_order_map a INNER JOIN  goods_order b on b.goods_order_id=a.goods_order_id where b.open_id  ='"+openId+"' ORDER BY a.create_time ASC  ;";
+	
+			List<Map<String, Object>> goodsOrderList = jdbcTemplate.queryForList(sql);
+			
+//			for(Map<String,Object> mapTmp:goodsClassList)
+//			{
+//				Map<String, Object> reMap =new HashMap<String, Object>();
+//				reMap.putAll(mapTmp);
+//				String goodsOrderId = (String) mapTmp.get("goods_order_id");
+//				//查询订单详细列表
+//				String detailsql = "select *From goods_order a   where a.open_id='"+openId+"' ORDER BY a.create_time ASC  ;";
+//				
+//				List<Map<String, Object>> orderDeailList = jdbcTemplate.queryForList(detailsql);
+//				
+//				reMap.put("orderDeailList", orderDeailList);
+//				
+//				//加入返回列表
+//				reList.add(reMap);
+//				
+//			}
+			
+			
+	
+			return goodsOrderList;
 	}
 	
 	

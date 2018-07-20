@@ -389,6 +389,10 @@ public class SaleAndCommiController {
 		 
 		return salesInfolist;
 	}
+	
+	
+	
+	
 	@RequestMapping(value="/addOnlineGoodsOrder.do",method = {RequestMethod.GET })
 	@ResponseBody
 	public String addOnlineGoodsOrder(@RequestParam Map<String,String> map)  {
@@ -402,6 +406,7 @@ public class SaleAndCommiController {
 		List<Map<String,String>> goodsOrderList =  (List) JSON.parse(goodsOrderListStr);
 		for(Map<String,String> goodsMap:goodsOrderList)
 		{
+			goodsMap.put("goodsOrderId", map.get("goodsOrderId"));
 			saleInfoService.addGoodsdetailList(goodsMap);
 		}
 		
@@ -415,6 +420,23 @@ public class SaleAndCommiController {
 	return reStr;
 	}
 	
+	
+	@RequestMapping(value="/getGoodsOrderListByOpenId.do",method = {RequestMethod.GET })
+	@ResponseBody
+	public List<Map<String, Object>> getGoodsOrderListByOpenId(@RequestParam Map<String,String> map)  {
+		LOGGER.info("json返回各个导购录入的销售信息列表");
+	
+		// List<Map<String, Object>> guideInfos = userPowerService.getUserPowerByOpenId(openId);
+//		LOGGER.info("guideInfos:"+guideInfos);
+		 List<Map<String, Object>> salesInfolist= new ArrayList<Map<String, Object>>();
+		try {
+			salesInfolist = saleInfoService.getGoodsOrderListByOpenId(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		 
+		return salesInfolist;
+	}
 	
 }
 

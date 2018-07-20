@@ -74,4 +74,62 @@ public class SaleInfoDaoImpl implements SaleInfoDao {
 
 		return customerReportList;
 	}
+	
+	//线上订单管理
+	@Override
+	public String addGoodsOnlineOrder(Map<String, String> map) throws Exception{
+			
+			MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
+
+		 String addUserGroupSql ="INSERT INTO goods_order ( goods_order_id, open_id, order_status,total_num, total_fee,receive_address_id,pay_time,create_time) VALUES (:goods_order_id, :open_id, :order_status,:total_num, :total_fee,:receive_address_id,:pay_time,:create_time)";
+			paramSourceGroup.addValue("goods_order_id", map.get("goods_order_id"));
+			paramSourceGroup.addValue("open_id", map.get("openId"));
+			paramSourceGroup.addValue("order_status", map.get("orderStatus"));
+			paramSourceGroup.addValue("total_num", map.get("totalNum"));
+			paramSourceGroup.addValue("total_fee", map.get("totalFee"));
+			paramSourceGroup.addValue("receive_address_id", map.get("receiveAddressId"));
+			if("02"==map.get("orderStatus"))
+			{
+				paramSourceGroup.addValue("pay_time", Utils.getCurrentDate());
+			}else{
+				paramSourceGroup.addValue("pay_time", "00:00:00");
+			}
+			
+			paramSourceGroup.addValue("create_time", Utils.getCurrentDate());
+			
+		
+
+		 int addSaleResult = namedParameterJdbcTemplate.update(addUserGroupSql, paramSourceGroup);
+			LOGGER.info("增加销售信息结果:"+String.valueOf(addSaleResult));
+
+		 return String.valueOf(addSaleResult);
+	}
+	
+	//线上订单管理
+	@Override
+	public String addGoodsdetailList(Map<String, String> map) throws Exception{
+			
+			MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
+
+		 String addUserGroupSql ="INSERT INTO goods_order_map ( goods_order_id,goods_id, goods_tile, goods_format,goods_price, buy_number,goods_image_url,create_time) VALUES (:goods_order_id,:goods_id, :goods_tile, :goods_format,:goods_price, :buy_number,:goods_image_url,:create_time)";
+			paramSourceGroup.addValue("goods_order_id", map.get("goods_order_id"));
+			paramSourceGroup.addValue("goods_id", map.get("goods_id"));
+			paramSourceGroup.addValue("open_id", map.get("openId"));
+			paramSourceGroup.addValue("goods_tile", map.get("goods_title"));
+			paramSourceGroup.addValue("goods_format", map.get("format_name"));
+			paramSourceGroup.addValue("goods_price", map.get("price"));
+			paramSourceGroup.addValue("buy_number", map.get("num"));
+			paramSourceGroup.addValue("goods_image_url", map.get("goods_image_server")+map.get("goods_image_url"));
+			
+			paramSourceGroup.addValue("create_time", Utils.getCurrentDate());
+			
+		
+
+		 int addSaleResult = namedParameterJdbcTemplate.update(addUserGroupSql, paramSourceGroup);
+			LOGGER.info("增加销售信息结果:"+String.valueOf(addSaleResult));
+
+		 return String.valueOf(addSaleResult);
+	}
+	
+	
 }

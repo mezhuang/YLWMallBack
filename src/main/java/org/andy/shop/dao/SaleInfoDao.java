@@ -25,4 +25,10 @@ public interface  SaleInfoDao extends Serializable {
 			String indexSize)throws Exception;
 
 
+	String addGoodsOnlineOrder(Map<String, String> map) throws Exception;
+
+
+	String addGoodsdetailList(Map<String, String> map) throws Exception;
+
+
 }

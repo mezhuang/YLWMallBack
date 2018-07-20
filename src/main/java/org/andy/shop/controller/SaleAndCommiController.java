@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
+
 /**
  * 创建时间：2015-2-1 下午9:40:03
  * 
@@ -387,6 +389,32 @@ public class SaleAndCommiController {
 		 
 		return salesInfolist;
 	}
+	@RequestMapping(value="/addOnlineGoodsOrder.do",method = {RequestMethod.GET })
+	@ResponseBody
+	public String addOnlineGoodsOrder(@RequestParam Map<String,String> map)  {
+	String reStr=null;
+	try {
+		//增加订单基本信息
+		reStr = saleInfoService.addGoodsOnlineOrder(map);
+		
+		//增加订单商品列表
+		String goodsOrderListStr = map.get("goodsOrderListStr");
+		List<Map<String,String>> goodsOrderList =  (List) JSON.parse(goodsOrderListStr);
+		for(Map<String,String> goodsMap:goodsOrderList)
+		{
+			saleInfoService.addGoodsdetailList(goodsMap);
+		}
+		
+		
+		
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	return reStr;
+	}
+	
 	
 }
 

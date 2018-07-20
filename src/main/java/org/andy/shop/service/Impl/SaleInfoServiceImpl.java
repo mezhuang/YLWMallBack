@@ -43,6 +43,14 @@ public class SaleInfoServiceImpl implements SaleInfoService {
 		return saleInfoDao.getSaleInfoList( openId,  startIndex, indexSize);
 		
 	}
+	@Override
+	public String addGoodsOnlineOrder(Map<String, String> map) throws Exception{
+		return saleInfoDao.addGoodsOnlineOrder(map);
+	}
+	@Override
+	public String addGoodsdetailList(Map<String, String> map) throws Exception{
+		return saleInfoDao.addGoodsdetailList(map);
+	}
 
 	
 

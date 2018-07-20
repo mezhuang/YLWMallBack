@@ -20,6 +20,8 @@ public interface SaleInfoService {
 	public String addSaleInfo(Map<String,String> map)throws Exception;
 	public List<Map<String, Object>> getSaleInfoList(String openId, String startIndex,
 			String indexSize)throws Exception;
+	String addGoodsOnlineOrder(Map<String, String> map) throws Exception;
+	String addGoodsdetailList(Map<String, String> map) throws Exception;
 	
 
 }

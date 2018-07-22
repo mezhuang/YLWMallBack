@@ -103,7 +103,7 @@ public class CartAndPayDaoImpl implements CartAndPayDao {
 			
 			String openId =map.get("openId");
 			
-			String sql = "select a.shopping_cart_id,a.open_id,a.goods_id,a.goods_title,a.goods_image_server,a.goods_image_url, CONVERT(a.goods_price,SIGNED)*CONVERT(a.buy_number,SIGNED) as  price,a.format_code,b.format_name,CONVERT(a.buy_number,SIGNED) as num,if(a.is_select='1',TRUE,FALSE) as isSelect From shopping_cart a LEFT JOIN goods_formatprice b on b.format_price_id =a.format_code  where a.open_id='"+openId+"' ORDER BY shopping_cart_id ASC  ;";
+			String sql = "select a.shopping_cart_id,a.open_id,a.goods_id,a.goods_title,a.goods_image_server,a.goods_image_url, CONVERT(a.goods_price,SIGNED) as  price,CONVERT(a.goods_price,SIGNED) as  unit_price,a.format_code,b.format_name,CONVERT(a.buy_number,SIGNED) as num,if(a.is_select='1',TRUE,FALSE) as isSelect From shopping_cart a LEFT JOIN goods_formatprice b on b.format_price_id =a.format_code  where a.open_id='"+openId+"' ORDER BY shopping_cart_id ASC  ;";
 	
 			List<Map<String, Object>> goodsClassList = jdbcTemplate.queryForList(sql);
 			

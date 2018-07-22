@@ -119,7 +119,7 @@ public class SaleInfoDaoImpl implements SaleInfoDao {
 			paramSourceGroup.addValue("open_id", map.get("openId"));
 			paramSourceGroup.addValue("goods_tile", map.get("goods_title"));
 			paramSourceGroup.addValue("goods_format", map.get("format_name"));
-			paramSourceGroup.addValue("goods_price", map.get("price"));
+			paramSourceGroup.addValue("goods_price", map.get("unit_price"));
 			paramSourceGroup.addValue("buy_number", map.get("num"));
 			paramSourceGroup.addValue("goods_image_url", map.get("goods_image_server")+map.get("goods_image_url"));
 			
@@ -138,30 +138,31 @@ public class SaleInfoDaoImpl implements SaleInfoDao {
 		List<Map<String, Object>> reList=new ArrayList<Map<String,Object>>();
 			String openId =map.get("openId");
 			
-			String sql = "select a.* from goods_order_map a INNER JOIN  goods_order b on b.goods_order_id=a.goods_order_id where b.open_id  ='"+openId+"' ORDER BY a.create_time ASC  ;";
+			String sql = "select *From goods_order a where a.open_id  ='"+openId+"' ORDER BY a.create_time ASC  ;";
 	
-			List<Map<String, Object>> goodsOrderList = jdbcTemplate.queryForList(sql);
+			List<Map<String, Object>> goodsClassList = jdbcTemplate.queryForList(sql);
 			
-//			for(Map<String,Object> mapTmp:goodsClassList)
-//			{
-//				Map<String, Object> reMap =new HashMap<String, Object>();
-//				reMap.putAll(mapTmp);
-//				String goodsOrderId = (String) mapTmp.get("goods_order_id");
-//				//查询订单详细列表
-//				String detailsql = "select *From goods_order a   where a.open_id='"+openId+"' ORDER BY a.create_time ASC  ;";
-//				
-//				List<Map<String, Object>> orderDeailList = jdbcTemplate.queryForList(detailsql);
-//				
-//				reMap.put("orderDeailList", orderDeailList);
-//				
-//				//加入返回列表
-//				reList.add(reMap);
-//				
-//			}
+			for(Map<String,Object> mapTmp:goodsClassList)
+			{
+				Map<String, Object> reMap =new HashMap<String, Object>();
+				reMap.putAll(mapTmp);
+				String goodsOrderId = (String) mapTmp.get("goods_order_id");
+				//查询订单详细列表
+				String detailsql = "select a.* from goods_order_map a    where a.goods_order_id='"+goodsOrderId+"' ORDER BY a.create_time ASC  ;";
+				
+				List<Map<String, Object>> orderDeailList = jdbcTemplate.queryForList(detailsql);
+				
+				reMap.put("orderDeailList", orderDeailList);
+				
+				//加入返回列表
+				reList.add(reMap);
+				
+				
+			}
 			
 			
 	
-			return goodsOrderList;
+			return reList;
 	}
 	
 	

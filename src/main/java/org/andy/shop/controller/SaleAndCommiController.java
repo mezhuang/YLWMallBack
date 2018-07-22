@@ -393,7 +393,7 @@ public class SaleAndCommiController {
 	
 	
 	
-	@RequestMapping(value="/addOnlineGoodsOrder.do",method = {RequestMethod.GET })
+	@RequestMapping(value="/addOnlineGoodsOrder.do",method = {RequestMethod.POST })
 	@ResponseBody
 	public String addOnlineGoodsOrder(@RequestParam Map<String,String> map)  {
 	String reStr=null;
@@ -421,7 +421,7 @@ public class SaleAndCommiController {
 	}
 	
 	
-	@RequestMapping(value="/getGoodsOrderListByOpenId.do",method = {RequestMethod.GET })
+	@RequestMapping(value="/getGoodsOrderListByOpenId.do",method = {RequestMethod.POST })
 	@ResponseBody
 	public List<Map<String, Object>> getGoodsOrderListByOpenId(@RequestParam Map<String,String> map)  {
 		LOGGER.info("json返回各个导购录入的销售信息列表");

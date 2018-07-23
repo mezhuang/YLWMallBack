@@ -138,7 +138,7 @@ public class SaleInfoDaoImpl implements SaleInfoDao {
 		List<Map<String, Object>> reList=new ArrayList<Map<String,Object>>();
 			String openId =map.get("openId");
 			
-			String sql = "select *From goods_order a where a.open_id  ='"+openId+"' ORDER BY a.create_time ASC  ;";
+			String sql = "select a.*,(case  a.order_status  when '01' THEN '待付款'  when '02' THEN '已付款' when '03' THEN '已发货'  when '04' THEN '待评价' END ) as order_status_name From goods_order a where a.open_id  ='"+openId+"' ORDER BY a.create_time ASC  ;";
 	
 			List<Map<String, Object>> goodsClassList = jdbcTemplate.queryForList(sql);
 			

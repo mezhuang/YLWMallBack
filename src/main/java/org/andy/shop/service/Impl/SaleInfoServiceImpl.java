@@ -56,6 +56,11 @@ public class SaleInfoServiceImpl implements SaleInfoService {
 	throws Exception{
 		return saleInfoDao.getGoodsOrderListByOpenId(map);
 	}
+	@Override
+	public String updateOrderStatus(Map<String, String> map)
+	throws Exception{
+		return saleInfoDao.updateOrderStatus(map);
+	}
 
 	
 

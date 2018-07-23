@@ -438,6 +438,24 @@ public class SaleAndCommiController {
 		return salesInfolist;
 	}
 	
+	@RequestMapping(value="/updateOrderStatus.do",method = {RequestMethod.POST })
+	@ResponseBody
+	public String updateOrderStatus(@RequestParam Map<String,String> map)  {
+		LOGGER.info("修改订单状态");
+	
+		// List<Map<String, Object>> guideInfos = userPowerService.getUserPowerByOpenId(openId);
+//		LOGGER.info("guideInfos:"+guideInfos);
+//		 List<Map<String, Object>> salesInfolist= new ArrayList<Map<String, Object>>();
+		String upateResult =null;
+		try {
+			 upateResult = saleInfoService.updateOrderStatus(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		 
+		return upateResult;
+	}
+	
 }
 
 

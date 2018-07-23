@@ -24,6 +24,8 @@ public interface SaleInfoService {
 	String addGoodsdetailList(Map<String, String> map) throws Exception;
 	List<Map<String, Object>> getGoodsOrderListByOpenId(Map<String, String> map)
 			throws Exception;
+	String updateOrderStatus(Map<String, String> map)
+			throws Exception;
 	
 
 }

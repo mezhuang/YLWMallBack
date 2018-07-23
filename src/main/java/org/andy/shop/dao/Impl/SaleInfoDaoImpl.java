@@ -164,6 +164,23 @@ public class SaleInfoDaoImpl implements SaleInfoDao {
 	
 			return reList;
 	}
-	
+	//支付成功，修改订单状态
+	@Override
+	public String updateOrderStatus(Map<String, String> map) throws Exception{
+			
+			MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
+
+		 String addUserGroupSql ="update goods_order set order_status=:order_status where goods_order_id=:goods_order_id and open_id=:open_id";
+			paramSourceGroup.addValue("order_status", map.get("orderStatus"));
+			paramSourceGroup.addValue("goods_order_id", map.get("goodsOrderId"));
+			paramSourceGroup.addValue("open_id",map.get("openId"));
+			
+		
+
+		 int addSaleResult = namedParameterJdbcTemplate.update(addUserGroupSql, paramSourceGroup);
+			LOGGER.info("增加销售信息结果:"+String.valueOf(addSaleResult));
+
+		 return String.valueOf(addSaleResult);
+	}
 	
 }

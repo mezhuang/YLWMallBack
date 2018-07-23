@@ -35,4 +35,7 @@ public interface  SaleInfoDao extends Serializable {
 			throws Exception;
 
 
+	String updateOrderStatus(Map<String, String> map) throws Exception;
+
+
 }

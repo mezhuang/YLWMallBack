@@ -383,7 +383,7 @@ public List<Map<String, Object>>getGoodsRecordDetail(@RequestParam Map<String,St
     }
     
 
-    @RequestMapping(value = "/getGoodsClassList.do",method = {RequestMethod.GET })
+    @RequestMapping(value = "/getGoodsClassListByClassType.do",method = {RequestMethod.GET })
 	@ResponseBody
 	public List<Map<String, Object>> getGoodsClassList(@RequestParam Map<String,String> map) {
 //    	int indexSize=10;
@@ -395,7 +395,7 @@ public List<Map<String, Object>>getGoodsRecordDetail(@RequestParam Map<String,St
 //    	
     	List<Map<String, Object>>  reList =null;
     	try {
-			  reList =goodsManagerService.getGoodsClassList(map);
+			  reList =goodsManagerService.getGoodsOnelevelClassListByClassType(map);
 			  
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

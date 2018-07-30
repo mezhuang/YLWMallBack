@@ -286,10 +286,13 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 		return reList;
 	}
 	@Override
-	public List<Map<String, Object>>  getGoodsOnelevelClassList(Map<String, String> map) throws Exception{
+	public List<Map<String, Object>>  getGoodsOnelevelClassListByClassType(Map<String, String> map) throws Exception{
 			
+			String classType=null;
 			
-			String oneLevelSql = "select DISTINCT a.onelevel_code,a.onelevel_name from goods_class a where a.class_type='1' ORDER BY onelevel_code ASC;";
+			classType =map.get("classType");
+			
+			String oneLevelSql = "select DISTINCT a.onelevel_code,a.onelevel_name from goods_class a where a.class_type='"+classType+"' ORDER BY onelevel_code ASC;";
 
 			
 
@@ -300,11 +303,11 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 	}
 	
 	@Override
-	public List<Map<String, Object>>  getGoodsClassList(Map<String, String> map) throws Exception{
+	public List<Map<String, Object>>  getGoodsTwoLevelClassListByOneLevelCode(Map<String, String> map) throws Exception{
 			
 			String onelevelCode =map.get("onelevelCode");
 			
-			String sql = "select DISTINCT a.twolevel_code,a.twolevel_name,CONCAT(a.goods_class_url,class_image_name) as class_image_url "+
+			String sql = "select DISTINCT a.twolevel_code,a.twolevel_name,CONCAT(a.goods_class_url,class_image_name) as class_image_url ,a.remark1,a.remark2 "+
 			             "From goods_class a  where a.onelevel_code='"+onelevelCode+"' ORDER BY a.twolevel_code ASC";
 	
 			List<Map<String, Object>> goodsClassList = jdbcTemplate.queryForList(sql);
@@ -317,17 +320,21 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 	public List<Map<String, Object>>  getGoodsInfoBytwolevelCode(Map<String, String> map) throws Exception{
 			
 			String twolevelCode =map.get("twolevelCode");
+			String imagePositionCode =map.get("imagePositionCode");
+			if(null!=imagePositionCode&&""!=imagePositionCode)
+			{
+				imagePositionCode = "and position_code = '"+imagePositionCode+"'";
+			}
 			
-			String sql = "select b.goods_id,a.twolevel_code,a.twolevel_name,c.goods_title,c.goods_model_number,d.goods_image_server,d.goods_image_url,min(e.curr_price) as curr_price ,d.goods_image_url_sl From goods_class a INNER JOIN goods_class_map b on b.goods_twolevel_code= a.twolevel_code"+ 
+			
+			
+			String sql = "select b.goods_id,a.twolevel_code,a.twolevel_name,a.remark3,c.goods_title,c.goods_model_number,d.goods_image_server,d.goods_image_url,min(e.curr_price) as curr_price ,min(e.org_price) as org_price,d.goods_image_url_sl,d.goods_image_text From goods_class a INNER JOIN goods_class_map b on b.goods_twolevel_code= a.twolevel_code"+ 
 						" INNER JOIN  goods_info c on c.goods_id=b.goods_id  INNER JOIN  goods_image d on d.goods_id=b.goods_id INNER JOIN  goods_formatprice e on e.goods_id=b.goods_id  "+																
-						" where b.goods_twolevel_code='"+twolevelCode+"' and d.goods_image_url like '%001%' GROUP BY goods_id ORDER BY a.twolevel_code ASC;";
+						" where b.goods_twolevel_code='"+twolevelCode+"' "+imagePositionCode+"  GROUP BY goods_id ORDER BY a.twolevel_code ASC;";
 	
 			List<Map<String, Object>> goodsClassList = jdbcTemplate.queryForList(sql);
 			
 	
 			return goodsClassList;
 	}
-	
-	
-
 }

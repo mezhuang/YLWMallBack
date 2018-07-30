@@ -27,7 +27,7 @@ public interface GoodsManagerService {
 	String deleteGoodsImage(Map<String, String> map) throws Exception;
 	String addGoodsFormatAndPrice(Map<String,String> map)throws Exception;
 	String deleteGoodsFormatPrice(Map<String, String> map) throws Exception;
-	List<Map<String, Object>> getGoodsClassList(Map<String, String> map)
+	List<Map<String, Object>> getGoodsOnelevelClassListByClassType(Map<String, String> map)
 			throws Exception;
 	List<Map<String, Object>> getGoodsInfoBytwolevelCode(Map<String, String> map)
 			throws Exception;

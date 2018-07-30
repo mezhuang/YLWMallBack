@@ -131,9 +131,9 @@ public class GoodsManagerServiceImpl implements GoodsManagerService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getGoodsClassList(Map<String, String> map)throws Exception{
+	public List<Map<String, Object>> getGoodsOnelevelClassListByClassType(Map<String, String> map)throws Exception{
 		List<Map<String, Object>> reList = new ArrayList<Map<String, Object>>();
-		List<Map<String, Object>> oneLevelClass =goodsManagerDao.getGoodsOnelevelClassList(map);
+		List<Map<String, Object>> oneLevelClass =goodsManagerDao.getGoodsOnelevelClassListByClassType(map);
 		
 		
 
@@ -144,7 +144,7 @@ public class GoodsManagerServiceImpl implements GoodsManagerService {
 
 			Map<String, String> twoLevelClass = new HashMap<String, String>();
 			twoLevelClass.put("onelevelCode",onelevelCode );
-			List<Map<String, Object>>  twoClassList = goodsManagerDao.getGoodsClassList(twoLevelClass);
+			List<Map<String, Object>>  twoClassList = goodsManagerDao.getGoodsTwoLevelClassListByOneLevelCode(twoLevelClass);
 			Map<String, Object> reMap = new HashMap<String, Object>();
 			reMap.put("onelevel_code",onelevelCode);
 			reMap.put("onelevel_name",onelevelName);

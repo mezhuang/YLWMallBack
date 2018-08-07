@@ -20,7 +20,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">  
 	<head>
 		<base href="<%=basePath%>">
-		<title>添加商品</title>
+		<title>添加生活家</title>
 		<jsp:include page="/common/include/jquery.jsp" flush="true"/>
 		<jsp:include page="/common/include/easyui.jsp" flush="true"/>
 		<jsp:include page="/common/include/dialog.jsp" flush="true"/>
@@ -36,92 +36,8 @@
 						alert(msg);
 					}
 				});
-				/*
-				for(int i=1;i<imageFileNO;i++)
-				{
-					$("#imagediplay"+i+"")
-					.formValidator({
-						empty:true,
-						onShow:"请选择图片显示位置",
-						onFocus:"请选择图片显示位置",
-						onCorrect:"请选择图片显示位置"
-					})
-					.inputValidator({
-						//min:1,
-						max:50,
-						onError:"请选择图片显示位置"
-					});	
-				}
-				for(int i=1;i<formatAndPriceNO;i++)
-				{
-					$("#currPrice"+i+"")
-					.formValidator({
-						empty:true,
-						onShow:"请输入当前价格",
-						onFocus:"请输入当前价格",
-						onCorrect:"您输入的当前价格合法"
-					})
-					.inputValidator({
-						//min:1,
-						max:50,
-						onError:"当前价格有误,请确认"
-					});	
-				}
-				
-					for(int i=1;i<7;i++)
-				{
-					$("#onelevelCode0"+i+"")
-					.formValidator({
-						empty:true,
-						onShow:"请商品分类",
-						onFocus:"请商品分类",
-						onCorrect:"您选择商品分类合法"
-					})
-					.inputValidator({
-						//min:1,
-						max:50,
-						onError:"商品分类有误,请确认"
-					});	
-				}
-					*/
-				$("#goodsTile")
-					.formValidator({
-						empty:true,
-						onShow:"请输入标题",
-						onFocus:"请输入标题",
-						onCorrect:"您输入的标题合法"
-					})
-					.inputValidator({
-						//min:1,
-						max:50,
-						onError:"创建人有误,请确认"
-					});		
 			
-				$("#goodsModelNumber")
-					.formValidator({
-						empty:true,
-						onShow:"请输入商品型号",
-						onFocus:"请输入商品型号",
-						onCorrect:"您输入的型号合法"
-					})
-					.inputValidator({
-						//min:1,
-						max:50,
-						onError:"商品型号有误,请确认"
-					});
-				
-				$("#createName")
-					.formValidator({
-						empty:true,
-						onShow:"请输入创建人",
-						onFocus:"请输入创建人",
-						onCorrect:"您输入的创建人合法"
-					})
-					.inputValidator({
-						//min:1,
-						max:50,
-						onError:"创建人有误,请确认"
-					});
+			
 				$("#createTime")
 					.formValidator({
 						empty:true,
@@ -242,7 +158,7 @@ function viewImage(file,imageId,viewId){
 				$("#imageFile"+preImageFileNO+"").after("<tr id=\"imageFile"+imageFileNO+"\"><td name='imageFileNO' hidden='true'></td>"+
 			                            	"<td><input type='file' name='caseImage"+imageFileNO.toString()+"'  onchange=\"viewImage(this,'localImag"+imageFileNO.toString()+"','preview"+imageFileNO.toString()+"')\"></td>"+
 			                            	"<td><div id=\"localImag"+imageFileNO.toString()+"\"><img id=\"preview"+imageFileNO.toString()+"\" width=-1 height=-1 style='diplay:none' /></td>"+
-										 	"<td> <select name='positionCode"+imageFileNO.toString()+"' id='positionCode"+imageFileNO.toString()+"'> <option value=''>请选择显示位置</option><option value='07001'>首次展示图</option><option value='07002'>详情页滚动轮播</option> <option value='07003'>详情明细</option> <option value='07004'>套餐活动图</option></select></>"+
+										 	"<td> <select name='positionCode"+imageFileNO.toString()+"' id='positionCode"+imageFileNO.toString()+"'><option value=''>请选择显示位置</option><option value='07001'>滚动轮播</option> <option value='07002'>详情明细</option> </select></>"+
 										 	"<td><button type='button' class='btn btn-danger btn-xs' style='border-radius:4px; margin-top:-5px;' onclick='deleteImageTr(this)'><i class='icon-trash icon-on-right bigger-110'></i>删除</button></td></tr>");
 				$("#imageFileNO").val(imageFileNO);
 			}
@@ -289,22 +205,17 @@ function viewImage(file,imageId,viewId){
                         </div>
                         <div>
                         <!-- 表单 start -->
-                        <form id="add" name="add" action="<%=basePath%>addGoodsRecord.do" method="post" enctype="multipart/form-data">
+                        <form id="add" name="add" action="<%=basePath%>addlifeExpert.do" method="post" enctype="multipart/form-data">
                             <div>
                             <!-- 表单元素table start -->
                             <table id ="addTableId"  cellspacing="0" width="100%" cellpadding="2" border="0">
                             <tr>
                             		<td >标题：
                             		
-                            			<input type="text" id="goodsTitle" name="goodsTitle" value=""/>
+                            			<input type="text" id="lifeExpertTitle" name="goodsTitle" value=""/>
                             		</td>
                             	</tr>
-                            	<tr>
-                            		<td >型号：
-                            		
-                            			<input type="text" id="goodsModelNumber" name="goodsModelNumber" value=""/>
-                            		</td>
-                            	</tr>
+                            	
                             
                             	<!-- ---------------- 上传图片及设置图片显示位置------------------------------->
                                 <tr class="FormatPriceGroup" id="FormatPriceGroup">
@@ -332,11 +243,8 @@ function viewImage(file,imageId,viewId){
 										 	<td>
 						                    <select name="positionCode1" id="positionCode1">
 						                        <option value="">请选择位置</option>
-						                        <option value="07001">首次展示图</option>
-						                        <option value="07002">滚动轮播</option>
-						                        <option value="07003">详情明细</option>
-						                        <option value="07004">套餐活动图</option>
-						                        
+						                        <option value="07001">滚动轮播</option>
+						                        <option value="07002">详情明细</option>
 						                    </select>
 					                    
 							                </td>

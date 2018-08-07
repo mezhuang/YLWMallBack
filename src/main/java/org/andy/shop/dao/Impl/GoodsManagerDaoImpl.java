@@ -145,14 +145,15 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 	
 	
 	@Override 
-	public String addGoodsImage(String goodsImageServer,String goodsImageUrl,String goodsImageUrlSl,String goodsId,String positionCode )throws Exception{
+	public String addGoodsImage(String goodsImageServer,String goodsImageUrl,String goodsImageUrlSl,String goodsId,String positionCode,String positionName )throws Exception{
 		MapSqlParameterSource paramSourceGroup = new MapSqlParameterSource();
-		String addGoodsImageSql ="insert into goods_image (goods_id,goods_image_server,goods_image_url,goods_image_url_sl,position_code) values(:goods_id,:goods_image_server,:goods_image_url,:goods_image_url_sl,:position_code)";
+		String addGoodsImageSql ="insert into goods_image (goods_id,goods_image_server,goods_image_url,goods_image_url_sl,position_code,position_name) values(:goods_id,:goods_image_server,:goods_image_url,:goods_image_url_sl,:position_code,:position_name)";
 			paramSourceGroup.addValue("goods_id", goodsId);
 			paramSourceGroup.addValue("goods_image_server", goodsImageServer);
 			paramSourceGroup.addValue("goods_image_url", goodsImageUrl);
 			paramSourceGroup.addValue("goods_image_url_sl", goodsImageUrlSl);
 			paramSourceGroup.addValue("position_code", positionCode);
+			paramSourceGroup.addValue("position_name", positionName);
 			
 			 int addResult = namedParameterJdbcTemplate.update(addGoodsImageSql, paramSourceGroup);
 				LOGGER.info("增加图片管理Result:"+String.valueOf(addResult));
@@ -321,6 +322,8 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 			
 			String twolevelCode =map.get("twolevelCode");
 			String imagePositionCode =map.get("imagePositionCode");
+			String sql=null;
+			
 			if(null!=imagePositionCode&&""!=imagePositionCode)
 			{
 				imagePositionCode = "and position_code = '"+imagePositionCode+"'";
@@ -328,7 +331,7 @@ public class GoodsManagerDaoImpl implements GoodsManagerDao {
 			
 			
 			
-			String sql = "select b.goods_id,a.twolevel_code,a.twolevel_name,a.remark3,c.goods_title,c.goods_model_number,d.goods_image_server,d.goods_image_url,min(e.curr_price) as curr_price ,min(e.org_price) as org_price,d.goods_image_url_sl,d.goods_image_text From goods_class a INNER JOIN goods_class_map b on b.goods_twolevel_code= a.twolevel_code"+ 
+			 sql = "select b.goods_id,a.twolevel_code,a.twolevel_name,a.remark3,c.goods_title,c.goods_model_number,d.goods_image_server,d.goods_image_url,min(e.curr_price) as curr_price ,min(e.org_price) as org_price,d.goods_image_url_sl,d.goods_image_text From goods_class a INNER JOIN goods_class_map b on b.goods_twolevel_code= a.twolevel_code"+ 
 						" INNER JOIN  goods_info c on c.goods_id=b.goods_id  INNER JOIN  goods_image d on d.goods_id=b.goods_id INNER JOIN  goods_formatprice e on e.goods_id=b.goods_id  "+																
 						" where b.goods_twolevel_code='"+twolevelCode+"' "+imagePositionCode+"  GROUP BY goods_id ORDER BY a.twolevel_code ASC;";
 	

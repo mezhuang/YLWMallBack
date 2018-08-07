@@ -138,7 +138,10 @@
 										   $("#imageFile"+rJ+"").after("<tr id=\"imageFile"+j+"\">"+
 				                            	"<td><input type='file' name='caseImage"+j+"'  onchange=\"viewImage(this,'localImag"+j+"','preview"+j+"')\"></td>"+
 				                            	"<td><div id=\"localImag"+j+"\"><img id=\"preview"+j+"\" width='100px' height='120px' style='diplay:none' /></td>"+
-											 	"<td> <select name='positionCode"+j+"' id='positionCode"+j+"'><option value=''>请选择显示位置</option><option value='07001'>滚动轮播</option> <option value='07002'>详情明细</option> </select></>"+
+											 	"<td> <select name='positionCode"+j+"' id='positionCode"+j+"'><option value=''>请选择显示位置</option> <option value=\"07001\">首次展示图</option>"+
+						                        "<option value=\"07002\">详情页滚动轮播</option>"+
+						                        "<option value=\"07003\">详情明细</option>"+
+						                        "<option value=\"07004\">套餐活动图</option> </select></>"+
 											 	"<td><button type='button' class='btn btn-danger btn-xs' style='border-radius:4px; margin-top:-5px;' onclick='deleteImageTr(this)'><i class='icon-trash icon-on-right bigger-110'></i>删除</button></td></tr>");
 										   
 											$("#preview"+j+"").attr('src',dataList[i].goodsImageList[rJ].goods_image_url); 
@@ -299,7 +302,7 @@ function viewImage(file,imageId,viewId){
 				$("#imageFile"+preImageFileNO+"").after("<tr id=\"imageFile"+imageFileNO+"\">"+
 			                            	"<td><input type='file' name='caseImage"+imageFileNO.toString()+"'  onchange=\"viewImage(this,'localImag"+imageFileNO.toString()+"','preview"+imageFileNO.toString()+"')\"></td>"+
 			                            	"<td><div id=\"localImag"+imageFileNO.toString()+"\"><img id=\"preview"+imageFileNO.toString()+"\" width=-1 height=-1 style='diplay:none' /></td>"+
-										 	"<td> <select name='positionCode"+imageFileNO.toString()+"' id='positionCode"+imageFileNO.toString()+"'><option value=''>请选择显示位置</option><option value='001'>轮播</option> <option value='002'>详情介绍</option> </select></>"+
+										 	"<td> <select name='positionCode"+imageFileNO.toString()+"' id='positionCode"+imageFileNO.toString()+"'><option value=''>请选择显示位置</option><option value='07001'>首次展示</option> <option value='07002'>详情页轮播</option> <option value='07003'>详情页明细</option><option value='07004'>套餐活动图</option> </select></>"+
 										 	"<td><button type='button' class='btn btn-danger btn-xs' style='border-radius:4px; margin-top:-5px;' onclick='deleteImageTr(this)'><i class='icon-trash icon-on-right bigger-110'></i>删除</button></td></tr>");
 				$("#imageFileNO").val(imageFileNO);
 			}
@@ -391,8 +394,10 @@ function viewImage(file,imageId,viewId){
 										 	<td witdth='100px' >
 						                    <select name="positionCode1" id="positionCode1">
 						                        <option value="">请选择位置</option>
-						                        <option value="001">轮播</option>
-						                        <option value="002">详情介绍</option>
+						                        <option value="07001">首次展示图</option>
+						                        <option value="07002">滚动轮播</option>
+						                        <option value="07003">详情明细</option>
+						                        <option value="07004">套餐活动图</option>
 						                    </select>
 					                    
 							                </td>

@@ -15,20 +15,23 @@
 	String id = new Uuid().getUUID();
 	//获得当前登录人
 	DhccUser loginUser = UserUtil.getCurrentUser(request);*/
+	String goodsId =request.getParameter("id");
+	out.println("goodsId:"+goodsId);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">  
 	<head>
 		<base href="<%=basePath%>">
-		<title>添加商品</title>
+		<title>编辑商品</title>
 		<jsp:include page="/common/include/jquery.jsp" flush="true"/>
 		<jsp:include page="/common/include/easyui.jsp" flush="true"/>
 		<jsp:include page="/common/include/dialog.jsp" flush="true"/>
 		<jsp:include page="/common/include/formValidator.jsp" flush="true"/>
 		<script type="text/javascript" src="<%= basePath %>plugins/My97DatePicker/WdatePicker.js"></script>
 		<script language="javascript">
-			var imageFileNO=1;//上传图片分组序号
-		    	var formatAndPriceNO=1;//商品规格和价格序号
+				
+		var imageFileNO=1;//上传图片分组序号
+		 var formatAndPriceNO=1;//商品规格和价格序号
 			$(document).ready(function(){
 				$.formValidator.initConfig( {
 					formID : "add",
@@ -36,80 +39,6 @@
 						alert(msg);
 					}
 				});
-				/*
-				for(int i=1;i<imageFileNO;i++)
-				{
-					$("#imagediplay"+i+"")
-					.formValidator({
-						empty:true,
-						onShow:"请选择图片显示位置",
-						onFocus:"请选择图片显示位置",
-						onCorrect:"请选择图片显示位置"
-					})
-					.inputValidator({
-						//min:1,
-						max:50,
-						onError:"请选择图片显示位置"
-					});	
-				}
-				for(int i=1;i<formatAndPriceNO;i++)
-				{
-					$("#currPrice"+i+"")
-					.formValidator({
-						empty:true,
-						onShow:"请输入当前价格",
-						onFocus:"请输入当前价格",
-						onCorrect:"您输入的当前价格合法"
-					})
-					.inputValidator({
-						//min:1,
-						max:50,
-						onError:"当前价格有误,请确认"
-					});	
-				}
-				
-					for(int i=1;i<7;i++)
-				{
-					$("#onelevelCode0"+i+"")
-					.formValidator({
-						empty:true,
-						onShow:"请商品分类",
-						onFocus:"请商品分类",
-						onCorrect:"您选择商品分类合法"
-					})
-					.inputValidator({
-						//min:1,
-						max:50,
-						onError:"商品分类有误,请确认"
-					});	
-				}
-					*/
-				$("#goodsTile")
-					.formValidator({
-						empty:true,
-						onShow:"请输入标题",
-						onFocus:"请输入标题",
-						onCorrect:"您输入的标题合法"
-					})
-					.inputValidator({
-						//min:1,
-						max:50,
-						onError:"创建人有误,请确认"
-					});		
-			
-				$("#goodsModelNumber")
-					.formValidator({
-						empty:true,
-						onShow:"请输入商品型号",
-						onFocus:"请输入商品型号",
-						onCorrect:"您输入的型号合法"
-					})
-					.inputValidator({
-						//min:1,
-						max:50,
-						onError:"商品型号有误,请确认"
-					});
-				
 				$("#createName")
 					.formValidator({
 						empty:true,
@@ -132,23 +61,152 @@
 					.inputValidator({
 						onError:"创建时间有误,请确认"
 					});
-					
 		
 		
 			});
+			function validator()
+			{}
 			
 			var submitPage;//定义用于提交流程的 子窗口对象
 			//提交表单
 			function submitForm() {
-    			$('#submitBtn').linkbutton('disable');//把提交按钮设置 为不可用
+    				//校验表单
+    				
+    				//设置图片张数和规格条数
+    				$('#imageFileNO').val(imageFileNO);
+    				$('#formatAndPriceNO').val(formatAndPriceNO);
+    			
+    				$('#submitBtn').linkbutton('disable');//把提交按钮设置 为不可用
+    	
     
+    		
     				$('#add').submit();
     			
-			};
+			}
+		
+			//获取需要修改的记录	
+			function initUpdateRecord() {
+						$.ajax({
+							type:"get",
+							url:"<%=basePath%>getGoodsRecordDetail.do",
+							data:{"id":"<%=goodsId%>"}, 
+							success:function(data) {
+							
+									// var str = "${list}"
+									// str里面的内容是：[{"a":"1","b":"2"},{"a":"3","b":"4"}]
+									console.log(data);
+									var dataList = JSON.parse(data);
+									//var jsonObj =  JSON.parse(data);//转换为json对象
+									//var dataList = eval("(" + data + ")");
+									for(var i in dataList) {
+									
+										console.log("i:"+i);
+										var i1=1;
+										var i2=2;
+										var i3=3;
+										var i4=4;
+										var i5=5;
+										
+										
+										console.log(dataList[i].goods_title + dataList[i].goods_model_number);
+										$("#goodsId").val(dataList[i].goods_id);
+									   $("#goodsTitle").val(dataList[i].goods_title);
+									   $("#goodsModelNumber").val(dataList[i].goods_model_number);
+									   $("#goodsOrgPrice").val(dataList[i].goods_org_price);
+									   $("#goodsCurrPrice").val(dataList[i].goods_curr_price);
+									   $("#goodsStock").val(dataList[i].goods_stock);
+									   
+										console.log(dataList[i].goodsImageList);
+										var imageListTmp = dataList[i].goodsImageList;
+										console.log(dataList[i].goodsImageList[i].goods_image_url);
+										//var imageList = eval("(" + dataList[i].goodsImageList + ")");
+									   var reImagesFileNo =parseInt(dataList[i].image_file_no);
+									   imageFileNO=reImagesFileNo;
+									   console.log("reImagesFileNo:"+reImagesFileNo);
+									   
+									   //显示图片
+									   var one=1;
+									   var zore=one-1;
+									   $("#preview"+one+"").attr('src',dataList[i].goodsImageList[zore].goods_image_url); 
+									   $("#positionCode"+one+"  option:selected").val(dataList[i].goodsImageList[zore].position_code); 
+									  $("#positionCode"+one+"  option:selected").text(dataList[i].goodsImageList[zore].position_name);
+									    
+									   for(var j=2;j<=reImagesFileNo;j++)
+									   {
+									   console.log("j:"+j);
+										  	var rJ=j-1;
+										   $("#imageFile"+rJ+"").after("<tr id=\"imageFile"+j+"\">"+
+				                            	"<td><input type='file' name='caseImage"+j+"'  onchange=\"viewImage(this,'localImag"+j+"','preview"+j+"')\"></td>"+
+				                            	"<td><div id=\"localImag"+j+"\"><img id=\"preview"+j+"\" width='100px' height='120px' style='diplay:none' /></td>"+
+											 	"<td> <select name='positionCode"+j+"' id='positionCode"+j+"'><option value=''>请选择显示位置</option><option value='07001'>滚动轮播</option> <option value='07002'>详情明细</option> </select></>"+
+											 	"<td><button type='button' class='btn btn-danger btn-xs' style='border-radius:4px; margin-top:-5px;' onclick='deleteImageTr(this)'><i class='icon-trash icon-on-right bigger-110'></i>删除</button></td></tr>");
+										   
+											$("#preview"+j+"").attr('src',dataList[i].goodsImageList[rJ].goods_image_url); 
+											$("#positionCode"+j+"  option:selected").val(dataList[i].goodsImageList[rJ].position_code); 
+									  		$("#positionCode"+j+"  option:selected").text(dataList[i].goodsImageList[rJ].position_name);
+					 
+										}
+										//回显规格和价格列表
+										 var reFomatPriceFileNo =parseInt(dataList[i].format_price_no);
+										  formatAndPriceNO = reFomatPriceFileNo;
+										 $("#formatName"+one+"").val(dataList[i].goodsFormatList[zore].format_name); 
+										 $("#orgPrice"+one+"").val(dataList[i].goodsFormatList[zore].org_price); 
+										 $("#currPrice"+one+"").val(dataList[i].goodsFormatList[zore].curr_price); 
+											for(var k =2;k<=reFomatPriceFileNo;k++)
+											{	
+												 var rk=k-1;
+												 $("#formatAndPriceId"+rk+"").after("<tr id=\"formatAndPriceId"+k+"\"><td ><input type='text' id='formatName"+k+"' name='formatName"+k+"' value=''/></td><td ><input type='text' id='orgPrice"+k+"'  name='orgPrice"+k+"' value=''/></td><td ><input type='text'  id='currPrice"+k+"' name='currPrice"+k+"' value=''/></td><td><button type='button' class='btn btn-danger btn-xs' style='border-radius:4px; margin-top:-5px;' onclick='deleteCurrent(this)'><i class='icon-trash icon-on-right bigger-110'></i>删除</button></td><tr>");
+												 $("#formatName"+k+"").val(dataList[i].goodsFormatList[rk].format_name); 
+												 $("#orgPrice"+k+"").val(dataList[i].goodsFormatList[rk].org_price); 
+												 $("#currPrice"+k+"").val(dataList[i].goodsFormatList[rk].curr_price);
+											}
+						
+						
+						
+						
+						
+										$('#onelevelCode01 option:selected').text(dataList[i].goodsClassList[i].twolevel_name);//选中的文本
+									   $('#onelevelCode01 option:selected').val(dataList[i].goodsClassList[i].twolevel_code);//选中的值
+										
+										$('#onelevelCode02 option:selected').text(dataList[i].goodsClassList[i1].twolevel_name);//选中的文本
+									   $('#onelevelCode02 option:selected').val(dataList[i].goodsClassList[i1].twolevel_code);//选中的值
+									   
+									   	$('#onelevelCode03 option:selected').text(dataList[i].goodsClassList[i2].twolevel_name);//选中的文本
+									   $('#onelevelCode03 option:selected').val(dataList[i].goodsClassList[i2].twolevel_code);//选中的值
+									   
+									   	$('#onelevelCode04 option:selected').text(dataList[i].goodsClassList[i3].twolevel_name);//选中的文本
+									   $('#onelevelCode04 option:selected').val(dataList[i].goodsClassList[i3].twolevel_code);//选中的值
+										
+										$('#onelevelCode05 option:selected').text(dataList[i].goodsClassList[i4].twolevel_name);//选中的文本
+									   $('#onelevelCode05 option:selected').val(dataList[i].goodsClassList[i4].twolevel_code);//选中的值
+									   
+									   	$('#onelevelCode06 option:selected').text(dataList[i].goodsClassList[i5].twolevel_name);//选中的文本
+									   $('#onelevelCode06 option:selected').val(dataList[i].goodsClassList[i5].twolevel_code);//选中的值
+									   
+									
+									}
+								
+								
+							
+								//$("#preview1").src.val(data.goodsImageList[0].goods_image_url);
+								//$("#preview1").attr('src',data[0].goodsImageList[0].goods_image_url); 
+								 //$("#province").val(data.goodsClassList[0].twolevel_code);
+								//$("#province").find("option[text='"+data.goodsClassList[0].twolevel_name+"']").attr("selected",true);;
+								
+								
+							    
+							     
+							//	$("#edit_phone").val(data.cust_phone);
+							//	$("#edit_mobile").val(data.cust_mobile); 
+							
+								
+							}
+						});
+						}
+			
 	
 			//关闭窗口
 			function closeWindow(){
-			parent.location.reload();//刷新父亲对象
 				if(frameElement==null||frameElement==undefined){
 					window.opener.initTable();
 					window.close();
@@ -163,10 +221,7 @@
 			//上传后预览图片
 			//上传图片后预览图片
 function viewImage(file,imageId,viewId){
-            
-            console.log(imageId);
-            console.log(viewId);
-          	//  var preview = document.getElementById('preview1');
+            //var preview = document.getElementById('preview1');
             var preview = document.getElementById(viewId);
             if(file.files && file.files[0]){
                 //火狐下
@@ -194,8 +249,7 @@ function viewImage(file,imageId,viewId){
                 document.selection.empty(); 
                 } 
                 return true; 
-        };
-        
+        }
         
         //实现产品类型（品类、风格、空间）二级联动
          $(function(){
@@ -215,9 +269,12 @@ function viewImage(file,imageId,viewId){
                     $("#city").append('<option value="'+now_city+'">'+now_city+'</option>');
                 }
             });
+            
+            initUpdateRecord();
         });
         
-        	//添加规格和价格标签
+        
+        //添加规格和价格标签
     
 			function addFormatAndPrice(){
 				var preformatAndPriceNO=formatAndPriceNO;
@@ -239,10 +296,10 @@ function viewImage(file,imageId,viewId){
 				//保留上一张图片位置
 				var preImageFileNO=imageFileNO;
 				imageFileNO++;
-				$("#imageFile"+preImageFileNO+"").after("<tr id=\"imageFile"+imageFileNO+"\"><td name='imageFileNO' hidden='true'></td>"+
+				$("#imageFile"+preImageFileNO+"").after("<tr id=\"imageFile"+imageFileNO+"\">"+
 			                            	"<td><input type='file' name='caseImage"+imageFileNO.toString()+"'  onchange=\"viewImage(this,'localImag"+imageFileNO.toString()+"','preview"+imageFileNO.toString()+"')\"></td>"+
 			                            	"<td><div id=\"localImag"+imageFileNO.toString()+"\"><img id=\"preview"+imageFileNO.toString()+"\" width=-1 height=-1 style='diplay:none' /></td>"+
-										 	"<td> <select name='positionCode"+imageFileNO.toString()+"' id='positionCode"+imageFileNO.toString()+"'> <option value=''>请选择显示位置</option><option value='07001'>首次展示图</option><option value='07002'>详情页滚动轮播</option> <option value='07003'>详情明细</option> <option value='07004'>套餐活动图</option></select></>"+
+										 	"<td> <select name='positionCode"+imageFileNO.toString()+"' id='positionCode"+imageFileNO.toString()+"'><option value=''>请选择显示位置</option><option value='001'>轮播</option> <option value='002'>详情介绍</option> </select></>"+
 										 	"<td><button type='button' class='btn btn-danger btn-xs' style='border-radius:4px; margin-top:-5px;' onclick='deleteImageTr(this)'><i class='icon-trash icon-on-right bigger-110'></i>删除</button></td></tr>");
 				$("#imageFileNO").val(imageFileNO);
 			}
@@ -254,7 +311,7 @@ function viewImage(file,imageId,viewId){
 			}
 			
 				                           
-
+        
 			
 		</script>
 	</head>
@@ -269,13 +326,13 @@ function viewImage(file,imageId,viewId){
                         <div class="path">
                             <div class="menublock" id="menublock">
                                 <div class="nav">
-                                    <a href="javascript:" class="hover" style="left: 0px; z-index: 99">添加商品信息 </a>
+                                    <a href="javascript:" class="hover" style="left: 0px; z-index: 99">编辑商品 </a>
                                     <div class="clear">
                                     </div>
                                 </div>
                             </div>
                             <div class="btnblock" id="btnblock" style="top: -5px">
-                                <a href="javascript:void(0)" onclick="submitForm();" id="submitBtn" class="easyui-linkbutton" plain="true" icon="icon-save"> 提交 </a>
+                                <a href="javascript:void(0)" onclick="submitForm();" id="submitBtn" class="easyui-linkbutton" plain="true" icon="icon-save"> 修改 </a>
                                 <a href="javascript:void(0)" onclick="javascript:closeWindow();" class="easyui-linkbutton" plain="true" icon="icon-back"> 关闭 </a>
                             </div>
                         </div>
@@ -287,13 +344,14 @@ function viewImage(file,imageId,viewId){
                     <td class="content" id="tdcontent">
                         <div id="errorlist">
                         </div>
-                        <div>
                         <!-- 表单 start -->
-                        <form id="add" name="add" action="<%=basePath%>addGoodsRecord.do" method="post" enctype="multipart/form-data">
-                            <div>
+                        <form id="add" name="add" action="<%=basePath%>updateGoodsRecord.do" method="post" enctype="multipart/form-data">
+                            
                             <!-- 表单元素table start -->
-                            <table id ="addTableId"  cellspacing="0" width="100%" cellpadding="2" border="0">
-                            <tr>
+                            <table cellspacing="0" width="100%" cellpadding="2" border="0">
+                            	<input type="hidden" name="goodsId" id="goodsId"/>
+								
+                            	<tr>
                             		<td >标题：
                             		
                             			<input type="text" id="goodsTitle" name="goodsTitle" value=""/>
@@ -305,7 +363,8 @@ function viewImage(file,imageId,viewId){
                             			<input type="text" id="goodsModelNumber" name="goodsModelNumber" value=""/>
                             		</td>
                             	</tr>
-                            
+                            	
+                            	
                             	<!-- ---------------- 上传图片及设置图片显示位置------------------------------->
                                 <tr class="FormatPriceGroup" id="FormatPriceGroup">
                             		<td class="td-left">
@@ -320,23 +379,20 @@ function viewImage(file,imageId,viewId){
                             		
                             	</tr>
                             	<tr id ="imageFile1" height="30" align="left" valign="middle">
-                            				<input id="imageFileNO"  name="imageFileNO"  value="1" hidden="true"/>
+                            				<input id="imageFileNO"  name="imageFileNO"   hidden="true"/>
 			                            	<td><input type="file" name="caseImage1"  onchange="viewImage(this,'localImag1','preview1')">
 			                            	</td>
 			                            	<td>
 			                            	<!--<p class="help-block">建议尺寸88*88</p>-->
 													</div>
-													<div id="localImag1"><img id="preview1" width=-1 height=-1 style="diplay:none" />
+													<div id="localImag1"><img id="preview1" width='100px' height='120px' style="diplay:none" />
 													</div>
 											</td>
-										 	<td>
+										 	<td witdth='100px' >
 						                    <select name="positionCode1" id="positionCode1">
 						                        <option value="">请选择位置</option>
-						                        <option value="07001">首次展示图</option>
-						                        <option value="07002">滚动轮播</option>
-						                        <option value="07003">详情明细</option>
-						                        <option value="07004">套餐活动图</option>
-						                        
+						                        <option value="001">轮播</option>
+						                        <option value="002">详情介绍</option>
 						                    </select>
 					                    
 							                </td>
@@ -357,7 +413,7 @@ function viewImage(file,imageId,viewId){
                             	</tr>
 								<tr id="formatAndPriceId1" >
 									<input id= "formatAndPriceNO" name="formatAndPriceNO" value="1" hidden='true'/>
-									<td name='formatCode1' value='001' hidden='true'></td>
+									<td name='formatCode1' value='001' hidden='true'>300</td>
                             		<td >
                             			<input type="text" id="formatName1" name="formatName1" value=""/>
                             		</td>
@@ -375,10 +431,10 @@ function viewImage(file,imageId,viewId){
 
                             			
                             	</tr>
-								
                             	
-                            	<tr>
-					             
+                            	
+                            	
+                            	<tr> 
 					                <td>
 					                    <select name="onelevelCode01" id="onelevelCode01">
 					                        <option value="">请选择品类</option>
@@ -391,7 +447,7 @@ function viewImage(file,imageId,viewId){
 					          </tr>
 					           <tr>
 					                <td>
-					                    <select name="onelevelCode02" id="onelevelCode2">
+					                    <select name="onelevelCode02" id="onelevelCode02">
 					                        <option value="">请选择风格</option>
 					                        <option value="02001">北欧轻奢</option>
 					                         <option value="02002">现代中式</option>
@@ -441,8 +497,7 @@ function viewImage(file,imageId,viewId){
 					                    </select>
 					                </td>
 					            </tr>
-				
-
+					            
                             	
                             	<tr>
                             		
@@ -450,12 +505,12 @@ function viewImage(file,imageId,viewId){
                             			<input type="text" id="goodsStock" name="goodsStock" value=""/>
                             		</td>
                             	</tr>
-      
+                            	
                             	<tr>
                             		
                             		<td class="td-right">
                             		<text>备注：</text>
-                            			<input type="text" id="remark" name="remark" value="" placeholder="选填"/>
+                            			<input type="text" id="remark" name="remark" value=""/>
                             		</td>
                             	</tr>
 
@@ -464,29 +519,20 @@ function viewImage(file,imageId,viewId){
                             	
                             		<td class="td-right">
                             		<text>创建人：</text>
-                            			<input type="text" id="createName" name="createName" value="周芬"/>
+                            			<input type="text" id="createName" name="createName" value=""/>
                             		</td>
                             	</tr>
-                            	<!-- 
-		                            	<tr>
-		                            		<td class="td-right">
-		                            		<text>创建时间：</text>
-		                            			<input type="text" id="createTime" name="createTime" readonly class="Wdate" onClick="WdatePicker({el:'createTime', dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
-		                            		</td>
-		                            	</tr>
-                            	 -->
-                            	
-                            
-                            	
-			    
-                            	
+                            	<tr>
+                            		<td class="td-right">
+                            		<text>创建时间：</text>
+                            			<input type="text" id="createTime" name="createTime" readonly class="Wdate" onClick="WdatePicker({el:'createTime', dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+                            		</td>
+                            	</tr>
 		
-                               </div>
+                               
                             </table>
-                             </div>
                             <!-- 表单元素table end -->
                         </form>
-                         </div>
                         <!-- 表单 end -->
                     </td>
                 </tr>

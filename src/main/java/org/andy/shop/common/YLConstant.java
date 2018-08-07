@@ -32,6 +32,13 @@ static public double refereeManager_TaskRadio=0.04;
 static public double refereeDicrector_NoTaskRadio=0.03;
 static public double refereeDicrector_TaskRadio=0.05;
 
+//位置编码
+static public String     POSITION_INDEX_PLAY="07001";//首次显示（小类）
+static public String     POSITION_DETAIL_PLAY="07002";//详情页轮播
+static public String     POSITION_DETAIL_DETAIL="07003";//详情页明细图
+static public String     POSITION_ACTIVITY_IMAGE="07004";//套餐活动图
+
+
 //错误编码
 static public String ERROR_CODE_COMMIFAIL="10005";//给分销经纪人结佣失败
 

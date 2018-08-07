@@ -17,6 +17,7 @@ import org.andy.shop.service.GroupMapService;
 import org.andy.shop.service.UserInfoService;
 import org.andy.shop.service.UserPowerService;
 import org.apache.log4j.Logger;
+import org.andy.shop.common.YLConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -308,6 +309,7 @@ public String  uploadImages(HttpServletRequest request,String goodsId,Map<String
                 	//缩略图访问地址
                 	String goodsImageUrlSl =recordPathTmpSl+goodsId.toString()+"00"+String.valueOf(i)+".jpg";
                 	String positionCode = map.get("positionCode"+String.valueOf(i));
+                	String positionName = this.convertPositionName(positionCode);
                 	
                     //如果上传的原图已存在，则先删除掉
                 	File uploadFile = new File(uploadFilePath);
@@ -327,7 +329,7 @@ public String  uploadImages(HttpServletRequest request,String goodsId,Map<String
                     //生成缩略图
                     goodsManagerService.storeThumbnail(uploadFilePath, uploadFilePath_sl);
                     try {
-						goodsManagerService.addGoodsImage(basePath,goodsImageUrl, goodsImageUrlSl,goodsId,positionCode);
+						goodsManagerService.addGoodsImage(basePath,goodsImageUrl, goodsImageUrlSl,goodsId,positionCode,positionName);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -421,5 +423,26 @@ public List<Map<String, Object>>getGoodsRecordDetail(@RequestParam Map<String,St
 		LOGGER.info("reList:"+reList);
 		return reList;
 	}
+    
+    private String convertPositionName(String positionCode)
+    {
+    String positionName=null;
+    if(positionCode.equals(YLConstant.POSITION_INDEX_PLAY))
+    {
+    	positionName="首次展示";
+    }else if(positionCode.equals(YLConstant.POSITION_DETAIL_PLAY))
+    {
+    	positionName="详情页轮播";
+    }else if(positionCode.equals(YLConstant.POSITION_DETAIL_DETAIL))
+    {
+    	positionName="详情页明细图";
+    }
+    else if(positionCode.equals(YLConstant.POSITION_ACTIVITY_IMAGE))
+    {
+    	positionName="套餐活动图";
+    }
+    	
+    	return positionName;
+    }
 }
 

@@ -71,9 +71,9 @@ public class GoodsManagerServiceImpl implements GoodsManagerService {
 		return goodsManagerDao.getGoodsRecordList(startIndex, indexSize);
 	}
 	@Override
-	public String addGoodsImage(String goodsImageServer,String goodsImageUrl,String goodsImageUrlSl,String goodsId,String displayPosition )throws Exception{
+	public String addGoodsImage(String goodsImageServer,String goodsImageUrl,String goodsImageUrlSl,String goodsId,String displayPosition,String positionName )throws Exception{
 		
-		return goodsManagerDao.addGoodsImage( goodsImageServer,goodsImageUrl,goodsImageUrlSl, goodsId,displayPosition);
+		return goodsManagerDao.addGoodsImage( goodsImageServer,goodsImageUrl,goodsImageUrlSl, goodsId,displayPosition,positionName);
 	}
 	@Override
 	public List<Map<String, Object>> getGoodsRecordDetail(String goodsId)

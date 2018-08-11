@@ -436,7 +436,9 @@ function viewImage(file,imageId,viewId){
 					                        <option value="">请选择展示位置</option>
 					                        <option value="06001">首页轮播</option>
 					                        <option value="06002">热销爆品</option>
-					                        <option value="06003">精选推荐</option>
+					                        <option value="06003">厂家直供</option>
+					                         <option value="06004">热销精选</option>
+					                        
 					                        
 					                    </select>
 					                </td>
